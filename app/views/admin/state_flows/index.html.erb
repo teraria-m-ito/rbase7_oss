@@ -1,0 +1,60 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.state_flows.index.title")%></h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <%= simple_form_for @condition, builder: RbaseFormBuilder, url: admin_state_flows_path, method: :get,  data: {turbo: true, action: "change->admin--state_flows#search_form_change"} do |f| %>
+            <div class="card-body">
+              <%= f.error_notification %>
+              <div class="form-group" id ="input_form">
+                <%= render partial: 'search_conditions', locals: {form: f} %>
+              </div>
+            </div>
+            <div class="card-footer">
+              <%= f.submit t(:"views.state_flows.index.button_search"), class: "btn btn-primary btn-sm"%>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+      
+    <% unless @state_flow.nil? %>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-title"></div>
+            <%= simple_form_for([:admin, @state_flow], builder: RbaseFormBuilder, html: {data: {turbo_confirm: t(:"views.common.update_confirm_message"), turbo: true, action: "change->admin--state_flows#form_change"}}) do |f| %>
+
+              <div class="card-body">
+                <a class="btn btn-default btn-sm" id="button_select_all" href="#select-all"><i class="glyphicon glyphicon-check"></i>Select all</a>
+                <a class="btn btn-default btn-sm" id="button_unselect_all" href="#unselect-all"><i class="glyphicon glyphicon-unchecked"></i>Unselect all</a>
+
+                <%= f.input :id, as: :hidden %>
+                <%= f.input :role_id, as: :hidden %>
+                <%= f.input :workflow_id, as: :hidden %>
+                <%= render partial: 'search_results', locals: {form: f} %>
+              </div>
+              <div class="card-footer">
+                <%= f.submit t(:"views.state_flows.index.button_update"), data: { confirm: t(:"views.common.update_confirm_message") }, class: "btn btn-primary btn-sm"%>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>

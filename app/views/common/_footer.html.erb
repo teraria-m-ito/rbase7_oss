@@ -1,0 +1,8 @@
+<!-- Main Footer -->
+<footer class="main-footer">
+  <!-- Default to the left -->
+  <%= ::SystemSetting.get_setting(:footer_copyright, current_site_id || Site.first.id).to_s.html_safe || "<strong>Copyright &copy;  #{Time.now.strftime("%Y")} |  All rights reserved.</strong> All rights reserved.".html_safe %>
+  <div class="float-right d-none d-sm-block">
+    <%= ::SystemSetting.get_setting(:footer_signature, current_site_id || Site.first.id).to_s.html_safe || "Powered by IDO Inc,<b>Version</b>0.9".html_safe %>
+  </div>
+</footer>

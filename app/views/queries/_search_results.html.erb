@@ -1,0 +1,29 @@
+<%= turbo_frame_tag 'entry-queries' do %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-title"></div>
+        <div class="card-body">
+          <% if @queries.to_a.empty? %>
+            <%= I18n.t(:"helpers.page_entries_info.one_page.display_entries.zero")%>
+          <% else %>
+            <table class="table table-hover table-striped table-condensed">
+              <tbody>
+                <% @queries.each do |query|%>
+                  <tr>
+                    <td class="col-md-8"><%= query.title %></td>
+                    <td class="col-md-4">
+                      <%= link_to t(:"views.queries.index.table_queries.button_load"), load_query_path(query), class: "btn btn-primary btn-sm storage-clear", data: {turbo: false} %>
+                      <%= link_to t(:"views.queries.index.table_queries.button_edit"), edit_query_path(query, target_class: "#{@target_class}"), class: "btn btn-primary btn-sm" %>
+                      <%= link_to t(:"views.queries.index.table_queries.button_destroy"), query_path(query, target_class: "#{@target_class}"), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %>
+                    </td>
+                  </tr>
+                <% end %> 
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

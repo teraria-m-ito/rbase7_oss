@@ -1,0 +1,41 @@
+<%= turbo_frame_tag "entry-turbo-job_history_search_results" do %>
+
+  <div class="card">
+  <div class="card-title"></div>
+  <div class="card-body">
+    <%= page_entries_info @job_histories %>
+    <table class="table table-hover table-striped table-sm">
+      <% unless @job_histories.empty? %>
+        <thead class="thead-dark">
+        <tr>
+          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.job_type"), :job_type) %></th>
+          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.status"), :status) %></th>
+          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.request_by"), :request_by) %></th>
+          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.requested_at"), :requested_at) %></th>
+          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.started_at"), :started_at) %></th>
+          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.finished_at"), :finished_at) %></th>
+          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.spent"), :spent) %></th>
+          <th colspan="3"><%= t(:"views.job_histories.fields.action") %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @job_histories.each do |job_history| %>
+          <tr>
+            <td><%= job_history.job_type_name %></td>
+            <td><%= job_history.status_name %></td>
+            <td><%= job_history.request_by_user.try(:name) %></td>
+            <td><%= datetime_string(job_history.requested_at) %></td>
+            <td><%= datetime_string(job_history.started_at) %></td>
+            <td><%= datetime_string(job_history.finished_at) %></td>
+            <td><%= job_history.spent %></td>
+            <td>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      <% end %>
+    </table>
+    <%= paginate @job_histories %>
+  </div>
+</div>
+<% end %>

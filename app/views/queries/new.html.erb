@@ -1,0 +1,35 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.queries.new.title")%></h1>
+        <small><%= t(:"views.queries.new.header_guide")%></small>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <%= simple_form_for(@query, html: {data: {turbo_confirm: t(:"views.common.create_confirm_message")}}) do |f| %>
+            <div class="card-body">
+              <%= f.error_notification %>
+              <div class="form-group">
+                <%= render partial: 'form', locals: {form: f} %>
+                <div id="condition">
+                  <%= render partial: "/#{@query.target_class}" %>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <%= f.submit t(:"views.queries.new.button_create"), class: "btn btn-primary btn-sm"%>
+              <%= link_to t(:"views.queries.new.button_cancel"), issues_path, class: "btn btn-default btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

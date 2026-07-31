@@ -1,0 +1,884 @@
+ja:
+  date:
+    order: ["year", "month", "day"]
+  common:
+    zip_code_mark: "〒"
+    day_unit: "日"
+  unauthorized:
+    default: "権限不足により、この操作を行うことはできません。"
+  function:
+    issues: "申請"
+    issue_attachments: "申請画像添付"
+    queries: "カスタムクエリー"
+    top: "トップページ"
+    admin/issue_types: "管理者メニュー/申請タイプ"
+    admin/mail_templates: "管理者メニュー/メールテンプレート"
+    admin/reports: "管理者メニュー/帳票"
+    admin/report_attachments: "管理者メニュー/帳票ファイル"
+    admin/state_flows: "管理者メニュー/ワークフロー処理"
+    admin/workflow_states: "管理者メニュー/ワークフロー/ステータス"
+    admin/workflows: "管理者メニュー/ワークフロー"
+    admin/custom_fields: "管理者メニュー/カスタムフィールド"
+    admin/roles: "管理者メニュー/権限"
+    admin/sites: "管理者メニュー/サイト"
+    admin/users: "管理者メニュー/ユーザー"
+    admin/admin_user_attachments: "管理者メニュー/ユーザー画像"
+    admin/system_settings: "管理者メニュー/設定"
+    admin/system_setting_attachments: "管理者メニュー/設定画像"
+    admin: "管理者メニュー"
+    sites: "サイト"
+    admin_users/registrations: "ログインユーザ"
+    job_histories: "ジョブ実行履歴"
+
+    action:
+      issues_index: "検索"
+      issues_show: "詳細"
+      issues_create: "新規登録"
+      issues_update: "更新"
+      issues_destroy: "削除"
+      issues_change_issue_type_for_index: "タイプ変更"
+      issues_change_issue_type_for_new_or_edit: "タイプ変更（編集用)"
+
+      queries_index: "検索"
+      queries_show: "詳細"
+      queries_create: "新規登録"
+      queries_update: "更新"
+      queries_destroy: "削除"
+      queries_select_field: "フィールド選択"
+      queries_load: "ロード"
+      queries_update_select_field: "フィールド選択更新"
+
+      top_index: "表示"
+      top_show: "個別表示"
+      admin/issue_types_index: "検索"
+      admin/issue_types_show: "詳細"
+      admin/issue_types_create: "新規登録"
+      admin/issue_types_update: "更新"
+      admin/issue_types_destroy: "削除"
+      admin/roles_index: "検索"
+      admin/roles_show: "詳細"
+      admin/roles_create: "新規登録"
+      admin/roles_update: "更新"
+      admin/roles_copy: "複製"
+      admin/roles_destroy: "削除"
+      admin/sites_index: "検索"
+      admin/sites_show: "詳細"
+      admin/sites_create: "新規登録"
+      admin/sites_update: "更新"
+      admin/sites_destroy: "削除"
+      admin_index: "表示"
+      admin/custom_fields_index: "検索"
+      admin/custom_fields_show: "詳細"
+      admin/custom_fields_create: "新規登録"
+      admin/custom_fields_update: "更新"
+      admin/custom_fields_destroy: "削除"
+      admin/mail_templates_index: "検索"
+      admin/mail_templates_show: "詳細"
+      admin/mail_templates_create: "新規登録"
+      admin/mail_templates_update: "更新"
+      admin/mail_templates_destroy: "削除"
+      admin/reports_index: "検索"
+      admin/reports_show: "詳細"
+      admin/reports_create: "新規登録"
+      admin/reports_update: "更新"
+      admin/reports_destroy: "削除"
+      admin/reports_preview: "プレビュー"
+      admin/report_attachments_create: "新規登録"
+      admin/report_attachments_destroy: "削除"
+
+      admin/state_flows_index: "検索"
+      admin/state_flows_create: "新規登録"
+      admin/state_flows_update: "更新"
+      admin/state_flows_destroy: "削除"
+      admin/system_settings_index: "検索"
+      admin/system_settings_show: "詳細"
+      admin/system_settings_create: "新規登録"
+      admin/system_settings_update: "更新"
+      admin/system_settings_destroy: "削除"
+      admin/system_settings_change_setting_category_div_for_new: "カテゴリ変更(新規登録)"
+      admin/system_settings_change_setting_category_div_for_edit: "カテゴリ変更(編集)"
+      
+      admin/system_setting_attachments_create: "アップロード"
+      admin/system_setting_attachments_destroy: "削除"
+
+      admin/users_index: "検索"
+      admin/users_show: "詳細"
+      admin/users_create: "新規登録"
+      admin/users_update: "更新"
+      admin/users_destroy: "削除"
+
+      admin/admin_user_attachments_create: "アップロード"
+      admin/admin_user_attachments_destroy: "削除"
+
+      admin/workflow_states_show: "詳細"
+      admin/workflow_states_create: "新規登録"
+      admin/workflow_states_update: "更新"
+      admin/workflow_states_destroy: "削除"
+      admin/workflow_states_move_up: "上に移動"
+      admin/workflow_states_move_down: "下に移動"
+      admin/workflows_index: "検索"
+      admin/workflows_show: "詳細"
+      admin/workflows_create: "新規登録"
+      admin/workflows_update: "更新"
+      admin/workflows_destroy: "削除"
+      admin/workflows_change_sites: "サイト変更"
+
+      sites_index: "検索"
+      
+      admin_users/registrations_create: "新規登録"
+      admin_users/registrations_update: "更新"
+      admin_users/registrations_destroy: "削除"
+
+      job_histories_index: "検索"
+      job_histories_show: "詳細"
+
+
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: " 存在しません。"
+          one: "<b>%{count}</b>ページ目のみ"
+          other: "全体で <b>%{count}</b>件 が存在しています。"
+      more_pages:
+        display_entries: "<b>%{first}&nbsp-&nbsp;%{last}</b>までを表示中 全体で <b>%{total}</b>件"
+  menu:
+    top:
+      title: "RBase"
+      top: "トップ"
+      admin_nav: "管理者機能"
+      admin: "管理者メニュー"
+      general_nav: "メンバー機能"
+      manager_nav: "運用者機能"
+      issues:
+        index: "申請一覧"
+      edit_profile: "プロファイル"
+      sign_out: "ログアウト"
+      sign_in: "ログイン"
+      sign_up: "ユーザ登録"
+      edit_link: "プロフィール"
+      job_histories:
+        index: "ジョブ実行履歴"
+    admin:
+      sites: "サイト"
+      roles: "権限"
+      users: "ユーザ"
+      issue_types: "申請タイプ"
+      workflows: "ワークフロー"
+      state_flows: "ワークフロー処理"
+      custom_fields: "カスタムフィールド"
+      mail_templates: "メールテンプレート"
+      reports: "帳票"
+      system_setting: "設定"
+      
+  selectable_attrs:
+    Site:
+      status_div:
+        before_apply: "申請前"
+        applying: "申請中"
+        accepted: "承認済"
+        denied: "否認"
+    Report:
+      report_class:
+        base_logic: "基本ロジック"
+    CustomField:
+      custom_field_type:
+        admin_user: "ユーザー"
+        issue: "申請"
+      field_type:
+        boolean: "真偽"
+        integer: "整数"
+        string: "文字列"
+        list: "リスト"
+        date: "日付"
+        date_time: "日付時刻"
+    MailTemplate:
+      template_div:
+        created: "申請時"
+        updated: "更新時"
+        finished: "終了時"
+      from_address:
+        issue_creator: "申請者"
+        issue_updater: "更新者"
+        issue_assigned: "担当者"
+        system_setting: "システム設定"
+      to_address:
+        all_member: "全員"
+        issue_creator: "申請者"
+        issue_updater: "更新者"
+        issue_assigned: "担当者"
+        issue_creator_and_assigned: "申請者および更新者"
+        system_setting: "システム設定"
+    AdminUser:
+      status_div:
+        before_apply: "申請前"
+        applying: "申請中"
+        accepted: "承認済"
+        denied: "否認"
+    Issue:
+      priority:
+        asap: "至急"
+        high: "高い"
+        normal: "普通"
+        low: "低い"
+    Issues:
+      SearchConditions:
+        condition_ope_type_select:
+          equal: "等しい"
+          not_equal: "等しくない"
+        condition_ope_type_text:
+          equal: "等しい"
+          not_equal: "等しくない"
+          include: "含む"
+          exclude: "含まない"
+        condition_field_type:
+          workflow_state_id: "ステータス"
+          issue_type_id: "申請タイプ"
+          priority: "優先度"
+          title: "タイトル"
+          expression: "説明"
+          assigned_id: "担当者"
+          creator_id: "作成者"
+    IssueType:
+      issue_type_class:
+        base_logic: "基本ロジック"
+
+  activemodel:
+    errors:
+      messages:
+        inclusion: "が正しくありません。"
+        blank: "を入力してください"
+
+    attributes:
+      admin_users/search_conditions:
+        name: "ユーザ名"
+        email: "Email"
+        site_id: "サイト"
+
+  activerecord:
+    models:
+      admin_user: "ユーザー"
+    errors:
+      messages:
+        required: "を入力してください"
+        name_invalid: "接頭辞が不正です。"
+        line_number_required: "末尾に明細行番号が必要"
+        uniq_bundle_no_error_message: "未登録の束番号が指定されました。"
+        alpha_and_numeric_invalid: "半角英数を指定して下さい。"
+        attachement_file_invalid: "ファイルを指定して下さい。"
+        update_record_invalid: "更新に失敗しました。"
+        blank: "を入力してください"
+        format_invalid: "フォーマットが不正です。"
+        inclusion: "が正しくありません。"
+        taken: "が重複しています。"
+        invalid: "が正しくありません。"
+        not_a_number: "が数値ではありません。"
+        greater_than_or_equal_to: "は0以上の数値を入力して下さい。"
+      models:
+        admin_user:
+          attributes:
+            password:
+              too_short: "は%{count}文字以上で入力してください"
+            password_confirmation:
+              confirmation: "とパスワードの入力が一致しません"
+            role:
+              invalid_role: "権限が不正です。"
+              
+    attributes:
+      site:
+        site_name: "サイト"
+        status_div: "ステータス"
+      role:
+        role_name: "権限名"
+        role_short_name: "権限略称"
+        deletable: "削除可"
+      admin_user:
+        current_site_id: "サイト"
+        name: "ユーザ名"
+        email: "E-mail"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+        current_password: "パスワード(現在)"
+        role: "権限"
+        role_id: "権限"
+        bu_name: "部名"
+        unit_name: "課名"
+        site_ids: "サイト"
+        sites: "サイト"
+        status_div: "ステータス"
+        reset_password_token: "パスワードトークン"
+        admin_user_attachements: "担当者押印画像"
+      issue_type:
+        issue_type_name: "申請タイプ名"
+        issue_type_short_name: "申請タイプ略称"
+        issue_type_class: "処理クラス"
+        site_ids: "サイト"
+        deletable: "削除可"
+      workflow:
+        workflow_name: "ワークフロー名"
+        temp_site_ids: "サイト"
+        issue_type_id: "申請タイプ名"
+        site_ids: "サイト"
+        deletable: "削除可"
+      workflow_state:
+        state_cd: "ステータスCD"
+        state_name: "ステータス名"
+        default_value: "デフォルト"
+        end_point: "完了"
+        deleted_state: "削除ステータス"
+      custom_field:
+        field_name: "カスタムフィールド名"
+        display_name: "カスタムフィールド表示名"
+        issue_type: "申請タイプ"
+        custom_field_type: "カスタムフィールドタイプ"
+        format_regexp: "正規表現"
+        default_value: "デフォルト値"
+        list_field: "リスト"
+        date_field: "日付"
+        datetime_field: "日付・時刻  "
+        field_type: "型"
+        required: "必須"
+        field_size: "サイズ"
+        search_cond: "検索条件表示"
+        display_result_list: "検索結果表示"
+        comment: "コメント"
+        site_ids: "サイト"
+      mail_template:
+        template_div: "メールテンプレート区分"
+        template_name: "メールテンプレート名"
+        from_address: "送り主"
+        to_address: "宛先"
+        subject: "件名"
+        body: "本文"
+        site_ids: "サイト"
+        enable: "有効フラグ"
+        disable_notice: "通知抑止フラグ"
+      report:
+        title: "帳票名"
+        report_class: "帳票クラス"
+        description: "説明"
+        site_ids: "サイト"
+      system_setting:
+        site_ids: "サイト"
+        setting_category_div: "カテゴリー"
+        setting_div: "設定名"
+        setting_value: "設定値"
+        hint: "入力説明"
+      query:
+        title: "タイトル"
+        shared: "共有"
+      issue:
+        bundle_no: "束番号"
+        title: "タイトル"
+        assigned_id: "担当者"
+        issue_type_id: "申請タイプ"
+        workflow_state_id: "ステータス"
+        priority: "優先度"
+        limited_at: "期限"
+        expression: "説明"
+        creator_name: "作成者"
+        updater_name: "更新者"
+        uploader_name: "登録者"
+        uploaded_at: "登録日時"
+      job_manage:
+        job_type: "ジョブ種別"
+        status: "ステータス"
+        request_by: "要求者"
+        requested_at: "要求日時"
+
+  views:
+    common:
+      fail_login_message: "ログインに失敗しました。"
+      create_confirm_message: "新規登録します。よろしいですか？"
+      register_confirm_message: "登録します。よろしいですか？"
+      update_confirm_message: "更新します。よろしいですか？"
+      destroy_confirm_message: "削除します。よろしいですか？"
+      build_confirm_message: "生成します。よろしいですか？"
+      password_confirm_message: "新しいパスワードを設定します。よろしいですか？"
+      submission_confirm_message: "提出します。よろしいですか？"
+      copy_confirm_message: "複製します。よろしいですか？"
+      preview_confirm_message: "PDFをダウンロードします。よろしいですか？"
+      start_confirm_message: "確認作業を開始します。よろしいですか？"
+      complate_confirm_message: "確認作業を完了します。よろしいですか？"
+      delete_selected_confirm_message: "すべて削除します。よろしいですか？"
+      upload_confirm_message: "アップロードします。よろしいですか？"
+      reset_confirm_message: "リセットします。よろしいですか？"
+
+      create_complete_message: "登録を完了しました。"
+      update_complete_message: "更新を完了しました。"
+      destroy_complete_message: "削除を完了しました。"
+      copy_complete_message: "複製を完了しました。"
+      copy_error_message: "複製を失敗しました。"
+      submission_complete_message: "提出を完了しました。"
+      comfirm_complete_message: "確認を完了しました。"
+      req_complate_comfirm_complete_message: "検収依頼を完了しました。"
+      complate_comfirm_complete_message: "検収を完了しました。"
+      upload_complete_message: "アップロードを完了しました。"
+
+      error_message: "処理エラーが発生しました。"
+      
+    pagination:
+      first: "&laquo; 最初"
+      last: "最後 &raquo;"
+      previous: "&lsaquo; 前"
+      next: "次 &rsaquo;"
+      truncate: "&hellip;"
+    admin_user:
+      fields:
+        new_password: "新しいパスワード"
+        password_confirmation: "パスワード確認"
+      sign_up:
+        title: "新規ユーザ登録"
+        button_create: "登録"
+      sign_in:
+        title: "ローカルログイン"
+        sso_title: "SSOログイン"
+        button_login: "ローカルログイン"
+        message_forget_your_password: "パスワードをお忘れの方はこちら"
+        saml2_title: " SSOログイン"
+        messages:
+          login_guide: "ローカルユーザの方は、 ID/パスワードを入力して「ローカル用ログイン」ボタンをクリックして下さい。"
+          saml2_guide: "SSOユーザの方は、以下の「SSO用ログイン」ボタンをクリックして下さい。"
+        button_saml2: "SSOログイン"
+      password:
+        new:
+          title: "パスワードをお忘れの方"
+          button_send: "リセットメールを送信する"
+        edit:
+          title: "パスワードリセット"
+          button_update: "新しいパスワードに更新する"
+
+    top:
+      fields:
+        site_name: "サイト名"
+      index:
+        title: "トップページ"
+        site_select:
+          title: "サイト選択"
+    sites:
+      fields:
+        site_name: "サイト名"
+        status_div: "ステータス"
+      index:
+        title: "サイト一覧"
+        button_new: "新しいサイトを追加"
+        table_sites:
+          title:
+            action: "アクション"
+          button_edit: "編集"
+          button_destroy: "削除"
+      show:
+        title: "サイト詳細"
+        button_back: "前のページへ"
+        header_guide: "サイト情報をご確認下さい。"
+      new:
+        title: "新規サイト登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "サイト情報を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "サイト編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "サイト情報を編集して、更新ボタンをクリックして下さい。"
+          
+    roles:
+      fields:
+        role_name: "権限名"
+        action: "アクション"
+        role_short_name: "権限略称"
+        function_name: "機能名"
+        index: "検索"
+        show: "詳細"
+        create: "新規作成"
+        update: "編集"
+        destroy: "削除"
+        others: "その他"
+      index:
+        title: "権限一覧"
+        button_new: "新しい権限を追加"
+        table_roles:
+          title:
+            action: "アクション"
+          button_edit: "編集"
+          button_copy: "複製"
+          button_destroy: "削除"
+      show:
+        title: "権限詳細"
+        button_back: "前のページへ"
+      new:
+        title: "新規権限登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "権限内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "権限編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "権限内容を変更して、更新ボタンをクリックして下さい。"
+        
+    users:
+      fields:
+        user_name: "ユーザ名"
+        status_div: "ステータス"
+        action: "アクション"
+        role_name: "権限"
+        email: "E-mail"
+        site: "サイト"
+        image: "画像"
+        filename: "ファイル名"
+        add_file: "ファイル追加..."
+      index:
+        title: "ユーザ一覧"
+        button_new: "新しいユーザを追加"
+        table_users:
+          title:
+            user_name: "ユーザ名"
+            action: "アクション"
+          button_edit: "編集"
+          button_destroy: "削除"
+      new:
+        title: "新規ユーザ登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "ユーザー内容を入力して、更新ボタンをクリックして下さい。"
+      edit:
+        title: "ユーザ編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "ユーザー内容を変更して、更新ボタンをクリックして下さい。"
+        message_no_icon: "登録されていません"
+        table_attachments:
+          button_destroy: "削除"
+    issue_types:
+      fields:
+        user_name: "ユーザ名"
+        issue_type_name: "申請タイプ名"
+        issue_type_class: "処理クラス"
+        action: "アクション"
+        role_short_name: "権限略称"
+        email: "E-mail"
+      index:
+        title: "申請タイプ一覧"
+        button_new: "新しい申請タイプを追加"
+        table_issue_types:
+          title:
+            action: "アクション"
+          button_edit: "編集"
+          button_destroy: "削除"
+      show:
+        title: "申請タイプ詳細"
+        button_back: "前のページへ"
+      new:
+        title: "新規申請タイプ登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "申請タイプ内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "申請タイプ編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "申請タイプ内容を変更して、更新ボタンをクリックして下さい。"
+        
+    workflows:
+      fields:
+        workflow_name: "ワークフロー名"
+        action: "アクション"
+      index:
+        title: "ワークフロー一覧"
+        button_new: "新しいワークフローを追加"
+        table_issue_types:
+          button_edit: "編集"
+          button_destroy: "削除"
+      show:
+        title: "ワークフロー詳細"
+        button_back: "前のページへ"
+      new:
+        title: "新規ワークフロー登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "ワークフロー内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "ワークフロー編集"
+        table_workflow_states:
+          button_new: "新しいステータスを追加"
+          title:
+            state_cd: "ステータスCD"
+            state_name: "ステータス名"
+            default_value: "デフォルト"
+            end_point: "完了"
+            deleted_state: "削除ステータス"
+            sort: "ソート"
+            action: "アクション"
+          button_edit: "編集"
+          button_destroy: "削除"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "ワークフロー内容を変更して、更新ボタンをクリックして下さい。"
+        
+    workflow_states:
+      new:
+        title: "ワークフロー詳細登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "ワークフロー詳細内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "ワークフロー詳細編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "ワークフロー詳細内容を変更して、更新ボタンをクリックして下さい。"
+      show:
+        title: "ワークフロー詳細参照"
+        button_cancel: "前のページへ"
+        
+    state_flows:
+      fields:
+        workflow_name: "ワークフロー処理名"
+        action: "アクション"
+      index:
+        title: "ワークフロー処理一覧"
+        button_search: "検索"
+        conditions:
+          role_id: "権限"
+          workflow_id: "ワークフロー"
+        table_istate_flows:
+          title:
+            from_state_name: "FROM"
+            to_state_name: "TO"
+        button_update: "更新"
+
+    custom_fields:
+      fields:
+        custom_field_type: "カスタムフィールドタイプ"
+        field_name: "フィールド名"
+        display_name: "表示名"
+        field_type: "型"
+        action: "アクション"
+      index:
+        title: "カスタムフィールド一覧"
+        button_new: "新しいカスタムフィールドを追加"
+        table_custom_fields:
+          title:
+            action: "アクション"
+          button_edit: "編集"
+          button_destroy: "削除"
+      show:
+        title: "カスタムフィールド詳細"
+        button_back: "前のページへ"
+      new:
+        title: "新規カスタムフィールド登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "カスタムフィールド内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "カスタムフィールド編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "カスタムフィールド内容を変更して、更新ボタンをクリックして下さい。"
+        
+    mail_templates:
+      fields:
+        mail_template_div: "メールテンプレート区分"
+        mail_template_name: "メールテンプレート名"
+        subject: "件名"
+        from: "送り主"
+        to: "宛先"
+        enable: "有効フラグ"
+        disable_notice: "通知抑止フラグ"
+        action: "アクション"
+      index:
+        title: "メールテンプレート一覧"
+        button_new: "新しいメールテンプレートを追加"
+        table_mail_templates:
+          button_edit: "編集"
+          button_destroy: "削除"
+      show:
+        title: "メールテンプレート詳細"
+        button_back: "前のページへ"
+      new:
+        title: "新規メールテンプレート登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "メールテンプレート内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "メールテンプレート編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "メールテンプレート内容を変更して、更新ボタンをクリックして下さい。"
+        
+    reports:
+      fields:
+        title: "帳票名"
+        report_class: "帳票クラス"
+        action: "アクション"
+        filename: "ファイル名"
+        add_file: "ファイル追加..."
+      index:
+        title: "帳票一覧"
+        button_new: "新しい帳票を追加"
+        table_reports:
+          button_edit: "編集"
+          button_preview: "プレビュー"
+          button_destroy: "削除"
+      show:
+        title: "帳票詳細"
+        button_back: "前のページへ"
+      new:
+        title: "新規帳票登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "帳票内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "帳票編集"
+        table_reports:
+          button_destroy: "削除"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "帳票内容を入力して、更新ボタンをクリックして下さい。"
+    system_settings:
+      fields:
+        site_name: "サイト名"
+        setting_category_div: "カテゴリ名"
+        setting_div_name: "設定名"
+        setting_value: "設定値"
+        filename: "ファイル名"
+        add_file: "ファイル追加..."
+      index:
+        title: "設定一覧"
+        conditions:
+          sites: "サイト"
+          setting_category_div: "カテゴリー"
+          setting_div: "設定名"
+        button_new: "新しい設定を追加"
+        button_search: "検索"
+        table_system_settings:
+          button_edit: "編集"
+          button_destroy: "削除"
+      show:
+        title: "設定詳細"
+        button_back: "前のページへ"
+      new:
+        title: "新規設定登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "システム設定内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "設定編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "システム設定内容を入力して、更新ボタンをクリックして下さい。"
+        table_system_settings:
+          button_destroy: "削除"
+
+    issues:
+      blockquote:
+        issue_information: "申請内容"
+        creator_updater: "作成者・更新者"
+      fields:
+        title: "タイトル"
+        created_at: "登録日時"
+        issue_type: "申請タイプ"
+        workflow_state: "ステータス"
+        action: "操作"
+        user_name: "担当者"
+        site_name: "サイト"
+        status: "ステータス"
+      index:
+        title: "申請一覧"
+        button_clear: "クリア"
+        button_search: "検索"
+        issue_title: "申請一覧"
+        button_new: "新しい申請を作成"
+        button_destroy: "削除"
+        button_hide_condition: "検索条件を非表示"
+        button_show_condition: "検索条件を表示"
+        button_add_query: "カスタムクエリを登録"
+        button_show_query: "カスタムクエリを表示"
+        button_show_query_close: "カスタムクエリを非表示"
+        table_issues:
+          button_edit: "編集"
+          button_destroy: "削除"
+      new:
+        title: "新しい申請を作成"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "申請内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "申請編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "申請内容を変更して、更新ボタンをクリックして下さい。"
+      show:
+        title: "申請詳細"
+        button_print: "ダウンロード"
+        button_cancel: "前のページへ"
+    queries:
+      index:
+        button_close: "閉じる"
+        table_queries:
+          button_load: "ロード"
+          button_edit: "編集"
+          button_destroy: "削除"
+      new:
+        title: "新規検索条件登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "検索条件を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "検索条件編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "検索条件を変更して、更新ボタンをクリックして下さい。"
+
+    admin_users:
+      fields:
+        image: "画像"
+        filename: "ファイル名"
+        add_file: "ファイル追加..."
+      edit:
+        title: "ユーザ編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "ユーザ内容を変更して、更新ボタンをクリックして下さい。"
+        message_no_icon: "登録されていません"
+        table_attachments:
+          button_destroy: "削除"
+
+      passwords:
+        new:
+          title: "パスワード再設定"
+          header_guide: "メールアドレスを入力して、リセットボタンをクリックして下さい。"
+          button_reset: "リセット"
+          button_cancel: "前のページへ"
+        edit:
+          title: "パスワード再設定"
+          header_guide: "新しいパスワードを入力して、更新ボタンをクリックして下さい。"
+          button_update: "更新"
+          button_top: "トップページへ"
+
+    job_histories:
+      fields:
+        job_type: "ジョブ種別"
+        status: "ステータス"
+        request_by: "要求者"
+        requested_at: "要求日時"
+        started_at: "開始日時"
+        finished_at: "終了日時"
+        spent: "経過時間"
+        action: "操作"
+      table_job_histories:
+        show: "詳細"
+      index:
+        title: "ジョブ実行履歴"
+      show:
+        title: "ジョブ実行結果詳細"
+        error_list_title: "発生エラー詳細"
+        back_to_job_histories: "ジョブ履歴へ戻る"
+        empty: "登録されているエラーはありません。"
+        forbidden: "このジョブのエラー一覧を参照する権限がありません。"
+        job_manage_id_label: "ジョブ管理ID"
+        table_show_errors:
+          row_no: "行番号"
+          target_name: "対象名"
+          message: "エラー内容"
+          created_at: "登録日時"

@@ -1,0 +1,31 @@
+<h2><%= t(:"views.top.index.site_select.title")%></h2>
+
+<% if @sites %>
+  <%= page_entries_info @sites %>
+
+  <table class="table table-hover table-striped table-condensed">
+    <% if @sites.empty? %>
+      <thead>
+        <tr>
+          <th>No data</th>
+        </tr>
+      <thead>
+    <% else %>
+      <thead>
+        <tr>
+          <th class="col-md-4"><%= t(:"views.top.fields.site_name")%></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sites.each do |site|%>
+          <tr class="line-selected" data-id="<%= site.id %>">
+            <td><%= site.site_name %></td>
+          </tr>
+        <% end %> 
+      </tbody>
+    <% end %>
+  </table>
+  <%= paginate @sites if @sites %>
+<% end %>
+
+

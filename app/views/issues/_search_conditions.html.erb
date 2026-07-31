@@ -1,0 +1,109 @@
+<%= turbo_frame_tag 'entry-forms' do %>
+  <%= simple_form_for @condition, builder: RbaseFormBuilder, url: issues_path, data: {turbo: true, action: "change->issues#search_form_change"} do |form| %>
+
+    <% @selected_query_fields.to_a.each_with_index do |query_fiels, idx| %>
+      <div class="row">
+        <% query_field_entry =Issues::SearchConditions.condition_field_type_entry_by_id(query_fiels[1]) %>
+        <div class="col-md-2">
+          <% unless @condition.send("#{query_fiels[1].gsub(/_id$/, "")}_check") %>
+            <%= form.input(:"#{query_fiels[1].gsub(/_id$/, "")}_check", as: :boolean, label: query_fiels[0], input_html: {checked: true})%>
+          <% else %>
+            <%= form.input(:"#{query_fiels[1].gsub(/_id$/, "")}_check", as: :boolean, label: query_fiels[0])%>
+          <% end %>
+        </div>
+        <% if query_field_entry[:field_type] == :select %>
+          <div class="col-md-2">
+            <%= form.input(:"select_field_ope_type_#{query_field_entry[:key]}", as: :select, collection: operator_select(query_field_entry[:field_type]), include_blank: false, label: false)%>
+          </div>
+          <div class="col-md-4">
+            <div class="<%= query_fiels[1]%>-single">
+              <%= form.input(query_field_entry[:key], as: query_field_entry[:field_type], collection: query_field_entry.values(@field_list[query_field_entry[:key]]), label: false, input_html: {class: "input-sm"})%>
+            </div>
+            <% if query_field_entry[:multi] == true %>
+              <div class="<%= query_fiels[1]%>-multi">
+                <%= form.input(query_field_entry[:key], as: query_field_entry[:field_type], collection: query_field_entry.values(@field_list[query_field_entry[:key]]), label: false, input_html: { multiple: true, class: "input-sm" })%>
+              </div>
+            <% end %>
+          </div>
+          <% if query_field_entry[:multi] == true %>
+            <div class="col-md-1">
+              <div class="<%= query_fiels[1]%>-single">
+                <span class="btn btn-success fileinput-button btn-sm" id="<%= query_fiels[1]%>-button-plus">
+                  <i class="fa fa-plus"></i>
+                </span>
+                <%= form.input(:"#{query_fiels[1].gsub(/_id$/, "")}_multiple", as: :hidden, input_html: {value: :sigle, class: "input-sm"})%>
+              </div>
+              <div class="<%= query_fiels[1]%>-multi">
+                <span class="btn btn-success fileinput-button btn-sm" id="<%= query_fiels[1]%>-button-minus">
+                  <i class="fa fa-minus"></i>
+                </span>
+                <%= form.input(:"#{query_fiels[1].gsub(/_id$/, "")}_multiple", as: :hidden, input_html: {value: :multi})%>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+        <% if query_field_entry[:field_type] == :text %>
+          <div class="col-md-2">
+            <%= form.input(:"select_field_ope_type_#{query_field_entry[:key]}", as: :select, collection: operator_select(query_field_entry[:field_type]), include_blank: false, label: false)%>
+          </div>
+          <div class="col-md-4">
+            <%= form.input(query_field_entry[:key], label: false, input_html: {class: "#{query_field_entry[:class]}"})%>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <script>
+    $('#condition-card').on('hidden.bs.collapse', function () {
+      $("#condtion-button").text("<%= t(:"views.issues.index.button_show_condition")%>")
+    });
+    $('#condition-card').on('show.bs.collapse', function () {
+      $("#condtion-button").text("<%= t(:"views.issues.index.button_hide_condition")%>")
+    });
+  
+    <% @selected_query_fields.to_a.each_with_index do |query_fiels, idx| %>
+      <% query_field_entry =::Issues::SearchConditions.condition_field_type_entry_by_id(query_fiels[1]) %>
+      <% if query_field_entry[:field_type] == :select %>
+        $("#<%= query_fiels[1]%>-button-plus").click(function(e) {
+          $(".<%= query_fiels[1]%>-single").hide();
+          $(".<%= query_fiels[1]%>-multi").show();
+          localStorage.setItem("issues/search_conditions/<%= query_fiels[1]%>-button-plus", "multi")
+        });
+        $("#<%= query_fiels[1]%>-button-minus").click(function(e) {
+          $(".<%= query_fiels[1]%>-single").show();
+          $(".<%= query_fiels[1]%>-multi").hide();
+          localStorage.setItem("issues/search_conditions/<%= query_fiels[1]%>-button-plus", "single")
+        });
+      <% end %>
+      $("#issues_search_conditions_<%= query_fiels[1]%>_check").change(function(e) {
+        if ($(e.target).prop('checked') == true) {
+          $("#<%= query_fiels[1]%>-condition").show();
+          Rbase.trigger_only_visible("issues_search_conditions_<%= query_field_entry[:key]%>", "change");
+        } else {
+          $("#<%= query_fiels[1]%>-condition").hide();
+          Rbase.trigger_only_visible("issues_search_conditions_<%= query_field_entry[:key]%>", "change");
+         }
+      });
+    
+      <% if @condition.respond_to?("#{query_fiels[1]}_multiple") && @condition.send("#{query_fiels[1]}_multiple") == 'multi' %>
+        $(".<%= query_fiels[1]%>-single").hide();
+      <% else %>
+        $(".<%= query_fiels[1]%>-multi").hide();
+      <% end %>
+    
+      <% if @condition.respond_to?("#{query_fiels[1]}_check") && @condition.send("#{query_fiels[1]}_check") == "0" %>
+        $("#<%= query_fiels[1]%>-condition").hide();
+      <% end %>
+
+      if (localStorage.getItem('<%= "issues/search_conditions/{query_fiels[1]}-button-plus" %>') == 'multi') {
+        $(".<%= query_fiels[1]%>-single").hide();
+        $(".<%= query_fiels[1]%>-multi").show();
+      } else {
+        $(".<%= query_fiels[1]%>-single").show();
+        $(".<%= query_fiels[1]%>-multi").hide();
+      }
+
+    <% end %>
+  </script>
+<% end %>

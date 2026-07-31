@@ -1,0 +1,57 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.custom_fields.index.title")%></h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+          <%= link_to t(:"views.custom_fields.index.button_new"), new_admin_custom_field_path(clear: true), class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-title"></div>
+          <div class="card-body">
+            <table class="table table-hover table-striped table-sm" data-sort-url="<%= sort_admin_custom_fields_path %>">
+              <% unless @custom_fields.empty? %>
+                <thead class="thead-dark">
+                  <tr>
+                    <th style="width: 50px;"></th>
+                    <th><%= t(:"views.custom_fields.fields.custom_field_type") %></th>
+                    <th><%= t(:"views.custom_fields.fields.field_name") %></th>
+                    <th><%= t(:"views.custom_fields.fields.display_name") %></th>
+                    <th><%= t(:"views.custom_fields.fields.field_type") %></th>
+                    <th colspan="2"><%= t(:"views.custom_fields.fields.action") %></th>
+                  </tr>
+                </thead>
+                <tbody id="custom-field-sortable-list">
+                  <% @custom_fields.each do |custom_field| %>
+                    <tr draggable="true" data-custom-field-id="<%= custom_field.id %>">
+                      <td class="text-center" style="cursor: move;">&#9776;</td>
+                      <td><%= custom_field.custom_field_type_name %></td>
+                      <td><%= link_to custom_field.field_name, admin_custom_field_path(custom_field)%></td>
+                      <td><%= custom_field.display_name %></td>
+                      <td><%= custom_field.field_type_name %></td>
+                      <td>
+                        <%= link_to t(:"views.issue_types.index.table_issue_types.button_edit"), edit_admin_custom_field_path(custom_field, clear: true), class: "btn btn-primary btn-sm" %>
+                        <%= link_to t(:"views.issue_types.index.table_issue_types.button_destroy"),  admin_custom_field_path(custom_field), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= SystemSetting[:app_name, current_admin_user.nil? ? Site.first.id : current_admin_user.try(:selected_site).to_i] || "TITLE" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+  <%= tinymce_assets %>
+  <%= javascript_include_tag "tinymce" %>
+  <meta name="turbo-cache-control" content="no-preview">
+  <!-- <meta name="turbo-visit-control" content="reload">
+    <meta name="turbo-root" content="<%= request.path %>"> -->
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper" data-controller="<%=js_controller_name%>"
+     data-<%=js_controller_name %>-controllername-value="<%= js_controller_name %>"
+     data-<%=js_controller_name %>-actionname-value="<%= controller.action_name %>"
+     data-<%=js_controller_name %>-params-value="<%= @stimulus_params %>"
+>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="margin-left: 0px;">
+    <%= render "common/error_top_menu" %>
+    <%= turbo_frame_tag 'entry-common-message' do %>
+      <%= render "common/message" %>
+    <% end %>
+    <div class="error_page">
+      <%= yield %>
+    </div>
+  </div>
+</div>
+
+<!-- ./wrapper -->
+</body>
+</html>

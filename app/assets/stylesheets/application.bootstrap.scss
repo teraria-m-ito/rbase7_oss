@@ -1,0 +1,253 @@
+@import 'jquery-ui-dist/jquery-ui';
+@import 'jquery-treeview/jquery.treeview.css';
+
+@import 'bootstrap/scss/bootstrap';
+
+@import 'bootstrap-icons/font/bootstrap-icons';
+@import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+@import 'select2/dist/css/select2.min.css';
+@import 'gridstack/dist/gridstack.min.css';
+
+//@import 'admin-lte/plugins/fontawesome-free/css/all.min.css';
+@import 'admin-lte/dist/css/adminlte.min.css';
+@import 'blueimp-file-upload/css/jquery.fileupload.css';
+@import 'blueimp-file-upload/css/jquery.fileupload-ui.css';
+
+$fa-font-path: '@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '@fortawesome/fontawesome-free/scss/regular.scss';
+@import '@fortawesome/fontawesome-free/scss/solid.scss';
+@import '@fortawesome/fontawesome-free/scss/brands.scss';
+@import '@fortawesome/fontawesome-free/scss/v4-shims.scss';
+
+@import 'bootstrap4-toggle/css/bootstrap4-toggle.min.css';
+
+@import 'rbase/forms.css.scss';
+@import 'rbase/custom-timy-mce.css';
+@import 'rbase/error-page.css';
+@import 'rbase/pdf.css.scss';
+
+// customizing stylesheets part.
+
+// for rbase
+body {
+  font-size : 0.8rem;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.brand-link {
+  font-size: 0.9rem;
+}
+
+.content-header {
+  padding: 5px 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+.input-group-sm {
+  margin-bottom: 0;
+}
+
+.form-group label.control-label {
+  min-width: 8rem;
+}
+
+.form-group span.checkbox label.control-label {
+  min-width: 8rem;
+}
+
+.form-group label.check_boxes-title {
+  min-width: 0 !important;
+}
+
+/*
+.main-sidebar, .main-sidebar::before {
+  width: 220px;
+}
+*/
+
+.content-header h1 {
+  font-size: 1.0rem;
+}
+.container, .container-fluid {
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+}
+
+.input-group-sm > .form-control,
+.input-group-sm > .custom-select,
+.input-group-sm > .input-group-prepend > .input-group-text,
+.input-group-sm > .input-group-append > .input-group-text,
+.input-group-sm > .input-group-prepend > .btn,
+.input-group-sm > .input-group-append > .btn {
+  padding: 0.1rem 0.2rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
+/* input-group-sm 内の通常 select と select2 の高さを揃える */
+.input-group-sm select.select2 + .select2-container .select2-selection--single {
+  height: 25.8px;
+  min-height: 25.8px;
+  border-radius: 0.2rem;
+  border-color: #ced4da;
+}
+
+.input-group-sm select.select2 + .select2-container .select2-selection--single .select2-selection__rendered {
+  line-height: 23.8px;
+  padding-left: 0.2rem;
+  padding-right: 1.5rem;
+  font-size: 0.8rem;
+  margin-top: -5px;
+}
+
+.input-group-sm select.select2 + .select2-container .select2-selection--single .select2-selection__arrow {
+  height: 25.8px;
+  top: 0;
+}
+
+.input-group-sm select.select2 + .select2-container--default .select2-selection--single .select2-selection__arrow b {
+  top: 40%;
+}
+
+/* 達成度マスタ「既存グループ」Select2 を同じ行の form-control-sm と同じ文字サイズ・行高に（枠内・行とも縦中央） */
+.select2-container--default .select2-selection--single.eport-rubric-group-preset-select2-selection {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  padding: 0.1rem 0.2rem;
+  border-color: #ced4da;
+  border-radius: 0.2rem;
+  min-height: calc(1.5em + 0.2rem + 2px);
+
+  .select2-selection__rendered {
+    flex: 1 1 auto;
+    min-width: 0;
+    line-height: 1.5;
+    padding-left: 0;
+    padding-right: 1.5rem;
+    color: #495057;
+  }
+
+  .select2-selection__arrow {
+    height: calc(1.5em + 0.2rem);
+    top: 1px;
+    right: 1px;
+
+    b {
+      margin-top: 0.2rem;
+    }
+  }
+
+  .select2-selection__clear {
+    float: none;
+    height: auto;
+    line-height: 1.5;
+    margin-right: 0.25rem;
+    margin-top: 0;
+    padding-right: 0;
+    align-self: center;
+  }
+}
+
+.select2-dropdown.eport-rubric-group-preset-select2-dropdown {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  border-color: #ced4da;
+
+  .select2-results__option {
+    padding: 0.15rem 0.35rem;
+  }
+
+  .select2-search__field {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    padding: 0.1rem 0.35rem;
+  }
+}
+
+.form-inline label {
+  padding: 0.4rem 1rem 0.1rem 0.4rem;
+}
+
+.row {
+  margin-left: -0.1rem;
+  margin-right: -0.1rem;
+}
+
+.col {
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+}
+
+.card-body {
+  padding: 0.75rem 1.25rem;
+}
+
+.dashboard-grid {
+  min-height: 420px;
+  background: #f8f9fa;
+  border: 1px dashed #ced4da;
+  border-radius: 4px;
+}
+
+.dashboard-widget {
+  background: #ffffff;
+  border: 2px dashed #6c757d;
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 0.75rem;
+}
+
+.dashboard-widget h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-widget p {
+  margin: 0;
+}
+
+.form-group {
+  padding: 0;
+  //margin-bottom: 0px;
+}
+
+.form-group span.checkbox label {
+  //margin: 0;
+  margin-left: 0.5rem;
+  //padding: 0;
+}
+
+span.fileinput-button {
+  font-size: 0.8rem;
+}
+
+/*
+@media (min-width: 768px) {
+  body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
+    margin-left: 220px;
+  }
+}
+*/
+
+@media (min-width: 576px) {
+  .form-inline label {
+    text-align: left !important;
+    justify-content: left !important;
+    margin-bottom: 4px;
+  }
+
+  .form-inline .form-control {
+    margin-bottom: 4px;
+  }
+}

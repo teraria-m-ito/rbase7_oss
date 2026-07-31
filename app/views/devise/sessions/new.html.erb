@@ -1,0 +1,50 @@
+<div class="row fit-height justify-content-center align-items-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header">
+        <%= @sso_idp_log_in ? t(:"views.admin_user.sign_in.sso_title") : t(:"views.admin_user.sign_in.title") %>
+      </div>
+      <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {data: {turbo: false}}) do |f| %>
+        <div class="card-body">
+          <%= devise_error_messages! %>
+          <div class="form-group">
+            <% if @site %>
+              <%= f.input :current_site_id, as: :hidden, input_html: {value: @site} %>
+              <%= hidden_field_tag :site, @site %>
+            <% else %>
+              <%= f.input :current_site_id, as: :select, collection: Site.order(:id).all.map{|x| [x.site_name, x.id]}, include_blank: false %>
+            <% end %>
+            <%= f.input :email, autofucus: true, required: true, placeholder: "your_account@example.com" %>
+            <% if @validatable %>
+              <%= f.input :password, autofucus: "off", placeholder: "(#{@minimum_password_length} characters minimum)" %>
+            <% else %>
+              <%= f.input :password, autofucus: "off" %>
+            <% end %>
+          </div>
+        </div>
+        <% if @sso_idp_log_in %>
+          <%= hidden_field_tag 'sso_login', true %>
+          <%= hidden_field_tag 'saml_idp_saml_request', @saml_idp_saml_request %>
+        <% end %>
+        <div class="card-footer footer-white">
+          <%= f.submit @sso_idp_log_in ? t(:"views.admin_user.sign_in.saml2_title") : t(:"views.admin_user.sign_in.button_login"), class: "btn btn-primary btn-sm"%>
+          <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+            <%#= link_to "#{t(:'views.admin_user.sign_in.message_forget_your_password')}", new_password_path(resource_name) %>
+            <br />
+          <% end -%>
+        </div>
+      <% end %>
+    </div>
+    <% if SystemSetting[:sso_enable, Site.first.id] %>
+      <div class="card">
+        <div class="card-body">
+          <small><%= t(:"views.admin_user.sign_in.messages.saml2_guide")%></small>
+        </div>
+        <div class="card-footer footer-white">
+          <%= link_to t(:"views.admin_user.sign_in.button_saml2"), sso_index_path, class: "btn btn-default btn-sm" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

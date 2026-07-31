@@ -1,0 +1,17 @@
+<% cnt = 0 %>
+<% first = true %>
+<%= form.simple_fields_for :admin_user_custom_fields do |ff| %>
+  <% size = ff.object.custom_field.field_size.nil? ? 3 : ff.object.custom_field.field_size.to_i %>
+  <% cnt += size %>
+  <% cnt = 0 if cnt > 12 %>
+  <% if cnt > 12 || first %>
+  <div class="row">
+  <% end %>
+    <div class="col-md-<%= size %>">
+      <%= custom_field_input(ff)%>
+    </div>
+  <% if cnt > 12 %>
+  </div>
+  <% end %>
+  <% first = false %>
+<% end %>

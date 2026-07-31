@@ -1,0 +1,39 @@
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :title, input_html: {col: 5} %>
+</div>
+
+<table class="table table-hover table-striped table-condensed">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th colspan="3"><%= t(:"views.reports.fields.filename") %></th>
+  </tr>
+  </thead>
+  
+  <tbody>
+  <% if form.object.report_attachments.empty? %>
+    <tr>
+      <td colspan="4">No data</td>
+    </tr>
+  <% end %>
+  <%  form.object.report_attachments.each_with_index do |report_attachment, idx| %>
+    <tr>
+      <td><%= idx+1 %></td>
+      <td><%= link_to report_attachment.filename, report_attachment.document.url,download: report_attachment.filename %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :report_class, as: :select, collection: Report.report_class_options %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :description, as: :text, input_html: {col: 8, rows: 12, rolw: 120} %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :site_ids, as: :check_boxes,
+                 collection: @sites.map{|x| [x.site_name,x.id]},
+                 item_wrapper_class: "form-check-inline"
+  %>
+</div>

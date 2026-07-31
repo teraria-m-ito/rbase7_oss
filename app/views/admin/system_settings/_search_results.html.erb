@@ -1,0 +1,40 @@
+<%= page_entries_info @system_settings %>
+
+<table class="table table-hover table-striped table-sm">
+<% unless @system_settings.empty? %>
+  <thead class="thead-dark">
+    <tr>
+      <th class="col-md-1"><%= t(:"views.system_settings.fields.site_name")%></th>
+      <th class="col-md-2"><%= t(:"views.system_settings.fields.setting_category_div")%></th>
+      <th class="col-md-3"><%= t(:"views.system_settings.fields.setting_div_name")%></th>
+      <th class="col-md-4"><%= t(:"views.system_settings.fields.setting_value")%></th>
+      <th class="col-md-2"><%= t(:"views.system_settings.fields.action")%></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @system_settings.each do |system_setting|%>
+      <tr>
+        <td><%= system_setting.sites.map(&:site_name).join("<br />").html_safe %></td>
+        <td><%= system_setting.setting_category_div_name %></td>
+        <td><%= link_to system_setting.setting_div_name, admin_system_setting_path(system_setting) %></td>
+        <% if system_setting.input_type == :file %>
+          <td>
+            <% system_setting.system_setting_attachments.each do |system_setting_attachment| %>
+              <%= image_tag system_setting_attachment.document.to_s, class: "system-setting-icon", style: "max-height: 64px;" %>
+            <% end %>
+          </td>
+        <% elsif system_setting.input_type == :boolean %>
+          <td><%= system_setting.setting_value == "1" ? "true" : "false" %></td>
+        <% else %>
+          <td><%= truncated_setting_value(system_setting.setting_value) %></td>
+        <% end %>
+        <td>
+          <%= link_to t(:"views.system_settings.index.table_system_settings.button_edit"), edit_admin_system_setting_path(system_setting), class: "btn btn-primary btn-sm" %>
+          <%= link_to t(:"views.system_settings.index.table_system_settings.button_destroy"), admin_system_setting_path(system_setting), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %></td>
+        </td>
+      </tr>
+    <% end %> 
+  </tbody>
+<% end %>
+</table>
+<%= paginate @system_settings %>

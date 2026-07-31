@@ -1,0 +1,53 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.issue_types.index.title")%></h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+          <%= link_to t(:"views.issue_types.index.button_new"), new_admin_issue_type_path, class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-title"></div>
+          <div class="card-body">
+            <%= page_entries_info @issue_types %>
+            <table class="table table-hover table-striped table-sm">
+              <% unless @issue_types.empty? %>
+                <thead class="thead-dark">
+                  <tr>
+                    <th><%= t(:"views.issue_types.fields.issue_type_name") %></th>
+                    <th><%= t(:"views.issue_types.fields.issue_type_class") %></th>
+                    <th colspan="2"><%= t(:"views.issue_types.fields.action") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @issue_types.each do |issue_type| %>
+                    <tr>
+                      <td><%= link_to issue_type.issue_type_name, admin_issue_type_path(issue_type) %></td>
+                      <td><%= issue_type.issue_type_class %></td>
+                      <td>
+                        <%= link_to t(:"views.issue_types.index.table_issue_types.button_edit"), edit_admin_issue_type_path(issue_type), class: "btn btn-primary btn-sm" %>
+                        <%= link_to t(:"views.issue_types.index.table_issue_types.button_destroy"), admin_issue_type_path(issue_type), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" if issue_type.deletable? %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              <% end %>
+            </table>
+            <%= paginate @issue_types %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

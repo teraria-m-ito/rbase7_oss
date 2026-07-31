@@ -1,0 +1,858 @@
+en:
+  date:
+    order: ["year", "month", "day"]
+  common:
+    zip_code_mark: ""
+    day_unit: "day(s)"
+  unauthorized:
+    default: "You do not have permission to perform this action."
+  function:
+    issues: "Requests"
+    issue_attachments: "Request image attachments"
+    queries: "Custom queries"
+    top: "Home"
+    admin/issue_types: "Admin / Request types"
+    admin/mail_templates: "Admin / Mail templates"
+    admin/reports: "Admin / Reports"
+    admin/report_attachments: "Admin / Report files"
+    admin/state_flows: "Admin / Workflow transitions"
+    admin/workflow_states: "Admin / Workflow / Status"
+    admin/workflows: "Admin / Workflow"
+    admin/custom_fields: "Admin / Custom fields"
+    admin/roles: "Admin / Roles"
+    admin/sites: "Admin / Sites"
+    admin/users: "Admin / Users"
+    admin/admin_user_attachments: "Admin / User images"
+    admin/system_settings: "Admin / Settings"
+    admin/system_setting_attachments: "Admin / Setting images"
+    admin: "Admin menu"
+    sites: "Sites"
+    admin_users/registrations: "Signed-in user"
+    job_histories: "Job execution history"
+
+    action:
+      issues_index: "Search"
+      issues_show: "Details"
+      issues_create: "Create"
+      issues_update: "Update"
+      issues_destroy: "Delete"
+      issues_change_issue_type_for_index: "Change type"
+      issues_change_issue_type_for_new_or_edit: "Change type (edit)"
+
+      queries_index: "Search"
+      queries_show: "Details"
+      queries_create: "Create"
+      queries_update: "Update"
+      queries_destroy: "Delete"
+      queries_select_field: "Select field"
+      queries_load: "Load"
+      queries_update_select_field: "Update field selection"
+
+      top_index: "View"
+      top_show: "Detail view"
+      admin/issue_types_index: "Search"
+      admin/issue_types_show: "Details"
+      admin/issue_types_create: "Create"
+      admin/issue_types_update: "Update"
+      admin/issue_types_destroy: "Delete"
+      admin/roles_index: "Search"
+      admin/roles_show: "Details"
+      admin/roles_create: "Create"
+      admin/roles_update: "Update"
+      admin/roles_copy: "Duplicate"
+      admin/roles_destroy: "Delete"
+      admin/sites_index: "Search"
+      admin/sites_show: "Details"
+      admin/sites_create: "Create"
+      admin/sites_update: "Update"
+      admin/sites_destroy: "Delete"
+      admin_index: "View"
+      admin/custom_fields_index: "Search"
+      admin/custom_fields_show: "Details"
+      admin/custom_fields_create: "Create"
+      admin/custom_fields_update: "Update"
+      admin/custom_fields_destroy: "Delete"
+      admin/mail_templates_index: "Search"
+      admin/mail_templates_show: "Details"
+      admin/mail_templates_create: "Create"
+      admin/mail_templates_update: "Update"
+      admin/mail_templates_destroy: "Delete"
+      admin/reports_index: "Search"
+      admin/reports_show: "Details"
+      admin/reports_create: "Create"
+      admin/reports_update: "Update"
+      admin/reports_destroy: "Delete"
+      admin/reports_preview: "Preview"
+      admin/report_attachments_create: "Create"
+      admin/report_attachments_destroy: "Delete"
+
+      admin/state_flows_index: "Search"
+      admin/state_flows_create: "Create"
+      admin/state_flows_update: "Update"
+      admin/state_flows_destroy: "Delete"
+      admin/system_settings_index: "Search"
+      admin/system_settings_show: "Details"
+      admin/system_settings_create: "Create"
+      admin/system_settings_update: "Update"
+      admin/system_settings_destroy: "Delete"
+      admin/system_settings_change_setting_category_div_for_new: "Change category (new)"
+      admin/system_settings_change_setting_category_div_for_edit: "Change category (edit)"
+
+      admin/system_setting_attachments_create: "Upload"
+      admin/system_setting_attachments_destroy: "Delete"
+
+      admin/users_index: "Search"
+      admin/users_show: "Details"
+      admin/users_create: "Create"
+      admin/users_update: "Update"
+      admin/users_destroy: "Delete"
+
+      admin/admin_user_attachments_create: "Upload"
+      admin/admin_user_attachments_destroy: "Delete"
+
+      admin/workflow_states_show: "Details"
+      admin/workflow_states_create: "Create"
+      admin/workflow_states_update: "Update"
+      admin/workflow_states_destroy: "Delete"
+      admin/workflow_states_move_up: "Move up"
+      admin/workflow_states_move_down: "Move down"
+      admin/workflows_index: "Search"
+      admin/workflows_show: "Details"
+      admin/workflows_create: "Create"
+      admin/workflows_update: "Update"
+      admin/workflows_destroy: "Delete"
+      admin/workflows_change_sites: "Change sites"
+
+      sites_index: "Search"
+
+      admin_users/registrations_create: "Create"
+      admin_users/registrations_update: "Update"
+      admin_users/registrations_destroy: "Delete"
+
+      job_histories_index: "Search"
+
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "No entries found."
+          one: "Showing page <b>%{count}</b> only"
+          other: "<b>%{count}</b> entries in total."
+      more_pages:
+        display_entries: "Showing <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> entries"
+  menu:
+    top:
+      title: "RBase"
+      top: "Home"
+      admin_nav: "Administrator"
+      admin: "Admin menu"
+      general_nav: "Member"
+      manager_nav: "Operations"
+      issues:
+        index: "Requests"
+      edit_profile: "Profile"
+      sign_out: "Sign out"
+      sign_in: "Sign in"
+      sign_up: "Register"
+      edit_link: "Profile"
+      job_histories:
+        index: "Job execution history"
+    admin:
+      sites: "Sites"
+      roles: "Roles"
+      users: "Users"
+      issue_types: "Request types"
+      workflows: "Workflows"
+      state_flows: "Workflow transitions"
+      custom_fields: "Custom fields"
+      mail_templates: "Mail templates"
+      reports: "Reports"
+      system_setting: "Settings"
+
+  selectable_attrs:
+    Site:
+      status_div:
+        before_apply: "Before application"
+        applying: "Applying"
+        accepted: "Approved"
+        denied: "Rejected"
+    Report:
+      report_class:
+        base_logic: "Base logic"
+    CustomField:
+      custom_field_type:
+        admin_user: "User"
+        issue: "Request"
+      field_type:
+        boolean: "Boolean"
+        integer: "Integer"
+        string: "String"
+        list: "List"
+        date: "Date"
+        date_time: "Date/time"
+    MailTemplate:
+      template_div:
+        created: "On create"
+        updated: "On update"
+        finished: "On completion"
+      from_address:
+        issue_creator: "Requester"
+        issue_updater: "Updater"
+        issue_assigned: "Assignee"
+        system_setting: "System settings"
+      to_address:
+        all_member: "Everyone"
+        issue_creator: "Requester"
+        issue_updater: "Updater"
+        issue_assigned: "Assignee"
+        issue_creator_and_assigned: "Requester and updater"
+        system_setting: "System settings"
+    AdminUser:
+      status_div:
+        before_apply: "Before application"
+        applying: "Applying"
+        accepted: "Approved"
+        denied: "Rejected"
+    Issue:
+      priority:
+        asap: "ASAP"
+        high: "High"
+        normal: "Normal"
+        low: "Low"
+    Issues:
+      SearchConditions:
+        condition_ope_type_select:
+          equal: "Equals"
+          not_equal: "Does not equal"
+        condition_ope_type_text:
+          equal: "Equals"
+          not_equal: "Does not equal"
+          include: "Contains"
+          exclude: "Does not contain"
+        condition_field_type:
+          workflow_state_id: "Status"
+          issue_type_id: "Request type"
+          priority: "Priority"
+          title: "Title"
+          expression: "Description"
+          assigned_id: "Assignee"
+          creator_id: "Creator"
+    IssueType:
+      issue_type_class:
+        base_logic: "Base logic"
+
+  activemodel:
+    errors:
+      messages:
+        inclusion: "is invalid."
+        blank: "can't be blank"
+
+    attributes:
+      admin_users/search_conditions:
+        name: "User name"
+        email: "Email"
+        site_id: "Site"
+
+  activerecord:
+    models:
+      admin_user: "User"
+    errors:
+      messages:
+        required: "can't be blank"
+        name_invalid: "Invalid prefix."
+        line_number_required: "Line number required at end"
+        uniq_bundle_no_error_message: "Unknown bundle number specified."
+        alpha_and_numeric_invalid: "Use alphanumeric characters."
+        attachement_file_invalid: "Please select a file."
+        update_record_invalid: "Update failed."
+        blank: "can't be blank"
+        format_invalid: "Invalid format."
+        inclusion: "is invalid."
+        taken: "has already been taken."
+        invalid: "is invalid."
+        not_a_number: "is not a number."
+        greater_than_or_equal_to: "must be greater than or equal to 0."
+      models:
+        admin_user:
+          attributes:
+            password:
+              too_short: "must be at least %{count} characters"
+            password_confirmation:
+              confirmation: "doesn't match password"
+            role:
+              invalid_role: "Invalid role."
+
+    attributes:
+      site:
+        site_name: "Site"
+        status_div: "Status"
+      role:
+        role_name: "Role name"
+        role_short_name: "Short name"
+        deletable: "Deletable"
+      admin_user:
+        current_site_id: "Site"
+        name: "User name"
+        email: "E-mail"
+        password: "Password"
+        password_confirmation: "Confirm password"
+        current_password: "Current password"
+        role: "Role"
+        role_id: "Role"
+        bu_name: "Department"
+        unit_name: "Section"
+        site_ids: "Sites"
+        sites: "Sites"
+        status_div: "Status"
+        reset_password_token: "Reset password token"
+        admin_user_attachements: "Approver stamp image"
+      issue_type:
+        issue_type_name: "Request type name"
+        issue_type_short_name: "Short name"
+        issue_type_class: "Handler class"
+        site_ids: "Sites"
+        deletable: "Deletable"
+      workflow:
+        workflow_name: "Workflow name"
+        temp_site_ids: "Sites"
+        issue_type_id: "Request type"
+        site_ids: "Sites"
+        deletable: "Deletable"
+      workflow_state:
+        state_cd: "Status code"
+        state_name: "Status name"
+        default_value: "Default"
+        end_point: "Terminal"
+        deleted_state: "Deleted status"
+      custom_field:
+        field_name: "Custom field name"
+        display_name: "Display name"
+        issue_type: "Request type"
+        custom_field_type: "Custom field type"
+        format_regexp: "Regular expression"
+        default_value: "Default value"
+        list_field: "List"
+        date_field: "Date"
+        datetime_field: "Date/time"
+        field_type: "Type"
+        required: "Required"
+        field_size: "Size"
+        comment: "Comment"
+        site_ids: "Sites"
+      mail_template:
+        template_div: "Mail template type"
+        template_name: "Mail template name"
+        from_address: "From"
+        to_address: "To"
+        subject: "Subject"
+        body: "Body"
+        site_ids: "Sites"
+        enable: "Enabled"
+        disable_notice: "Suppress notifications"
+      report:
+        title: "Report name"
+        report_class: "Report class"
+        description: "Description"
+        site_ids: "Sites"
+      system_setting:
+        site_ids: "Sites"
+        setting_category_div: "Category"
+        setting_div: "Setting"
+        setting_value: "Value"
+      query:
+        title: "Title"
+        shared: "Shared"
+      issue:
+        bundle_no: "Bundle no."
+        title: "Title"
+        assigned_id: "Assignee"
+        issue_type_id: "Request type"
+        workflow_state_id: "Status"
+        priority: "Priority"
+        limited_at: "Due date"
+        expression: "Description"
+        creator_name: "Creator"
+        updater_name: "Updater"
+        uploader_name: "Uploaded by"
+        uploaded_at: "Uploaded at"
+  views:
+    common:
+      fail_login_message: "Sign in failed."
+      create_confirm_message: "Create a new record. Continue?"
+      register_confirm_message: "Register. Continue?"
+      update_confirm_message: "Save changes. Continue?"
+      destroy_confirm_message: "Delete. Continue?"
+      build_confirm_message: "Generate. Continue?"
+      password_confirm_message: "Set a new password. Continue?"
+      submission_confirm_message: "Submit. Continue?"
+      copy_confirm_message: "Duplicate. Continue?"
+      preview_confirm_message: "Download PDF. Continue?"
+      start_confirm_message: "Start review. Continue?"
+      complate_confirm_message: "Complete review. Continue?"
+      delete_selected_confirm_message: "Delete all. Continue?"
+      upload_confirm_message: "Upload. Continue?"
+      reset_confirm_message: "Reset. Continue?"
+
+      create_complete_message: "Created successfully."
+      update_complete_message: "Updated successfully."
+      destroy_complete_message: "Deleted successfully."
+      copy_complete_message: "Duplicated successfully."
+      copy_error_message: "Duplication failed."
+      submission_complete_message: "Submitted successfully."
+      comfirm_complete_message: "Confirmation completed."
+      req_complate_comfirm_complete_message: "Inspection request completed."
+      complate_comfirm_complete_message: "Inspection completed."
+      upload_complete_message: "Upload completed."
+
+      error_message: "An error occurred."
+
+    pagination:
+      first: "&laquo; First"
+      last: "Last &raquo;"
+      previous: "&lsaquo; Prev"
+      next: "Next &rsaquo;"
+      truncate: "&hellip;"
+    admin_user:
+      fields:
+        new_password: "New password"
+        password_confirmation: "Confirm password"
+      sign_up:
+        title: "Register user"
+        button_create: "Register"
+      sign_in:
+        title: "Local sign-in"
+        sso_title: "SSO sign-in"
+        button_login: "Sign in (local)"
+        message_forget_your_password: "Forgot your password?"
+        saml2_title: "SSO sign-in"
+        messages:
+          login_guide: "Local users: enter ID and password, then click “Sign in (local).”"
+          saml2_guide: "SSO users: click the “SSO sign-in” button below."
+        button_saml2: "SSO sign-in"
+      password:
+        new:
+          title: "Forgot password"
+          button_send: "Send reset email"
+        edit:
+          title: "Reset password"
+          button_update: "Update password"
+
+    top:
+      fields:
+        site_name: "Site name"
+      index:
+        title: "Home"
+        site_select:
+          title: "Select site"
+    sites:
+      fields:
+        site_name: "Site name"
+        status_div: "Status"
+      index:
+        title: "Sites"
+        button_new: "Add site"
+        table_sites:
+          title:
+            action: "Action"
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      show:
+        title: "Site details"
+        button_back: "Back"
+        header_guide: "Review site information."
+      new:
+        title: "New site"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter site information and click Register."
+      edit:
+        title: "Edit site"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Edit site information and click Save."
+
+    roles:
+      fields:
+        role_name: "Role name"
+        action: "Action"
+        role_short_name: "Short name"
+        function_name: "Feature"
+        index: "Search"
+        show: "Details"
+        create: "Create"
+        update: "Edit"
+        destroy: "Delete"
+        others: "Other"
+      index:
+        title: "Roles"
+        button_new: "Add role"
+        table_roles:
+          title:
+            action: "Action"
+          button_edit: "Edit"
+          button_copy: "Duplicate"
+          button_destroy: "Delete"
+      show:
+        title: "Role details"
+        button_back: "Back"
+      new:
+        title: "New role"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter role details and click Register."
+      edit:
+        title: "Edit role"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change role details and click Save."
+
+    users:
+      fields:
+        user_name: "User name"
+        status_div: "Status"
+        action: "Action"
+        role_name: "Role"
+        email: "E-mail"
+        site: "Site"
+        image: "Image"
+        filename: "File name"
+        add_file: "Add file..."
+      index:
+        title: "Users"
+        button_new: "Add user"
+        table_users:
+          title:
+            user_name: "User name"
+            action: "Action"
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      new:
+        title: "New user"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter user details and click Register."
+      edit:
+        title: "Edit user"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change user details and click Save."
+        message_no_icon: "Not registered"
+        table_attachments:
+          button_destroy: "Delete"
+    issue_types:
+      fields:
+        user_name: "User name"
+        issue_type_name: "Request type name"
+        issue_type_class: "Handler class"
+        action: "Action"
+        role_short_name: "Short name"
+        email: "E-mail"
+      index:
+        title: "Request types"
+        button_new: "Add request type"
+        table_issue_types:
+          title:
+            action: "Action"
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      show:
+        title: "Request type details"
+        button_back: "Back"
+      new:
+        title: "New request type"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter request type details and click Register."
+      edit:
+        title: "Edit request type"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change request type details and click Save."
+
+    workflows:
+      fields:
+        workflow_name: "Workflow name"
+        action: "Action"
+      index:
+        title: "Workflows"
+        button_new: "Add workflow"
+        table_issue_types:
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      show:
+        title: "Workflow details"
+        button_back: "Back"
+      new:
+        title: "New workflow"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter workflow details and click Register."
+      edit:
+        title: "Edit workflow"
+        table_workflow_states:
+          button_new: "Add status"
+          title:
+            state_cd: "Status code"
+            state_name: "Status name"
+            default_value: "Default"
+            end_point: "Terminal"
+            deleted_state: "Deleted status"
+            sort: "Sort"
+            action: "Action"
+          button_edit: "Edit"
+          button_destroy: "Delete"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change workflow details and click Save."
+
+    workflow_states:
+      new:
+        title: "New workflow status"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter status details and click Register."
+      edit:
+        title: "Edit workflow status"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change status details and click Save."
+      show:
+        title: "Workflow status"
+        button_cancel: "Back"
+
+    state_flows:
+      fields:
+        workflow_name: "Transition name"
+        action: "Action"
+      index:
+        title: "Workflow transitions"
+        button_search: "Search"
+        conditions:
+          role_id: "Role"
+          workflow_id: "Workflow"
+        table_istate_flows:
+          title:
+            from_state_name: "FROM"
+            to_state_name: "TO"
+        button_update: "Save"
+
+    custom_fields:
+      fields:
+        custom_field_type: "Custom field type"
+        field_name: "Field name"
+        display_name: "Display name"
+        field_type: "Type"
+        action: "Action"
+      index:
+        title: "Custom fields"
+        button_new: "Add custom field"
+        table_custom_fields:
+          title:
+            action: "Action"
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      show:
+        title: "Custom field details"
+        button_back: "Back"
+      new:
+        title: "New custom field"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter custom field details and click Register."
+      edit:
+        title: "Edit custom field"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change custom field details and click Save."
+
+    mail_templates:
+      fields:
+        mail_template_div: "Mail template type"
+        mail_template_name: "Mail template name"
+        subject: "Subject"
+        from: "From"
+        to: "To"
+        enable: "Enabled"
+        disable_notice: "Suppress notifications"
+        action: "Action"
+      index:
+        title: "Mail templates"
+        button_new: "Add mail template"
+        table_mail_templates:
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      show:
+        title: "Mail template details"
+        button_back: "Back"
+      new:
+        title: "New mail template"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter mail template details and click Register."
+      edit:
+        title: "Edit mail template"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change mail template details and click Save."
+
+    reports:
+      fields:
+        title: "Report name"
+        report_class: "Report class"
+        action: "Action"
+        filename: "File name"
+        add_file: "Add file..."
+      index:
+        title: "Reports"
+        button_new: "Add report"
+        table_reports:
+          button_edit: "Edit"
+          button_preview: "Preview"
+          button_destroy: "Delete"
+      show:
+        title: "Report details"
+        button_back: "Back"
+      new:
+        title: "New report"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter report details and click Register."
+      edit:
+        title: "Edit report"
+        table_reports:
+          button_destroy: "Delete"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Enter report details and click Save."
+    system_settings:
+      fields:
+        site_name: "Site name"
+        setting_div_name: "Setting"
+        setting_value: "Value"
+        filename: "File name"
+        add_file: "Add file..."
+      index:
+        title: "Settings"
+        conditions:
+          sites: "Sites"
+          setting_category_div: "Category"
+          setting_div: "Setting"
+        button_new: "Add setting"
+        button_search: "Search"
+        table_system_settings:
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      show:
+        title: "Setting details"
+        button_back: "Back"
+      new:
+        title: "New setting"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter setting details and click Register."
+      edit:
+        title: "Edit setting"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Enter system setting details and click Save."
+        table_system_settings:
+          button_destroy: "Delete"
+
+    issues:
+      blockquote:
+        issue_information: "Request details"
+        creator_updater: "Creator / updater"
+      fields:
+        title: "Title"
+        created_at: "Created at"
+        issue_type: "Request type"
+        workflow_state: "Status"
+        action: "Action"
+        user_name: "Assignee"
+        site_name: "Site"
+        status: "Status"
+      index:
+        title: "Requests"
+        button_clear: "Clear"
+        button_search: "Search"
+        issue_title: "Requests"
+        button_new: "New request"
+        button_destroy: "Delete"
+        button_hide_condition: "Hide search"
+        button_show_condition: "Show search"
+        button_add_query: "Save custom query"
+        button_show_query: "Show custom query"
+        button_show_query_close: "Hide custom query"
+        table_issues:
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      new:
+        title: "New request"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter request details and click Register."
+      edit:
+        title: "Edit request"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change request details and click Save."
+      show:
+        title: "Request details"
+        button_print: "Download"
+        button_cancel: "Back"
+    queries:
+      index:
+        button_close: "Close"
+        table_queries:
+          button_load: "Load"
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      new:
+        title: "New saved search"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter search conditions and click Register."
+      edit:
+        title: "Edit saved search"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change search conditions and click Save."
+
+    admin_users:
+      fields:
+        image: "Image"
+        filename: "File name"
+        add_file: "Add file..."
+      edit:
+        title: "Edit user"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change user details and click Save."
+        message_no_icon: "Not registered"
+        table_attachments:
+          button_destroy: "Delete"
+
+      passwords:
+        new:
+          title: "Reset password"
+          header_guide: "Enter your email address and click Reset."
+          button_reset: "Reset"
+          button_cancel: "Back"
+        edit:
+          title: "Reset password"
+          header_guide: "Enter a new password and click Save."
+          button_update: "Save"
+          button_top: "Home"
+
+    job_histories:
+      fields:
+        job_type: "Job type"
+        status: "Status"
+        request_by: "Requested by"
+        requested_at: "Requested at"
+        started_at: "Started at"
+        finished_at: "Finished at"
+        spent: "Elapsed"
+        action: "Action"
+      index:
+        title: "Job execution history"

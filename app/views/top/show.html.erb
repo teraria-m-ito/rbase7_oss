@@ -1,0 +1,42 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.top.index.title")%>(<%= Site.find(current_admin_user.selected_site == 0 ? current_admin_user.sites.first.id : current_admin_user.selected_site).site_name %>)</h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-title"></div>
+          <div class="card-body">
+            <% if current_admin_user %>
+              <% if current_admin_user.admin? %>
+                <%= admin_top_page_content %>
+              <% end %>
+
+              <% if current_admin_user.manager? %>
+                <%= manager_top_page_content %>
+              <% end %>
+
+              <% if current_admin_user.member? %>
+                <%= member_top_page_content %>
+              <% end %>
+            <% else %>
+              <%= non_login_top_page_content %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

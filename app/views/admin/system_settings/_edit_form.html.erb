@@ -1,0 +1,20 @@
+<%= turbo_frame_tag 'entry-forms' do %>
+  <%  html_option = {data: {turbo_confirm: t(:"views.common.update_confirm_message")}} %>
+  <%  html_option.update({multipart: true, id: :fileupload}) if @system_setting.input_type == :file %>
+  <%= simple_form_for([:admin, @system_setting], builder: RbaseFormBuilder, html: html_option) do |f| %>
+    <div class="card-body">
+      <%= f.error_notification %>
+      <div class="form-group">
+        <%= render partial: 'form', locals: {form: f} %>
+      </div>
+    </div>
+    <div class="card-footer">
+      <% if @system_setting.input_type == :file %>
+        <%= link_to t(:"views.system_settings.edit.button_update"), "#", onclick: "confirm_alert('#{t(:"views.common.update_confirm_message")}', 'callback', 'forced_upload()');return false;", class: "btn btn-primary btn-sm" %>
+      <% else %>
+        <%= f.submit t(:"views.system_settings.edit.button_update"), data: { confirm: t(:"views.common.update_confirm_message") }, class: "btn btn-primary btn-sm"%>
+      <% end %>
+      <%= link_to t(:"views.system_settings.edit.button_cancel"), admin_system_settings_path, class: "btn btn-default btn-sm btn-sm" %>
+    </div>
+  <% end %>
+<% end %>

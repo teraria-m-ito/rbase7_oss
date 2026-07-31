@@ -1,0 +1,54 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <%= link_to "/top", {class: "brand-link"} do %>
+    <%= image_tag SystemSetting[:logo_path, current_admin_user.nil? ? Site.first.id : current_admin_user.try(:selected_site).to_i] || "logo.png", class: "brand-image" %>
+    <span class="brand-text font-weight-light"><%= SystemSetting[:app_name, current_admin_user.nil? ? Site.first.id : current_admin_user.try(:selected_site).to_i] || "TITLE" %> </span>
+  <% end %>
+  
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <% if admin_user_signed_in? %>
+          <% if current_admin_user.admin? || current_admin_user.manager? %>
+            <li class="nav-item <%= @sidebar_admin_opened %>">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-toolbox"></i>
+                <p>
+                  <%= t(:"menu.top.admin_nav") %>
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <%= render partial: 'common/admin_menu' %>
+            </li>
+          <% end %>
+          
+          <li class="nav-item <%= @sidebar_opened %>">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p><%= t(:"menu.top.general_nav") %>
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <%= link_to('/issues?clear=true', class: "nav-link") do %>
+                  <% if is_current_page?("/issues") %>
+                    <i class="fa fa-tasks text-red"></i>
+                  <% else %>
+                    <i class="fa fa-tasks"></i>
+                  <% end %>
+                  <p><%= t(:"menu.top.issues.index") %></p>
+                <% end %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+    <!-- Sidebar Menu -->
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

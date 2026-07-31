@@ -1,0 +1,4 @@
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :role_id, label: t(:"views.state_flows.index.conditions.role_id"), as: :select, collection: @roles.map{|x|[x.role_name, x.id]}, input_html: {col: 3} %>
+  <%= form.input :workflow_id, label: t(:"views.state_flows.index.conditions.workflow_id"), as: :select, collection: @workflows.map{|x|[x.workflow_name, x.id]}, input_html: {col: 3} %>
+</div>

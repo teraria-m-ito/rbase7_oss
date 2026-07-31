@@ -1,0 +1,7 @@
+<%= turbo_frame_tag 'entry-selects' do %>
+  <div id="select_field_area">
+    <div class="form-group form-inline input-group-sm align-items-start">
+      <%= select_tag(:select_field_type, options_for_select(@query_fields.to_a), include_blank: true, class: "select optional form-control input-sm", id: "select_field_type")%>
+    </div>
+  </div>
+<% end %>
