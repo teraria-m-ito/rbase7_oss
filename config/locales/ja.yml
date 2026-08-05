@@ -25,6 +25,7 @@ ja:
     admin/admin_user_attachments: "管理者メニュー/ユーザー画像"
     admin/system_settings: "管理者メニュー/設定"
     admin/system_setting_attachments: "管理者メニュー/設定画像"
+    admin/translations: "管理者メニュー/翻訳"
     admin: "管理者メニュー"
     sites: "サイト"
     admin_users/registrations: "ログインユーザ"
@@ -107,6 +108,12 @@ ja:
       admin/users_update: "更新"
       admin/users_destroy: "削除"
 
+      admin/translations_index: "検索"
+      admin/translations_show: "詳細"
+      admin/translations_create: "新規登録"
+      admin/translations_update: "更新"
+      admin/translations_destroy: "削除"
+
       admin/admin_user_attachments_create: "アップロード"
       admin/admin_user_attachments_destroy: "削除"
 
@@ -169,6 +176,7 @@ ja:
       custom_fields: "カスタムフィールド"
       mail_templates: "メールテンプレート"
       reports: "帳票"
+      translations: "翻訳"
       system_setting: "設定"
       
   selectable_attrs:
@@ -254,10 +262,16 @@ ja:
         name: "ユーザ名"
         email: "Email"
         site_id: "サイト"
+      translations/search_conditions:
+        locale: "ロケール"
+        key: "キー"
+        value: "翻訳文"
+        scope: "サイト"
 
   activerecord:
     models:
       admin_user: "ユーザー"
+      translation: "翻訳"
     errors:
       messages:
         required: "を入力してください"
@@ -353,6 +367,13 @@ ja:
         site_ids: "サイト"
         enable: "有効フラグ"
         disable_notice: "通知抑止フラグ"
+      translation:
+        locale: "ロケール"
+        key: "キー"
+        value: "翻訳文"
+        scope: "サイト"
+        is_proc: "Procフラグ"
+        interpolations: "補間キー"
       report:
         title: "帳票名"
         report_class: "帳票クラス"
@@ -705,7 +726,44 @@ ja:
         button_update: "更新"
         button_cancel: "前のページへ"
         header_guide: "メールテンプレート内容を変更して、更新ボタンをクリックして下さい。"
-        
+
+    translations:
+      fields:
+        locale: "ロケール"
+        key: "キー"
+        value: "翻訳文"
+        value_yml: "翻訳文(YAML)"
+        value_db: "翻訳文(DB)"
+        scope: "サイト"
+        source: "取得元"
+        source_yml: "YAML"
+        source_db: "DB"
+        is_proc: "Procフラグ"
+        action: "アクション"
+      index:
+        title: "翻訳一覧"
+        button_new: "新しい翻訳を追加"
+        button_search: "検索"
+        table_translations:
+          button_create: "新規登録"
+          button_edit: "編集"
+          button_destroy: "削除"
+      show:
+        title: "翻訳詳細"
+        button_edit: "編集"
+        button_back: "前のページへ"
+        header_guide: "翻訳内容を確認できます。"
+      new:
+        title: "新規翻訳登録"
+        button_create: "登録"
+        button_cancel: "前のページへ"
+        header_guide: "翻訳内容を入力して、登録ボタンをクリックして下さい。"
+      edit:
+        title: "翻訳編集"
+        button_update: "更新"
+        button_cancel: "前のページへ"
+        header_guide: "翻訳内容を変更して、更新ボタンをクリックして下さい。"
+
     reports:
       fields:
         title: "帳票名"

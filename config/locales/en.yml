@@ -25,6 +25,7 @@ en:
     admin/admin_user_attachments: "Admin / User images"
     admin/system_settings: "Admin / Settings"
     admin/system_setting_attachments: "Admin / Setting images"
+    admin/translations: "Admin / Translations"
     admin: "Admin menu"
     sites: "Sites"
     admin_users/registrations: "Signed-in user"
@@ -107,6 +108,12 @@ en:
       admin/users_update: "Update"
       admin/users_destroy: "Delete"
 
+      admin/translations_index: "Search"
+      admin/translations_show: "Details"
+      admin/translations_create: "Create"
+      admin/translations_update: "Update"
+      admin/translations_destroy: "Delete"
+
       admin/admin_user_attachments_create: "Upload"
       admin/admin_user_attachments_destroy: "Delete"
 
@@ -167,6 +174,7 @@ en:
       custom_fields: "Custom fields"
       mail_templates: "Mail templates"
       reports: "Reports"
+      translations: "Translations"
       system_setting: "Settings"
 
   selectable_attrs:
@@ -252,10 +260,16 @@ en:
         name: "User name"
         email: "Email"
         site_id: "Site"
+      translations/search_conditions:
+        locale: "Locale"
+        key: "Key"
+        value: "Value"
+        scope: "Site"
 
   activerecord:
     models:
       admin_user: "User"
+      translation: "Translation"
     errors:
       messages:
         required: "can't be blank"
@@ -349,6 +363,13 @@ en:
         site_ids: "Sites"
         enable: "Enabled"
         disable_notice: "Suppress notifications"
+      translation:
+        locale: "Locale"
+        key: "Key"
+        value: "Value"
+        scope: "Site"
+        is_proc: "Proc flag"
+        interpolations: "Interpolations"
       report:
         title: "Report name"
         report_class: "Report class"
@@ -694,6 +715,43 @@ en:
         button_update: "Save"
         button_cancel: "Back"
         header_guide: "Change mail template details and click Save."
+
+    translations:
+      fields:
+        locale: "Locale"
+        key: "Key"
+        value: "Value"
+        value_yml: "Value (YAML)"
+        value_db: "Value (DB)"
+        scope: "Site"
+        source: "Source"
+        source_yml: "YAML"
+        source_db: "DB"
+        is_proc: "Proc flag"
+        action: "Action"
+      index:
+        title: "Translations"
+        button_new: "Add translation"
+        button_search: "Search"
+        table_translations:
+          button_create: "Create"
+          button_edit: "Edit"
+          button_destroy: "Delete"
+      show:
+        title: "Translation details"
+        button_edit: "Edit"
+        button_back: "Back"
+        header_guide: "Review translation details."
+      new:
+        title: "New translation"
+        button_create: "Register"
+        button_cancel: "Back"
+        header_guide: "Enter translation details and click Register."
+      edit:
+        title: "Edit translation"
+        button_update: "Save"
+        button_cancel: "Back"
+        header_guide: "Change translation details and click Save."
 
     reports:
       fields:

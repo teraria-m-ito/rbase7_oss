@@ -42,11 +42,20 @@ module Rbase7
       config.autoload_paths << path
     end
 
-    # localeのカスタマイズ部の登録
+    # localeのカスタマイズ部の登録（RBASE_GEMS_ORDER の順。後勝ちで上書き）
     plugin_locales_paths = Dir["rbase_gems/rbase_*/locales"]
+    if ENV["RBASE_GEMS_ORDER"].present?
+      gem_names = plugin_locales_paths.map { |path| path[%r{rbase_gems/(rbase_[^/]+)/locales}, 1] }.compact
+      sort_list = ENV["RBASE_GEMS_ORDER"].split(",").map(&:strip).reject(&:blank?)
+      ordered_gem_names = (sort_list & gem_names) + (gem_names - sort_list)
+      plugin_locales_paths = ordered_gem_names.map { |name| "rbase_gems/#{name}/locales" }
+    end
     plugin_locales_paths.each do |plugin_locales_path|
-      puts "add locale path:#{Dir[Rails.root.join(plugin_locales_path, '*.yml')]}"
-      config.i18n.load_path += Dir[Rails.root.join(plugin_locales_path, '*.yml')]
+      yml_files = Dir[Rails.root.join(plugin_locales_path, "*.yml")]
+      next if yml_files.empty?
+
+      puts "add locale path:#{yml_files}"
+      config.i18n.load_path += yml_files
     end
 
     # migrationのカスタマイズ部の登録

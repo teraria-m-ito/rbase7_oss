@@ -57,6 +57,7 @@ config/public.key
 /config/database.yml
 /config/master.key
 /config/credentials.yml.enc
+/config/credentials/*
 /app/javascript/graphs/*.js
 /ruby_gems/rbase_*
 /.env

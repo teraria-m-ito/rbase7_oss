@@ -2,7 +2,7 @@
 #lock '3.17.0'
 
 set :application, 'rbase7_oss'
-set :repo_url, 'https://github.com/minoruito/rbase7_oss.git'
+set :repo_url, 'https://github.com/teraria-m-ito/rbase7_ldi_release.git'
 
 set :git_submodules, true
 

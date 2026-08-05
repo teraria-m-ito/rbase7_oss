@@ -166,5 +166,6 @@ gem 'base64', '0.2.0'
 gem 'logger', '1.6.0'
 gem 'json', '2.7.2'
 gem 'rack-cors', '2.0.2'
+gem 'i18n-active_record', require: 'i18n/active_record'
 eval_gemfile File.join( File.dirname(__FILE__), "rbase_gems/Gemfile")
 

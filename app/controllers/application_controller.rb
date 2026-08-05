@@ -30,6 +30,7 @@ class ApplicationController < ActionController::Base
   before_action :set_menu_collapse
 
   #before_action :check_permission
+  before_action :reset_session_index
   before_action :reset_session
 
   #パラメータが抜ける不具合が発生。一旦コメントアウト
@@ -213,10 +214,15 @@ class ApplicationController < ActionController::Base
     session[:active_site_id]
   end
 
-  def reset_session
+  def reset_session_index
     if params[:clear] == 'true'
       session[:"#{controller_name}_condition"] = nil
       session[:"#{controller_name}_search_conditions"] = nil
+    end
+  end
+
+  def reset_session
+    if params[:clear] == 'true'
       session[:"#{controller_name.singularize}"] = nil
     end
   end

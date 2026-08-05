@@ -81,15 +81,23 @@ namespace :git do
           within release_path do
             execute :git, :submodule, "init"
 
+            # .gitmodules が無い／空のとき、git config --get-regexp は exit 1 を返す。
+            # SSHKit の capture は非ゼロを例外にするため、先に存在と中身を確認する。
+            has_gitmodules = test("[ -s .gitmodules ]")
+
             user = fetch(:git_http_username, nil)
             pass = fetch(:git_http_password, nil)
-            if user && !pass.to_s.empty?
+            if has_gitmodules && user && !pass.to_s.empty?
               parent_host = CapistranoGitSubmodulesRelease.git_remote_host(fetch(:repo_url))
               match_parent_only = fetch(:git_submodule_auth_match_parent_host_only, true)
               escaped_pass = CGI.escape(pass.to_s)
 
-              raw = capture(:git, "config", "-f", ".gitmodules", "--get-regexp", "^submodule\\..*\\.url$")
-              raw.strip.each_line do |line|
+              # キーが無い場合も exit 1 になるため raise_on_non_zero_exit: false
+              raw = capture(
+                :git, "config", "-f", ".gitmodules", "--get-regexp", "^submodule\\..*\\.url$",
+                raise_on_non_zero_exit: false
+              )
+              raw.to_s.strip.each_line do |line|
                 key, url = line.strip.split(/\t+/, 2)
                 key, url = line.strip.split(/\s+/, 2) if url.nil?
                 next if url.nil? || url.empty?
@@ -106,9 +114,11 @@ namespace :git do
                 uri.password = escaped_pass
                 execute :git, :config, "submodule.#{path}.url", uri.to_s
               end
-            else
+            elsif has_gitmodules
               warn "[git:create_release] :git_http_username / :git_http_password が未設定です。" \
                    "プライベートな HTTPS サブモジュールは clone に失敗する可能性があります。"
+            else
+              info "[git:create_release] .gitmodules が無い、または空のためサブモジュール URL の書き換えをスキップします。"
             end
 
             execute :git, :submodule, "update", "--recursive"

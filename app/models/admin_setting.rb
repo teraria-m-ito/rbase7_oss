@@ -12,7 +12,8 @@ class AdminSetting < ApplicationRecord
     entry 'custom_fields', :custom_fields, 'Custom fields', url: "admin_custom_fields_path(clear: true)", icon: "fas fa-border-style", display_order: 70
     entry 'mail_templates', :mail_templates, 'Mail Templates', url: "admin_mail_templates_path(clear: true)", icon: "fa fa-envelope-open", display_order: 80
     entry 'reports', :reports, 'Reports', url: "admin_reports_path(clear: true)", icon: "fa fa-file-alt", display_order: 90
-    entry 'system_setting', :system_setting, 'System Setting', url: "admin_system_settings_path(clear: true)", icon: "fas fa-wrench", display_order: 100
+    entry 'translations', :translations, 'Translations', url: "admin_translations_path(clear: true)", icon: "fas fa-language", display_order: 990
+    entry 'system_setting', :system_setting, 'System Setting', url: "admin_system_settings_path(clear: true)", icon: "fas fa-wrench", display_order: 1000
 
     update_with_plugins(:AdminSetting, :added_entries_for_menus)
   end

@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       end
     end
     resources :mail_templates
+    resources :translations
     resources :reports do
       member do
         get 'preview'
