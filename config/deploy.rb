@@ -83,6 +83,15 @@ namespace :deploy do
   # end
   # before "bundler:install", "deploy:plugins_symlink"
 
+  task :plugins_symlink do
+    on roles(:app) do
+      within release_path do
+        execute :ruby, release_path.join("lib/rbase/plugins_symlink_core.rb"), release_path.to_s
+      end
+    end
+  end
+  before "bundler:install", "deploy:plugins_symlink"
+
   namespace :permission_update do
     task :exec_rake do
       on roles(:app) do

@@ -102,15 +102,15 @@ gem 'devise', "~> 4.9.2"
 
 gem 'simple_form'
 
-gem 'selectable_attr', '0.3.18.rails7', git: 'https://github.com/minoruito/selectable_attr.git'
-gem 'selectable_attr_rails', git: 'https://github.com/minoruito/selectable_attr_rails.git'
+gem 'selectable_attr', '0.3.18.rails7', git: 'https://github.com/teraria-m-ito/selectable_attr.git'
+gem 'selectable_attr_rails', git: 'https://github.com/teraria-m-ito/selectable_attr_rails.git'
 
 gem 'nested_form'
 
 gem 'cancancan'
 
 gem 'paranoia'
-gem 'kaminari', '1.2.2.1.custom', git: 'https://github.com/minoruito/kaminari.git'
+gem 'kaminari', '1.2.2.1.custom', git: 'https://github.com/teraria-m-ito/kaminari.git'
 
 gem 'mime-types'
 gem 'carrierwave'

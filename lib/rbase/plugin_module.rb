@@ -134,11 +134,16 @@ module Rbase
           mod.module_eval{ include plugin_module }
         end
         mod.extend(ClassMethods)
-        mod.instance_eval do
-          alias :method_added_without_rbase_plugin_module :method_added
-          alias :method_added :method_added_with_rbase_plugin_module
-          alias :singleton_method_added_without_rbase_plugin_module :singleton_method_added
-          alias :singleton_method_added :singleton_method_added_with_rbase_plugin_module
+        hooks_installed =
+          mod.respond_to?(:method_added_without_rbase_plugin_module, true) &&
+          mod.respond_to?(:singleton_method_added_without_rbase_plugin_module, true)
+        unless hooks_installed
+          mod.instance_eval do
+            alias :method_added_without_rbase_plugin_module :method_added
+            alias :method_added :method_added_with_rbase_plugin_module
+            alias :singleton_method_added_without_rbase_plugin_module :singleton_method_added
+            alias :singleton_method_added :singleton_method_added_with_rbase_plugin_module
+          end
         end
       end
       

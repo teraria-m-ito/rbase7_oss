@@ -12,6 +12,7 @@ class SystemSetting < ApplicationRecord
 
   attr_accessor :hint
   attr_accessor :uuid
+  attr_accessor :existing_registered_setting
 
   validates :site_ids, presence: true
   validates :setting_category_div, presence: true
@@ -27,14 +28,18 @@ class SystemSetting < ApplicationRecord
   end
 
   def sites_validate
-    system_settings = SystemSetting.where(setting_div: self.setting_div).all
-    system_settings.each do |system_setting|
-      next if !system_setting.new_record? && system_setting.id == self.id
-      if system_setting.new_record? and self.site_ids.empty?
-        errors.add(:site_ids, I18n.t("activerecord.errors.messages.blank"))
-      elsif (system_setting.site_ids & self.site_ids).empty?
-        errors.add(:site_ids, I18n.t("activerecord.errors.messages.blank"))
-      end
+    new_site_ids = Array(site_ids).map(&:to_i).reject(&:zero?)
+    return if setting_div.blank? || new_site_ids.empty?
+
+    SystemSetting.where(setting_div: self.setting_div).each do |system_setting|
+      next if persisted? && system_setting.id == self.id
+
+      existing_site_ids = Array(system_setting.site_ids).map(&:to_i).reject(&:zero?)
+      next if (existing_site_ids & new_site_ids).empty?
+
+      self.existing_registered_setting = system_setting
+      errors.add(:base, I18n.t("activerecord.errors.messages.system_setting_already_registered"))
+      break
     end
   end
 
@@ -103,7 +108,7 @@ class SystemSetting < ApplicationRecord
 
     entry 'R023', :footer_signature    , 'フッターシグネイチャー'    , required: true, category: :application_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
       ※　フッターシグネイチャーを設定します。
-      未登録の場合、Powered by IDO Inc,を表示します。
+      未登録の場合、Powered by Teraria Labs,を表示します。
       END_OF_HINT
     end
 
@@ -143,7 +148,7 @@ class SystemSetting < ApplicationRecord
       　　この定義は、サイト１の設定がすべてのサイトに有効になります。
       入力例：
       issuerのURL|LMSのURL
-      https：//shibboleth.example.com/realms/rbase|https：//moodle.example.com
+      https：//shibboleth.example.com/realms/rbase|https：//moodle-dev.example.com
       END_OF_HINT
     end
     entry 'S004', :sso_enable    , 'SSO適用設定'    , required: true, category: :sso_setting, input_type: :boolean, reload: true, hint: <<-"END_OF_HINT" do
@@ -197,6 +202,7 @@ class SystemSetting < ApplicationRecord
   end
   
   def self.get_setting(setting_div_key, site_id)
+    site_id = Site.first.try(:id) if site_id.blank?
     seting_div_entry = setting_div_entry_by_key(setting_div_key)
     raise ArgumentError, "Unknown setting_div_key: #{setting_div_key.inspect}" if seting_div_entry.null?
     raise ArgumentError, "No site_id" if site_id.blank?

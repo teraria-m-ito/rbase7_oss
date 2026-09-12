@@ -116,7 +116,7 @@ namespace :git do
               end
             elsif has_gitmodules
               warn "[git:create_release] :git_http_username / :git_http_password が未設定です。" \
-                   "プライベートな HTTPS サブモジュールは clone に失敗する可能性があります。"
+                     "プライベートな HTTPS サブモジュールは clone に失敗する可能性があります。"
             else
               info "[git:create_release] .gitmodules が無い、または空のためサブモジュール URL の書き換えをスキップします。"
             end

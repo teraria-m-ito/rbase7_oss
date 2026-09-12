@@ -6,6 +6,14 @@ import { get, post, put, patch, destroy } from '@rails/request.js'
 const SEARCH_FORM_NAME = 'system_setting_conditions';
 const FORM_NAME = 'system_setting';
 
+function formParamsWithoutSettingValue() {
+  var data = $('form').serializeJSON();
+  if (data.system_setting) {
+    delete data.system_setting.setting_value;
+  }
+  return data;
+}
+
 function initFunc(self) {
   $('#fileupload').fileupload({
     downloadTemplateId: null,
@@ -74,7 +82,7 @@ export default class extends RbaseController {
       console.log("change system_setting_setting_category_div");
 
       const response = await post(self.paramsValue.url1, {
-        body: $('form').serializeJSON(),
+        body: formParamsWithoutSettingValue(),
         contentType: "application/json",
         responseKind: "turbo-stream"
       });
@@ -89,7 +97,7 @@ export default class extends RbaseController {
       console.log("change system_setting_setting_div");
 
       const response = await post(self.paramsValue.url1, {
-        body: $('form').serializeJSON(),
+        body: formParamsWithoutSettingValue(),
         contentType: "application/json",
         responseKind: "turbo-stream"
       });
@@ -118,7 +126,7 @@ export default class extends RbaseController {
       console.log("change system_setting_setting_category_div");
 
       const response = await patch(self.paramsValue.url1, {
-        body: $('form').serializeJSON(),
+        body: formParamsWithoutSettingValue(),
         contentType: "application/json",
         responseKind: "turbo-stream"
       });
@@ -133,7 +141,7 @@ export default class extends RbaseController {
       console.log("change system_setting_setting_category_div");
 
       const response = await patch(self.paramsValue.url1, {
-        body: $('form').serializeJSON(),
+        body: formParamsWithoutSettingValue(),
         contentType: "application/json",
         responseKind: "turbo-stream"
       });

@@ -1,6 +1,14 @@
 GIT
-  remote: https://github.com/minoruito/kaminari.git
-  revision: ba941a5177d81e11be6fe313e3ae834e0b0cb337
+  remote: https://github.com/pennylane-hq/activerecord-adapter-redshift.git
+  revision: c856b282c6b0a986f55a078b5fb415b4396a894a
+  specs:
+    activerecord7-redshift-adapter-pennylane (1.0.4)
+      activerecord (~> 7.0)
+      pg (~> 1.0)
+
+GIT
+  remote: https://github.com/teraria-m-ito/kaminari.git
+  revision: 53298ec3cbe3943ad8f540472a7385773b3c996c
   specs:
     kaminari (1.2.2.1.custom)
       activesupport (>= 4.1.0)
@@ -16,29 +24,21 @@ GIT
     kaminari-core (1.2.2.1.custom)
 
 GIT
-  remote: https://github.com/minoruito/selectable_attr.git
-  revision: 33aada31feb93eb6b6888a357f7d6553a0ad1ab7
+  remote: https://github.com/teraria-m-ito/selectable_attr.git
+  revision: 7ab69085e9042957fafdb723d3a9b1ed9ebe9f5a
   specs:
     selectable_attr (0.3.18.rails7)
       i18n
 
 GIT
-  remote: https://github.com/minoruito/selectable_attr_rails.git
-  revision: f31ec63a945313c6585f68eb38d71c4675262d95
+  remote: https://github.com/teraria-m-ito/selectable_attr_rails.git
+  revision: 135bdd45594edef986b740b52a470a6edc51b3d6
   specs:
     selectable_attr_rails (0.3.15.rails)
       actionpack (>= 2.3.14)
       activerecord (>= 2.3.14)
       activesupport (>= 2.3.14)
       selectable_attr (>= 0.3.15)
-
-GIT
-  remote: https://github.com/pennylane-hq/activerecord-adapter-redshift.git
-  revision: c856b282c6b0a986f55a078b5fb415b4396a894a
-  specs:
-    activerecord7-redshift-adapter-pennylane (1.0.4)
-      activerecord (~> 7.0)
-      pg (~> 1.0)
 
 PATH
   remote: lib/immigration/saml_idp

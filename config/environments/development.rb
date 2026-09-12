@@ -46,7 +46,7 @@ Rails.application.configure do
 
 
   config.action_mailer.default_url_options = {
-    host: 'ltitest.dev-appl.biz',
+    host: 'CHANGE_ME',
     protocol: 'https'
   }
 

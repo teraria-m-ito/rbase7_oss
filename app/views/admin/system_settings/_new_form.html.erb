@@ -3,7 +3,14 @@
   <%  html_option.update({multipart: true, id: :fileupload}) if @system_setting.input_type == :file %>
   <%= simple_form_for([:admin, @system_setting], builder: RbaseFormBuilder, html: html_option) do |f| %>
     <div class="card-body">
-      <%= f.error_notification %>
+      <% if @system_setting.existing_registered_setting %>
+        <div class="has-error alert alert-danger">
+          <%= t(:"activerecord.errors.messages.system_setting_already_registered") %>
+          <%= link_to t(:"views.system_settings.new.already_registered_link"), edit_admin_system_setting_path(@system_setting.existing_registered_setting), class: "text-primary", style: "color: #007bff;", data: { turbo_frame: "_top" } %>
+        </div>
+      <% else %>
+        <%= f.error_notification %>
+      <% end %>
       <div class="form-group">
         <%= render partial: 'form', locals: {form: f} %>
       </div>

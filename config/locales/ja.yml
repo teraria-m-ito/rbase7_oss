@@ -288,6 +288,7 @@ ja:
         invalid: "が正しくありません。"
         not_a_number: "が数値ではありません。"
         greater_than_or_equal_to: "は0以上の数値を入力して下さい。"
+        system_setting_already_registered: "既に登録済です．編集画面に遷移可能です．"
       models:
         admin_user:
           attributes:
@@ -820,6 +821,7 @@ ja:
         button_create: "登録"
         button_cancel: "前のページへ"
         header_guide: "システム設定内容を入力して、登録ボタンをクリックして下さい。"
+        already_registered_link: "リンク"
       edit:
         title: "設定編集"
         button_update: "更新"

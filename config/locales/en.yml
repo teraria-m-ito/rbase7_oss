@@ -286,6 +286,7 @@ en:
         invalid: "is invalid."
         not_a_number: "is not a number."
         greater_than_or_equal_to: "must be greater than or equal to 0."
+        system_setting_already_registered: "This setting is already registered. You can open the edit screen."
       models:
         admin_user:
           attributes:
@@ -808,6 +809,7 @@ en:
         button_create: "Register"
         button_cancel: "Back"
         header_guide: "Enter setting details and click Register."
+        already_registered_link: "Link"
       edit:
         title: "Edit setting"
         button_update: "Save"

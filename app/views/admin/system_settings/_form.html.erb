@@ -14,7 +14,11 @@
 
 <% if ::SystemSetting.setting_div_entry_by_id(form.object.setting_div)[:input_type] == :string %>
   <div class="form-group form-inline input-group-sm align-items-start">
-    <%= form.input :setting_value, autofucus: true, as: :text, input_html: {col: 8, rows: 5} %>
+    <% string_setting_value = form.object.setting_value %>
+    <% if form.object.new_record? && ["0", "1"].include?(string_setting_value.to_s) %>
+      <% string_setting_value = "" %>
+    <% end %>
+    <%= form.input :setting_value, autofucus: true, as: :text, input_html: {col: 8, rows: 5, value: string_setting_value} %>
   </div>
 <% end %>
 <% if ::SystemSetting.setting_div_entry_by_id(form.object.setting_div)[:input_type] == :boolean %>

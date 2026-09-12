@@ -157,6 +157,8 @@ module Admin
     def change_setting_category_div_for_new
       @system_setting = SystemSetting.new(system_setting_params)
       @system_setting.uuid = @uuid
+      # booleanのhidden値(0/1)がstring項目へ持ち込まれないようにする
+      discard_boolean_setting_value_for_string
       setup_values
       setup_setting_divs
       # render :partial => 'new_form'
@@ -167,11 +169,21 @@ module Admin
     def change_setting_category_div_for_edit
       @system_setting.assign_attributes(system_setting_params)
       @system_setting.uuid = @uuid
+      discard_boolean_setting_value_for_string
       setup_values
       setup_setting_divs
       render turbo_stream: turbo_stream.replace('entry-forms', partial: 'edit_form')
     end    
     private
+
+    def discard_boolean_setting_value_for_string
+      return if @system_setting.setting_div.blank?
+      return unless @system_setting.input_type == :string
+      return unless ["0", "1"].include?(@system_setting.setting_value.to_s)
+
+      @system_setting.setting_value = nil
+    end
+
     def setup_values
       @sites = current_admin_user.sites.all
     end

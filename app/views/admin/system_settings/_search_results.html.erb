@@ -30,7 +30,7 @@
         <% end %>
         <td>
           <%= link_to t(:"views.system_settings.index.table_system_settings.button_edit"), edit_admin_system_setting_path(system_setting), class: "btn btn-primary btn-sm" %>
-          <%= link_to t(:"views.system_settings.index.table_system_settings.button_destroy"), admin_system_setting_path(system_setting), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %></td>
+          <%= link_to t(:"views.system_settings.index.table_system_settings.button_destroy"), admin_system_setting_path(system_setting), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %>
         </td>
       </tr>
     <% end %> 
