@@ -263,7 +263,8 @@ abbr.nec {
   position: sticky;
   right: 0;
   z-index: 999;
-  background-color: #444a50
+  background-color: #fff !important;
+  color: #212529;
 }
 
 .table-fixed thead:not(.no_action) th:not(:last-child) {
@@ -275,7 +276,12 @@ abbr.nec {
   position: sticky;
   right: 0;
   z-index: 999;
-  background-color: rgba( 189,225,231,1.0);
+  /* table-striped の transparent !important より優先し、透過させない */
+  background-color: rgba(189, 225, 231, 1.0) !important;
+}
+
+.table-fixed.table-hover tbody:not(.no_action) tr:hover > td:last-child {
+  background-color: rgba(189, 225, 231, 1.0) !important;
 }
 
 .table-fixed tbody:not(.no_action) td:not(:last-child) {
@@ -392,6 +398,11 @@ abbr.nec {
 
 .table-fixed td.action {
   max-width: none;
+}
+
+/* 横スクロール位置を復元するまで非表示（ちらつき防止） */
+.table-responsive.is-scroll-pending {
+  visibility: hidden;
 }
 
 .tox .tox-menubar button span {

@@ -1,7 +1,7 @@
 // Entry point for the build script in your package.json
+// jquery_global を先頭で import し、他モジュール評価前に window.$ を載せる
+import jquery from "./lib/jquery_global"
 import "@hotwired/turbo-rails"
-import jquery from "jquery"
-window.$ = window.jQuery = jquery
 
 import * as bootstrap from "bootstrap"
 window.bootstrap = bootstrap

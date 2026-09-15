@@ -1,3 +1,4 @@
+import "./lib/jquery_global"
 import { Controller } from "@hotwired/stimulus"
 import * as Rbase from "./rbase_common.js"
 

@@ -1,0 +1,22 @@
+<script>
+  (function () {
+    var id = "<%= j element_id.to_s %>";
+    var el = document.getElementById(id);
+    if (!el) {
+      return;
+    }
+    try {
+      if (typeof window.restoreTableScroll === "function") {
+        window.restoreTableScroll(id);
+      } else {
+        var key = "tableScrollX:" + (el.getAttribute("data-table-scroll-key") || "default");
+        var x = Number(sessionStorage.getItem(key) || 0);
+        if (x > 0) {
+          el.scrollLeft = x;
+        }
+      }
+    } finally {
+      el.classList.remove("is-scroll-pending");
+    }
+  })();
+</script>

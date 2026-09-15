@@ -1,3 +1,5 @@
+require("./lib/jquery_global")
+
 function admin_init() {
   $(function() {
   });
@@ -363,7 +365,9 @@ function initValueWebStorageFormValue(form_id, form_name) {
 
 var positionX;
 var STORAGE_KEY = "scrollX";
- 
+var TABLE_SCROLL_STORAGE_PREFIX = "tableScrollX:";
+var TABLE_SCROLL_EVENT_NS = "tableScrollPreserve";
+
 function resetTableXOffset(){
     localStorage.setItem(STORAGE_KEY, 0);
 }
@@ -377,10 +381,124 @@ function restoreTableXOffset() {
   positionX = localStorage.getItem(STORAGE_KEY);
   $(".table-responsive").scrollLeft(Number(positionX));
   console.log("scroll->"+positionX);
-  
-  $(".table-responsive").on("scroll", function() {
+
+  $(".table-responsive").off("scroll.tableXOffset").on("scroll.tableXOffset", function() {
     saveTableXOffset();
   });
+}
+
+/*
+ * 一覧テーブルの横スクロール位置を、ソート（Turbo Stream 差し替え）後も保持する。
+ *
+ * 操作ログの restoreTableXOffset とは別系統。こちらはテーブルごとに
+ * data-table-scroll-key でキーを分け、sessionStorage に保存する。
+ *
+ * 【HTML】
+ *   <div class="table-responsive is-scroll-pending"
+ *        id="canvas-users-table-scroll"
+ *        data-table-scroll-key="canvas_users">
+ *     <table class="table table-fixed ...">...</table>
+ *   </div>
+ *   <%= render partial: "common/table_scroll_restore",
+ *              locals: { element_id: "canvas-users-table-scroll" } %>
+ *
+ *   - id は一意。bindTableScrollPreserve / restoreTableScroll に渡す。
+ *   - data-table-scroll-key は画面ごとの保存キー（clearTableScroll の引数と同じ）。
+ *   - is-scroll-pending は復元まで非表示にするクラス（ちらつき防止）。
+ *   - ソートリンクは table_sort ヘルパーの .sort_button であること。
+ *
+ * 【Stimulus（index）】
+ *   Rbase.bindTableScrollPreserve("canvas-users-table-scroll");
+ *   if (Rbase.getParams("clear") == "true") {
+ *     Rbase.clearTableScroll("canvas_users");
+ *   }
+ *
+ * 【API】
+ *   saveTableScroll(elementOrId)     現在位置を保存
+ *   restoreTableScroll(elementOrId)  保存位置へ戻し is-scroll-pending を外す
+ *   bindTableScrollPreserve(id?)     復元＋scroll/ソートで保存。id 省略時は
+ *                                    [data-table-scroll-key] 全部が対象
+ *   clearTableScroll(scrollKey)      保存を削除（data-table-scroll-key の値）
+ *
+ * 初回表示は module 読み込み前にインラインスクリプトが走るため、
+ * 復元は common/table_scroll_restore 側でも行う。
+ */
+function tableScrollStorageKey(el) {
+  var suffix = (el && el.getAttribute("data-table-scroll-key")) || "default";
+  return TABLE_SCROLL_STORAGE_PREFIX + suffix;
+}
+
+function tableScrollDomElement(elementOrId) {
+  if (!elementOrId) {
+    return null;
+  }
+  if (typeof elementOrId === "string") {
+    return document.getElementById(elementOrId);
+  }
+  return elementOrId;
+}
+
+// data-table-scroll-key 付き一覧の横スクロール位置を sessionStorage に保存する
+function saveTableScroll(elementOrId) {
+  var el = tableScrollDomElement(elementOrId);
+  if (!el) {
+    return;
+  }
+  sessionStorage.setItem(tableScrollStorageKey(el), String(el.scrollLeft || 0));
+}
+
+// 保存した横スクロール位置を復元し、is-scroll-pending を外す（見つからなくても pending は解除する）
+function restoreTableScroll(elementOrId) {
+  var el = tableScrollDomElement(elementOrId);
+  if (el) {
+    var x = Number(sessionStorage.getItem(tableScrollStorageKey(el)) || 0);
+    if (x > 0) {
+      el.scrollLeft = x;
+    }
+    el.classList.remove("is-scroll-pending");
+    return;
+  }
+  $(".table-responsive.is-scroll-pending").removeClass("is-scroll-pending");
+}
+
+function clearTableScroll(scrollKey) {
+  if (!scrollKey) {
+    return;
+  }
+  sessionStorage.removeItem(TABLE_SCROLL_STORAGE_PREFIX + scrollKey);
+}
+
+// 対象テーブルの scroll とソートクリックで位置を保存し、表示中の pending を復元する
+function bindTableScrollPreserve(elementId) {
+  var $targets = elementId ? $("#" + elementId) : $("[data-table-scroll-key]");
+  if ($targets.length === 0) {
+    $(".table-responsive.is-scroll-pending").removeClass("is-scroll-pending");
+    return;
+  }
+  $targets.each(function() {
+    var el = this;
+    restoreTableScroll(el);
+    $(el).off("scroll." + TABLE_SCROLL_EVENT_NS).on("scroll." + TABLE_SCROLL_EVENT_NS, function() {
+      saveTableScroll(el);
+    });
+  });
+
+  $(document).off("click." + TABLE_SCROLL_EVENT_NS, ".sort_button").on("click." + TABLE_SCROLL_EVENT_NS, ".sort_button", function() {
+    $("[data-table-scroll-key]").each(function() {
+      saveTableScroll(this);
+    });
+  });
+}
+
+$(function() {
+  bindTableScrollPreserve();
+  $(document).on("turbo:load." + TABLE_SCROLL_EVENT_NS + " turbo:frame-render." + TABLE_SCROLL_EVENT_NS, function() {
+    bindTableScrollPreserve();
+  });
+});
+
+if (typeof window !== "undefined") {
+  window.restoreTableScroll = restoreTableScroll;
 }
 
 function tinyMceOnChangeHandler(form_name, id) {
@@ -447,6 +565,10 @@ module.exports = {
   resetTableXOffset: resetTableXOffset,
   saveTableXOffset: saveTableXOffset,
   restoreTableXOffset: restoreTableXOffset,
+  saveTableScroll: saveTableScroll,
+  restoreTableScroll: restoreTableScroll,
+  bindTableScrollPreserve: bindTableScrollPreserve,
+  clearTableScroll: clearTableScroll,
   tinyMceOnChangeHandler: tinyMceOnChangeHandler,
   showLoading: showLoading,
   defaultTinyMceOption: defaultTinyMceOption,

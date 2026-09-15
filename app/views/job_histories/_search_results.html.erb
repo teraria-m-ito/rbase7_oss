@@ -8,14 +8,13 @@
       <% unless @job_histories.empty? %>
         <thead class="thead-dark">
         <tr>
-          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.job_type"), :job_type) %></th>
+          <th class="col-md-3"><%= table_sort(t(:"views.job_histories.fields.job_type"), :job_type) %></th>
           <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.status"), :status) %></th>
           <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.request_by"), :request_by) %></th>
-          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.requested_at"), :requested_at) %></th>
-          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.started_at"), :started_at) %></th>
-          <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.finished_at"), :finished_at) %></th>
+          <th class="col-md-2"><%= table_sort(t(:"views.job_histories.fields.requested_at"), :requested_at) %></th>
+          <th class="col-md-2"><%= table_sort(t(:"views.job_histories.fields.started_at"), :started_at) %></th>
+          <th class="col-md-2"><%= table_sort(t(:"views.job_histories.fields.finished_at"), :finished_at) %></th>
           <th class="col-md-1"><%= table_sort(t(:"views.job_histories.fields.spent"), :spent) %></th>
-          <th colspan="3"><%= t(:"views.job_histories.fields.action") %></th>
         </tr>
         </thead>
         <tbody>
@@ -28,8 +27,6 @@
             <td><%= datetime_string(job_history.started_at) %></td>
             <td><%= datetime_string(job_history.finished_at) %></td>
             <td><%= job_history.spent %></td>
-            <td>
-            </td>
           </tr>
         <% end %>
         </tbody>
