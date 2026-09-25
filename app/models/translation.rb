@@ -31,7 +31,6 @@ class Translation < I18n::Backend::ActiveRecord::Translation
   private
 
   def reload_i18n_backend
-    I18n.backend.reload! if I18n.backend.respond_to?(:reload!)
-    ::Translations::SearchConditions.reset_yml_cache!
+    I18nTranslationsCache.bump!
   end
 end

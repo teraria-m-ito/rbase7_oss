@@ -491,17 +491,17 @@ ja:
           button_destroy: "削除"
       show:
         title: "サイト詳細"
-        button_back: "前のページへ"
+        button_back: "戻る"
         header_guide: "サイト情報をご確認下さい。"
       new:
         title: "新規サイト登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "サイト情報を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "サイト編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "サイト情報を編集して、更新ボタンをクリックして下さい。"
           
     roles:
@@ -527,16 +527,16 @@ ja:
           button_destroy: "削除"
       show:
         title: "権限詳細"
-        button_back: "前のページへ"
+        button_back: "戻る"
       new:
         title: "新規権限登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "権限内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "権限編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "権限内容を変更して、更新ボタンをクリックして下さい。"
         
     users:
@@ -562,12 +562,12 @@ ja:
       new:
         title: "新規ユーザ登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "ユーザー内容を入力して、更新ボタンをクリックして下さい。"
       edit:
         title: "ユーザ編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "ユーザー内容を変更して、更新ボタンをクリックして下さい。"
         message_no_icon: "登録されていません"
         table_attachments:
@@ -590,16 +590,16 @@ ja:
           button_destroy: "削除"
       show:
         title: "申請タイプ詳細"
-        button_back: "前のページへ"
+        button_back: "戻る"
       new:
         title: "新規申請タイプ登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "申請タイプ内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "申請タイプ編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "申請タイプ内容を変更して、更新ボタンをクリックして下さい。"
         
     workflows:
@@ -614,11 +614,11 @@ ja:
           button_destroy: "削除"
       show:
         title: "ワークフロー詳細"
-        button_back: "前のページへ"
+        button_back: "戻る"
       new:
         title: "新規ワークフロー登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "ワークフロー内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "ワークフロー編集"
@@ -635,23 +635,23 @@ ja:
           button_edit: "編集"
           button_destroy: "削除"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "ワークフロー内容を変更して、更新ボタンをクリックして下さい。"
         
     workflow_states:
       new:
         title: "ワークフロー詳細登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "ワークフロー詳細内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "ワークフロー詳細編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "ワークフロー詳細内容を変更して、更新ボタンをクリックして下さい。"
       show:
         title: "ワークフロー詳細参照"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         
     state_flows:
       fields:
@@ -686,16 +686,16 @@ ja:
           button_destroy: "削除"
       show:
         title: "カスタムフィールド詳細"
-        button_back: "前のページへ"
+        button_back: "戻る"
       new:
         title: "新規カスタムフィールド登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "カスタムフィールド内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "カスタムフィールド編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "カスタムフィールド内容を変更して、更新ボタンをクリックして下さい。"
         
     mail_templates:
@@ -716,16 +716,16 @@ ja:
           button_destroy: "削除"
       show:
         title: "メールテンプレート詳細"
-        button_back: "前のページへ"
+        button_back: "戻る"
       new:
         title: "新規メールテンプレート登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "メールテンプレート内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "メールテンプレート編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "メールテンプレート内容を変更して、更新ボタンをクリックして下さい。"
 
     translations:
@@ -752,17 +752,17 @@ ja:
       show:
         title: "翻訳詳細"
         button_edit: "編集"
-        button_back: "前のページへ"
+        button_back: "戻る"
         header_guide: "翻訳内容を確認できます。"
       new:
         title: "新規翻訳登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "翻訳内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "翻訳編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "翻訳内容を変更して、更新ボタンをクリックして下さい。"
 
     reports:
@@ -781,18 +781,18 @@ ja:
           button_destroy: "削除"
       show:
         title: "帳票詳細"
-        button_back: "前のページへ"
+        button_back: "戻る"
       new:
         title: "新規帳票登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "帳票内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "帳票編集"
         table_reports:
           button_destroy: "削除"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "帳票内容を入力して、更新ボタンをクリックして下さい。"
     system_settings:
       fields:
@@ -815,17 +815,17 @@ ja:
           button_destroy: "削除"
       show:
         title: "設定詳細"
-        button_back: "前のページへ"
+        button_back: "戻る"
       new:
         title: "新規設定登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "システム設定内容を入力して、登録ボタンをクリックして下さい。"
         already_registered_link: "リンク"
       edit:
         title: "設定編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "システム設定内容を入力して、更新ボタンをクリックして下さい。"
         table_system_settings:
           button_destroy: "削除"
@@ -861,17 +861,17 @@ ja:
       new:
         title: "新しい申請を作成"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "申請内容を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "申請編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "申請内容を変更して、更新ボタンをクリックして下さい。"
       show:
         title: "申請詳細"
         button_print: "ダウンロード"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
     queries:
       index:
         button_close: "閉じる"
@@ -882,12 +882,12 @@ ja:
       new:
         title: "新規検索条件登録"
         button_create: "登録"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "検索条件を入力して、登録ボタンをクリックして下さい。"
       edit:
         title: "検索条件編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "検索条件を変更して、更新ボタンをクリックして下さい。"
 
     admin_users:
@@ -898,7 +898,7 @@ ja:
       edit:
         title: "ユーザ編集"
         button_update: "更新"
-        button_cancel: "前のページへ"
+        button_cancel: "戻る"
         header_guide: "ユーザ内容を変更して、更新ボタンをクリックして下さい。"
         message_no_icon: "登録されていません"
         table_attachments:
@@ -909,7 +909,7 @@ ja:
           title: "パスワード再設定"
           header_guide: "メールアドレスを入力して、リセットボタンをクリックして下さい。"
           button_reset: "リセット"
-          button_cancel: "前のページへ"
+          button_cancel: "戻る"
         edit:
           title: "パスワード再設定"
           header_guide: "新しいパスワードを入力して、更新ボタンをクリックして下さい。"
@@ -930,8 +930,10 @@ ja:
         show: "詳細"
       index:
         title: "ジョブ実行履歴"
+        button_reload: "リロード"
       show:
         title: "ジョブ実行結果詳細"
+        button_cancel: "戻る"
         error_list_title: "発生エラー詳細"
         back_to_job_histories: "ジョブ履歴へ戻る"
         empty: "登録されているエラーはありません。"

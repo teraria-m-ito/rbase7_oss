@@ -6,6 +6,12 @@
       </div>
       <div class="col-sm-6">
         <div class="float-sm-right">
+          <%= link_to job_histories_path,
+                      title: t(:"views.job_histories.index.button_reload"),
+                      class: "btn btn-tool" do %>
+            <i class="fas fa-sync-alt" aria-hidden="true"></i>
+            <span class="sr-only"><%= t(:"views.job_histories.index.button_reload") %></span>
+          <% end %>
         </div>
       </div>
     </div>

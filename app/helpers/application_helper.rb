@@ -72,6 +72,7 @@ module ApplicationHelper
 
   private
   def custom_field_input_else_field_type(form, options);end
+  def search_condition_custom_field_input_else_field_type(form, custom_field, options);end
   public
 
   def search_condition_custom_field_input(form, custom_field, options={})
@@ -84,7 +85,7 @@ module ApplicationHelper
       name: "#{form.object_name}[custom_field_values][#{field_id}]",
       value: value
     )
-    input_html[:col] = custom_field.field_size.to_i if custom_field.field_size
+    input_html[:col] = custom_field.field_size.to_i if custom_field.field_size && !input_html.key?(:col)
 
     options = options.merge(
       label: custom_field.display_name,
@@ -102,6 +103,8 @@ module ApplicationHelper
       )
     when "date"
       options[:input_html][:class] = [options[:input_html][:class], "datepicker"].compact.join(" ")
+    else
+      search_condition_custom_field_input_else_field_type(form, custom_field, options)
     end
 
     form.input(:custom_field_values, options)

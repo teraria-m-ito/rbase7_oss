@@ -916,3 +916,7 @@ en:
         action: "Action"
       index:
         title: "Job execution history"
+        button_reload: "Reload"
+      show:
+        title: "Job execution result details"
+        button_cancel: "Back"

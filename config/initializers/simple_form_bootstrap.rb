@@ -8,7 +8,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :vertical_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :pattern
     b.optional :min_max
@@ -22,7 +22,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :vertical_file_input, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'control-label'
@@ -55,7 +55,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :horizontal_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :pattern
     b.optional :min_max
@@ -71,7 +71,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_file_input, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-3 control-label'
@@ -99,7 +99,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_boolean, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.wrapper tag: 'ul' do | ul|
@@ -118,7 +118,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :horizontal_label_input, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.wrapper tag: 'ul' do | ul|
@@ -172,7 +172,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :inline_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :pattern
     b.optional :min_max
@@ -188,7 +188,7 @@ SimpleForm.setup do |config|
   # 採用分
   config.wrappers :horizontal_input, tag: 'div', class: 'form-group row', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-2 col-form-label'
@@ -201,7 +201,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :horizontal_nemeric_input, tag: 'div', class: 'form-group row', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-3 col-form-label'
@@ -214,7 +214,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :horizontal_input_wide_label, tag: 'div', class: 'form-group row', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-3 col-form-label'
@@ -227,7 +227,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_input_wide_label_4, tag: 'div', class: 'form-group row', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-4 col-form-label'
@@ -240,7 +240,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_boolean_input, tag: 'div', class: 'form-group row', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-3 col-form-label'
@@ -253,7 +253,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :horizontal_boolean_input_label2, tag: 'div', class: 'form-group row', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-2 col-form-label'
@@ -266,7 +266,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_boolean_input_label4, tag: 'div', class: 'form-group row', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-4 col-form-label'
@@ -279,7 +279,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :horizontal_boolean_input_label6, tag: 'div', class: 'form-group row', error_class: 'has-error' do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: 'col-sm-6 col-form-label'
@@ -293,7 +293,7 @@ SimpleForm.setup do |config|
   #未検証
   config.wrappers :horizontal_input_inline, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.wrapper tag: 'ul' do | ul|
@@ -330,7 +330,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_boolean_input_inline, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.wrapper tag: 'ul' do | ul|
@@ -347,7 +347,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_boolean_inline, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.wrapper tag: 'ul' do | ul|
@@ -366,7 +366,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_label_input_inline, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.wrapper tag: 'ul' do | ul|
@@ -383,7 +383,7 @@ SimpleForm.setup do |config|
   
   config.wrappers :horizontal_radio_and_checkboxes, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5 
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.optional :col
@@ -401,7 +401,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :default_input_form, tag: false do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: "control-label", error_class: "has-error"
@@ -443,7 +443,7 @@ SimpleForm.setup do |config|
 
   config.wrappers :default_select_form, tag: false do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :maxlength
     b.optional :readonly
     b.use :label, class: "control-label", error_class: "has-error"

@@ -19,7 +19,7 @@ SimpleForm.setup do |config|
 
     # Calculates placeholders automatically from I18n
     # You can also pass a string as f.input placeholder: "Placeholder"
-    b.use :placeholder
+    b.optional :placeholder
 
     ## Optional extensions
     # They are disabled unless you pass `f.input EXTENSION_NAME => true`
@@ -142,14 +142,14 @@ SimpleForm.setup do |config|
   # Default priority for country inputs.
   # config.country_priority = nil
 
-  # When false, do not use translations for labels.
-  # config.translate_labels = true
+  # simple_form.labels は未定義。Chain(AR, YAML) のフォールバック配列を毎フィールド走らせない。
+  config.translate_labels = false
 
   # Automatically discover new inputs in Rails' autoload path.
   # config.inputs_discovery = true
 
-  # Cache SimpleForm inputs discovery
-  # config.cache_discovery = !Rails.env.development?
+  # development でも入力クラス解決をプロセス内でキャッシュする（NFS 上の const_get を繰り返さない）
+  config.cache_discovery = true
 
   # Default class for inputs
   # config.input_class = nil
@@ -164,3 +164,14 @@ SimpleForm.setup do |config|
   # Defines which i18n scope will be used in Simple Form.
   # config.i18n_scope = 'simple_form'
 end
+
+module SimpleFormI18nLookupCache
+  def translate_from_namespace(namespace, default = "")
+    cache = I18nTranslationsCache.simple_form_cache
+    key = [I18n.locale, namespace, lookup_model_names, lookup_action, reflection_or_attribute_name, default]
+    return cache[key] if cache.key?(key)
+
+    cache[key] = super
+  end
+end
+SimpleForm::Inputs::Base.prepend(SimpleFormI18nLookupCache)

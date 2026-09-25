@@ -19,16 +19,19 @@ module CustomFieldDynamicAccessors
     def reset_custom_field_dynamic_access_cache!
       @custom_field_dynamic_definitions = nil
       @custom_field_dynamic_method_name_index = nil
+      @custom_field_dynamic_db_ready = nil
+      @integration_row_assignable_columns_by_normalized_key = nil
     end
 
     def database_ready_for_custom_field_dynamic_access?
-      return false unless ActiveRecord::Base.connected?
+      return @custom_field_dynamic_db_ready unless @custom_field_dynamic_db_ready.nil?
 
-      conn = ActiveRecord::Base.connection
-      return false unless conn.data_source_exists?(:custom_fields)
-
-      ds = @custom_field_dynamic_data_source
-      ds.present? && conn.data_source_exists?(ds)
+      @custom_field_dynamic_db_ready =
+        ActiveRecord::Base.connected? &&
+        (conn = ActiveRecord::Base.connection) &&
+        conn.data_source_exists?(:custom_fields) &&
+        @custom_field_dynamic_data_source.present? &&
+        conn.data_source_exists?(@custom_field_dynamic_data_source)
     end
 
     def custom_field_definitions_for_dynamic_access
@@ -44,10 +47,19 @@ module CustomFieldDynamicAccessors
 
     def custom_field_dynamic_method_name_index
       @custom_field_dynamic_method_name_index ||= custom_field_definitions_for_dynamic_access.each_with_object({}) do |cf, h|
-        next if cf.field_name.blank?
+        raw = cf.field_name.to_s.strip
+        next if raw.blank?
 
-        h[cf.field_name.to_s] = cf
+        h[raw] = cf
+        h[raw.downcase] = cf
       end
+    end
+
+    def lookup_custom_field_dynamic_definition(name)
+      key = name.to_s.strip
+      return nil if key.blank?
+
+      custom_field_dynamic_method_name_index[key] || custom_field_dynamic_method_name_index[key.downcase]
     end
 
     def custom_field_dynamic_association_name
@@ -58,7 +70,7 @@ module CustomFieldDynamicAccessors
   def method_missing(method_name, *args, &block)
     s = method_name.to_s
     base = setter_method_name?(s) ? s.chomp("=") : s
-    cf = self.class.custom_field_dynamic_method_name_index[base]
+    cf = self.class.lookup_custom_field_dynamic_definition(base)
     if cf
       return write_custom_field_join_record(cf, args.first) if setter_method_name?(s)
 
@@ -71,12 +83,19 @@ module CustomFieldDynamicAccessors
   def respond_to_missing?(method_name, include_private = false)
     s = method_name.to_s
     base = setter_method_name?(s) ? s.chomp("=") : s
-    if self.class.database_ready_for_custom_field_dynamic_access? &&
-       self.class.custom_field_dynamic_method_name_index.key?(base)
-      return true
-    end
+    return true if self.class.lookup_custom_field_dynamic_definition(base)
 
     super
+  end
+
+  # インテグレーション行など、method_missing に頼らずカスタムフィールドへ代入する。
+  # @return [Boolean] 対象の CustomField があり代入したとき true
+  def assign_custom_field_dynamic_value!(name, value)
+    cf = self.class.lookup_custom_field_dynamic_definition(name)
+    return false if cf.blank?
+
+    write_custom_field_join_record(cf, value)
+    true
   end
 
   private
