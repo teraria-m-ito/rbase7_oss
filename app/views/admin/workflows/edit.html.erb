@@ -1,0 +1,37 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.workflows.edit.title")%></h1>
+        <small><%= t(:"views.workflows.edit.header_guide")%></small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <%= simple_form_for([:admin, @workflow], builder: RbaseFormBuilder, html: {data: {turbo_confirm: t(:"views.common.update_confirm_message"), turbo: true, action: "change->admin--workflows#form_change"}}) do |f| %>
+
+            <div class="card-body">
+              <%= f.error_notification %>
+              <div class="form-group">
+                <%= render partial: 'form', locals: {form: f} %>
+                <div id="form_workflow_states">
+                  <%= render partial: 'form_workflow_states', locals: {form: f} %>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <%= f.submit t(:"views.workflows.edit.button_update"), class: "btn btn-primary btn-sm"%>
+              <%= link_to t(:"views.workflows.edit.button_cancel"), admin_workflows_path, class: "btn btn-default btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

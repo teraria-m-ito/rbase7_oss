@@ -1,0 +1,33 @@
+<% raw_return = params[:return_to].to_s.strip %>
+<% safe_return_to = (raw_return.start_with?("/") && !raw_return.start_with?("//")) ? raw_return : nil %>
+<% back_href = safe_return_to.presence || job_histories_path(clear: true) %>
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.job_histories.show.title")%></h1>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group">
+              <%= render partial: 'show_errors'%>
+            </div>
+          </div>
+          <div class="card-footer">
+            <%= link_to t(:"views.issues.show.button_cancel"), back_href, class: "btn btn-default btn-sm" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+

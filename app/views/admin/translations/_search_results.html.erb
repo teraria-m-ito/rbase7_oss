@@ -1,0 +1,54 @@
+<div class="card">
+  <div class="card-title"></div>
+  <div class="card-body">
+    <%= page_entries_info @translations %>
+    <table class="table table-hover table-striped table-sm">
+      <% unless @translations.empty? %>
+        <thead class="thead-dark">
+          <tr>
+            <th class="col-md-1"><%= t(:"views.translations.fields.locale") %></th>
+            <th class="col-md-2"><%= t(:"views.translations.fields.key") %></th>
+            <th class="col-md-3"><%= t(:"views.translations.fields.value_yml") %></th>
+            <th class="col-md-3"><%= t(:"views.translations.fields.value_db") %></th>
+            <th class="col-md-1"><%= t(:"views.translations.fields.scope") %></th>
+            <th class="col-md-2"><%= t(:"views.translations.fields.action") %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @translations.each do |translation| %>
+            <tr>
+              <td><%= translation.locale %></td>
+              <td>
+                <% if translation.from_db? %>
+                  <%= link_to translation.key, admin_translation_path(translation.record) %>
+                <% else %>
+                  <%= translation.key %>
+                <% end %>
+              </td>
+              <td><%= truncate(translation.yml_display_value.to_s, length: 80) %></td>
+              <td><%= truncate(translation.db_display_value.to_s, length: 80) %></td>
+              <td><%= translation.scope %></td>
+              <td>
+                <% if translation.from_yml_only? %>
+                  <%= link_to t(:"views.translations.index.table_translations.button_create"),
+                              new_admin_translation_path(
+                                clear: true,
+                                locale: translation.locale,
+                                key: translation.key,
+                                value: translation.value_for_create,
+                                scope: @condition.scope
+                              ),
+                              class: "btn btn-success btn-sm" %>
+                <% else %>
+                  <%= link_to t(:"views.translations.index.table_translations.button_edit"), edit_admin_translation_path(translation.record, clear: true), class: "btn btn-primary btn-sm" %>
+                  <%= link_to t(:"views.translations.index.table_translations.button_destroy"), admin_translation_path(translation.record), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      <% end %>
+    </table>
+    <%= paginate @translations %>
+  </div>
+</div>

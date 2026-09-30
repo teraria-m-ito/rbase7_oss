@@ -1,0 +1,40 @@
+
+<div class="card">
+  <div class="card-title"></div>
+  <div class="card-body">
+    <%= page_entries_info @users %>
+    <table class="table table-hover table-striped table-sm">
+      <% unless @users.empty? %>
+        <thead class="thead-dark">
+        <tr>
+          <th><%= t(:"views.users.fields.user_name") %></th>
+          <th><%= t(:"views.users.fields.email") %></th>
+          <th><%= t(:"views.users.fields.site") %></th>
+          <th><%= t(:"views.users.fields.status_div") %></th>
+          <th><%= t(:"views.users.fields.role_name") %></th>
+          <th colspan="3"><%= t(:"views.users.fields.action") %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @users.each do |user| %>
+          <% next if user.id == 1 and !current_admin_user.admin? %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.sites.map(&:site_name).join(",") %></td>
+            <td><%= user.status_div_name %></td>
+            <td><%= user.role.try(:role_name) %></td>
+            <td>
+              <%= link_to t(:"views.users.index.table_users.button_edit"), edit_admin_user_path(user, edit_clear: true), class: "btn btn-primary btn-sm" %>
+              <%if user.id != 1 %>
+                <%= link_to t(:"views.users.index.table_users.button_destroy"), admin_user_path(user), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      <% end %>
+    </table>
+    <%= paginate @users %>
+  </div>
+</div>

@@ -1,0 +1,3 @@
+<%= simple_fields_for @condition do |ff| %>
+  <%= ff.input(:workflow_state_id, as: :select, collection: @workflow_states.map{|x|[x.state_name, x.id]})%>
+<% end %>

@@ -1,0 +1,8 @@
+<%= turbo_stream.replace "entry-queries" do %>
+  <%= render partial: "search_results" %>
+<% end %>
+
+<%= turbo_stream.replace "entry-common-message" do %>
+  <%= render partial: "common/message" %>
+<% end %>
+

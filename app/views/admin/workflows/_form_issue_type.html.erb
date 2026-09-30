@@ -1,0 +1,7 @@
+<%= turbo_frame_tag 'entry-forms' do %>
+  <%= simple_fields_for @workflow do |ff| %>
+    <div class="form-group form-inline input-group-sm align-items-start">
+      <%= ff.input :issue_type_id, as: :select, collection: IssueType.issue_type_for_sites(@workflow.site_ids.map{|x| x.to_i}).map{|x|[x.issue_type_name, x.id]}, input_html: {id: "issue_type_id"} %>
+    </div>
+  <% end %>
+<% end %>

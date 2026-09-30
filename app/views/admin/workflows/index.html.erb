@@ -1,0 +1,49 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.workflows.index.title")%></h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+          <%= link_to t(:"views.workflows.index.button_new"), new_admin_workflow_path(clear: true), class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-title"></div>
+          <div class="card-body">
+            <%= page_entries_info @workflows %>
+            <table class="table table-hover table-striped table-sm">
+              <% unless @workflows.empty? %>
+                <thead class="thead-dark">
+                  <tr>
+                    <th><%= t(:"views.workflows.fields.workflow_name") %></th>
+                    <th colspan="2"><%= t(:"views.workflows.fields.action") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @workflows.each do |workflow| %>
+                    <tr>
+                      <td><%= link_to workflow.workflow_name, admin_workflow_path(workflow) %></td>
+                      <td><%= link_to t(:"views.workflows.index.table_issue_types.button_edit"), edit_admin_workflow_path(workflow, clear: true), class: "btn btn-primary btn-sm" %></td>
+                      <td><%= link_to t(:"views.workflows.index.table_issue_types.button_destroy"), admin_workflow_path(workflow), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" if workflow.deletable? %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              <% end %>
+            </table>
+            <%= paginate @workflows %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

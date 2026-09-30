@@ -1,0 +1,33 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.mail_templates.show.title")%></h1>
+        <small><%= t(:"views.mail_templates.show.header_guide")%></small>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <%= simple_form_for([:admin, @mail_template], builder: RbaseFormBuilder, html: {data: {turbo_confirm: t(:"views.common.create_confirm_message")}}) do |f| %>
+            <div class="card-body">
+              <%= f.error_notification %>
+              <div class="form-group">
+                <%= render partial: 'form', locals: {form: f} %>
+              </div>
+            </div>
+            <div class="card-footer">
+              <%= link_to t(:"views.mail_templates.show.button_back"), admin_mail_templates_path, class: "btn btn-default btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+

@@ -1,0 +1,66 @@
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%=form.input :name, autofucus: true, required: true, input_html: {col: 3} %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%=form.input :email, autofucus: true, required: true, placeholder: "your_account@example.com", input_html: {col: 5} %>
+</div>
+<% if resource_class.try(:password_length).try(:min) %>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%=form.input :password, autofucus: "off", placeholder: "(#{resource_class.password_length.min} characters minimum)", input_html: {col: 3} %>
+    <span class="input-group-addon">
+      <i class="bi bi-eye-slash" id="toggle-password"></i>
+    </span>
+  </div>
+<% else %>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%=form.input :password, autofucus: "off", input_html: {col: 3} %>
+    <span class="input-group-addon">
+      <i class="bi bi-eye-slash" id="toggle-password"></i>
+    </span>
+  </div>
+<% end %>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%=form.input :password_confirmation, autofucus: "off", input_html: {col: 3} %>
+  <span class="input-group-addon">
+      <i class="bi bi-eye-slash" id="toggle-password-confirm"></i>
+  </span>
+</div>
+<% if resource_class.try(:password_length).try(:min) %>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%=form.input :current_password, autofucus: "off", placeholder: "(#{resource_class.password_length.min} characters minimum)", required: true, input_html: {col: 3} %>
+    <span class="input-group-addon">
+      <i class="bi bi-eye-slash" id="toggle-password-current"></i>
+    </span>
+  </div>
+<% else %>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%=form.input :current_password, autofucus: "off", required: true, input_html: {col: 3} %>
+    <span class="input-group-addon">
+      <i class="bi bi-eye-slash" id="toggle-password-current"></i>
+    </span>
+  </div>
+<% end %>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%=form.input :role_id, as: :select, collection: AdminUser.role_id_options, :include_blank => false, disabled: true, input_html: {name: "admin_user_dummy[role_id]"} %>
+</div>
+<%=form.input :role_id, as: :hidden %>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%=form.input :site_ids, as: :check_boxes,
+                collection: @sites.map{|x| [x.site_name,x.id]},
+                disabled: true,
+                item_wrapper_class: "form-check-inline",
+                input_html: {name: "admin_user_dummy[site_ids]"}
+  %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%=form.input :site_ids, as: :hidden,
+                collection: @sites.map{|x| [x.site_name,x.id]},
+                item_wrapper_class: "form-check-inline",
+                wrapper: :vertical_radio_and_checkboxes, disabled: true
+  %>
+</div>
+<div id = "custom_field">
+  <%= render partial: 'form_user_custom_fields', locals: {form: form} %>
+</div>

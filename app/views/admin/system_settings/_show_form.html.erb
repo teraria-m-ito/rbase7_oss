@@ -1,0 +1,13 @@
+<%= turbo_frame_tag 'entry-forms' do %>
+  <%= simple_form_for([:admin, @system_setting], builder: RbaseFormBuilder) do |f| %>
+    <div class="card-body">
+      <%= f.error_notification %>
+      <div class="form-group">
+        <%= render partial: 'show_show_form', locals: {form: f} %>
+      </div>
+    </div>
+    <div class="card-footer">
+      <%= link_to t(:"views.system_settings.edit.button_cancel"), admin_system_settings_path, class: "btn btn-default btn-sm btn-sm" %>
+    </div>
+  <% end %>
+<% end %>

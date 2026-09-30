@@ -1,0 +1,16 @@
+<% cnt = 0 %>
+<% first = true %>
+<%= form.simple_fields_for :issue_custom_fields do |ff| %>
+  <% size = ff.object.custom_field.field_size.nil? ? 3 : ff.object.custom_field.field_size.to_i %>
+  <% cnt += size %>
+  <% cnt = 0 if cnt > 12 %>
+  <% if cnt > 12 || first %>
+    <div class="form-group form-inline input-group-sm align-items-start">
+  <% end %>
+  <%= custom_field_input(ff, {col: size})%>
+  <% if cnt > 12 %>
+      </div>
+  <% end %>
+  <% first = false %>
+<% end %>
+

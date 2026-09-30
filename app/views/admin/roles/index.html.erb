@@ -1,0 +1,54 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.roles.index.title")%></h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+          <%= link_to t(:"views.roles.index.button_new"), new_admin_role_path(clear: true), class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-title"></div>
+          <div class="card-body">
+            <%= page_entries_info @roles %>
+            <table class="table table-hover table-striped table-sm">
+              <% unless @roles.empty? %>
+                <thead class="thead-dark">
+                  <tr>
+                    <th><%= t(:"views.roles.fields.role_name") %></th>
+                    <th colspan="2"><%= t(:"views.roles.fields.action") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @roles.each do |role| %>
+                    <tr>
+                      <td><%= link_to role.role_name, admin_role_path(role) %></td>
+                      <td>
+                        <%= link_to t(:"views.roles.index.table_roles.button_edit"), edit_admin_role_path(role, clear: true), class: "btn btn-primary btn-sm" %>
+                        <%= link_to t(:"views.roles.index.table_roles.button_destroy"), admin_role_path(role), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" if role.deletable?%>
+                        <% if role.role_short_name != "admin" %>
+                          <%= link_to t(:"views.roles.index.table_roles.button_copy"), copy_admin_role_path(role, clear: true), data: { turbo_method: :post, turbo_confirm: t(:"views.common.copy_confirm_message") }, class: "btn btn-warning btn-sm" %>
+                         <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              <% end %>
+            </table>
+            <%= paginate @roles %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

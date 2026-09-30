@@ -1,0 +1,39 @@
+<table class="table table-hover table-striped table-condensed">
+  <thead>
+    <tr>
+      <th><%= t(:"views.roles.fields.function_name") %></th>
+      <th><%= t(:"views.roles.fields.index") %></th>
+      <th><%= t(:"views.roles.fields.show") %></th>
+      <th><%= t(:"views.roles.fields.create") %></th>
+      <th><%= t(:"views.roles.fields.update") %></th>
+      <th><%= t(:"views.roles.fields.destroy") %></th>
+      <th><%= t(:"views.roles.fields.others") %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @controller_names.each do |controller_name| %>
+    <tr>
+      <td>
+        <%= t(controller_display_name(controller_name)) %>
+        <%= controller_display_name_desc(controller_name) %>
+      </td>
+      <% [:auth_as_index, :auth_as_show, :auth_as_create, :auth_as_update, :auth_as_destroy, :auth_as_others].each do |auth_as|%>
+        <td>
+          <% @actions[controller_name.to_sym][auth_as].to_a.each do |role_action| %>
+            <% next if role_action.action_display_name.blank? %>
+            <%= form.simple_fields_for :role_role_actions, RoleRoleAction.where(role_id: @role.id).where(role_action_id: role_action.id).first || RoleRoleAction.new({role_id: @role.id}) do |fa|%>
+              <%#= fa.input :role_id, as: :hidden, value: @role.id unless fa.object.new_record?%>
+              <%= fa.check_box :role_action_id, {class: "check_role check_for_role", id: "check_role_#{role_action.id}"}, role_action.id, nil unless fa.object.new_record?%>
+              <%= fa.check_box :role_action_id, {class: "check_for_role"}, role_action.id, nil if fa.object.new_record?%>
+              <%= t(role_action.action_display_name) %>
+              <%= fa.input(:_destroy, as: :hidden, value: false, input_html: {id: "check_role_#{role_action.id}_destroy"}) unless fa.object.new_record?%>
+            <% end %>
+            <br />
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

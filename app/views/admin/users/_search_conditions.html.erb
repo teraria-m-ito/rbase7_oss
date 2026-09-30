@@ -1,0 +1,14 @@
+<%= turbo_frame_tag 'entry-forms' do %>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%= form.input :name, input_html: {col: 3} %>
+  </div>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%= form.input :email, input_html: {col: 5} %>
+  </div>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%= form.input :site_id, as: :check_boxes,
+                   collection: @sites.map{|x| [x.site_name,x.id.to_s]},
+                   item_wrapper_class: "form-check-inline"
+    %>
+  </div>
+<% end %>
