@@ -71,7 +71,7 @@ namespace :deploy do
   desc 'Restart application'
 
   # after "bundle:install" do
-    # download "config/credentials/production.key", "config/credentials/production.key", via: :scp
+  # download "config/credentials/production.key", "config/credentials/production.key", via: :scp
   # end
 
   # task :plugins_symlink do
@@ -146,6 +146,8 @@ namespace :deploy do
         execute :bundle, :exec, :rake, 'db:migrate:primary RAILS_ENV=production' if has_primary
         execute :bundle, :exec, :rake, 'db:migrate RAILS_ENV=production' unless has_primary
         # execute :bundle, :config, :frozen
+        # prepare_task 内の yarn build より先に node_modules を入れる
+        execute :yarn, :install
         execute :bundle, :exec, :rake, 'rbase:prepare_task_when_deployed RAILS_ENV=production'
       end
     end
