@@ -1,0 +1,10 @@
+<%= turbo_frame_tag 'entry-forms' do %>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%= form.input :locale, as: :select, collection: Translation.locale_options, include_blank: true, input_html: {col: 2} %>
+    <%= form.input :key, input_html: {col: 4} %>
+  </div>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%= form.input :value, input_html: {col: 5} %>
+    <%= form.input :scope, as: :select, collection: Translation.scope_options(@sites), include_blank: true, input_html: {col: 3} %>
+  </div>
+<% end %>

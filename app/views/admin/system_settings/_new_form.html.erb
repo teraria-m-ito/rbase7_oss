@@ -1,0 +1,23 @@
+<%= turbo_frame_tag 'entry-forms' do %>
+  <%  html_option = {data: {turbo_confirm: t(:"views.common.create_confirm_message")}} %>
+  <%  html_option.update({multipart: true, id: :fileupload}) if @system_setting.input_type == :file %>
+  <%= simple_form_for([:admin, @system_setting], builder: RbaseFormBuilder, html: html_option) do |f| %>
+    <div class="card-body">
+      <% if @system_setting.existing_registered_setting %>
+        <div class="has-error alert alert-danger">
+          <%= t(:"activerecord.errors.messages.system_setting_already_registered") %>
+          <%= link_to t(:"views.system_settings.new.already_registered_link"), edit_admin_system_setting_path(@system_setting.existing_registered_setting), class: "text-primary", style: "color: #007bff;", data: { turbo_frame: "_top" } %>
+        </div>
+      <% else %>
+        <%= f.error_notification %>
+      <% end %>
+      <div class="form-group">
+        <%= render partial: 'form', locals: {form: f} %>
+      </div>
+    </div>
+    <div class="card-footer">
+      <%= f.submit t(:"views.system_settings.new.button_create"), class: "btn btn-primary btn-sm"%>
+     <%= link_to t(:"views.system_settings.new.button_cancel"), admin_system_settings_path, class: "btn btn-default btn-sm btn-sm" %>
+    </div>
+  <% end %>
+<% end %>

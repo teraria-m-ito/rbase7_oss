@@ -1,0 +1,53 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2 align-items-center">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.sites.index.title")%></h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+          <%= link_to t(:"views.sites.index.button_new"), new_admin_site_path, class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-title"></div>
+          <div class="card-body">
+            <%= page_entries_info @sites %>
+            <table class="table table-hover table-striped table-sm">
+              <% unless @sites.empty? %>
+                <thead class="thead-dark">
+                  <tr>
+                    <th><%= t(:"views.sites.fields.site_name") %></th>
+                    <th><%= t(:"views.sites.fields.status_div") %></th>
+                    <th colspan="2"><%= t(:"views.sites.index.table_sites.title.action") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @sites.each do |site| %>
+                    <tr>
+                      <td><%= link_to site.site_name, admin_site_path(site) %></td>
+                      <td><%= site.status_div_name %></td>
+                      <td>
+                        <%= link_to t(:"views.sites.index.table_sites.button_edit"), edit_admin_site_path(site, clear: true), class: "btn btn-primary btn-sm" %>
+                        <%= link_to t(:"views.sites.index.table_sites.button_destroy"), admin_site_path(site), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              <% end %>
+            </table>
+            <%= paginate @sites %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

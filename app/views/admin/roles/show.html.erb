@@ -1,0 +1,37 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.roles.show.title")%></h1>
+        <small><%= t(:"views.roles.show.header_guide")%></small>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <%= simple_form_for([:admin, @role], builder: RbaseFormBuilder) do |f| %>
+            <div class="card-body">
+              <%= f.error_notification %>
+              <div class="form-group">
+                <%= render partial: 'form', locals: {form: f} %>
+              </div>
+            </div>
+            <div class="card-body">
+             <%= render partial: 'form_role_actions', locals: {form: f} %>
+            </div>
+            <div class="card-footer">
+              <%= link_to t(:"views.sites.show.button_back"), admin_roles_path, class: "btn btn-default btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+

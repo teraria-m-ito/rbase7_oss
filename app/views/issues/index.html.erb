@@ -1,0 +1,69 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.issues.index.title")%></h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+          <%= render partial: '/queries/select_fields' %>
+          <%= link_to t(:"views.issues.index.button_new"), new_issue_path, class: "btn btn-primary btn-sm", local: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <%= link_to t(:"views.issues.index.button_hide_condition"), "#condition-card", {id: "condtion-button", class: "btn btn-default btn-sm", role: "button", :"data-toggle"=> "collapse", :"aria-expanded" => "false", :"aria-controls" => "condition-card"} %>
+          </div>
+          <div class="collapse show" id="condition-card">
+            <%= simple_form_for @condition, url: issues_path, method: :get do |f| %>
+              <div class="card-body">
+                <%= f.error_notification %>
+                <div class="form-group">
+                  <%= render partial: 'search_conditions', locals: {form: f} %>
+                </div>
+              </div>
+              <div class="card-footer">
+                <%= f.submit t(:"views.issues.index.button_search"), class: "btn btn-primary btn-sm"%>
+                <%= link_to t(:"views.issues.index.button_add_query"), new_query_path(target_class: "issues/search_conditions"), class: "btn btn-default btn-sm", id: "button_add_query" %>
+                <%= link_to t(:"views.issues.index.button_show_query"), "#queries-card", {id: "button_show_query", class: "btn btn-default btn-sm", role: "button", :"data-toggle"=> "collapse", :"aria-expanded" => "false", :"aria-controls" => "queries-card"} %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="collapse" id="queries-card">
+      <%= render partial: 'queries/search_results' %>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <% unless @issues.nil? %>
+            <div class="card-title"></div>
+            <div class="card-body">
+              <%= render partial: 'search_results' %>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  $('#queries-card').on('hidden.bs.collapse', function () {
+    $("#button_show_query").text("<%= t(:"views.issues.index.button_show_query")%>")
+  });
+  $('#queries-card').on('show.bs.collapse', function () {
+    $("#button_show_query").text("<%= t(:"views.issues.index.button_show_query_close")%>")
+  });
+
+</script>

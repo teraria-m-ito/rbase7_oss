@@ -1,0 +1,65 @@
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :field_name, input_html: {col: 3} %>
+  <%= form.input :display_name, input_html: {col: 5} %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :custom_field_type, as: :select, collection: CustomField.custom_field_type_options,
+                 input_html: {col: 3, id: "custom_field_type", data: {turbo: true, action: "change->admin--custom_fields#custom_field_type_change"}} %>
+  <%= form.input :issue_type, as: :select, collection: @issue_types.map{|x|[x.issue_type_name, x.id]}, required: false, input_html: {col: 3}%>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :field_type, as: :select, collection: CustomField.field_type_options,
+                 input_html: {col: 2, id: "field_type", data: {turbo: true, action: "change->admin--custom_fields#field_type_change"}} %>
+</div>
+<div id="format_regexp" class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :format_regexp, input_html: {col: 2} %>
+</div>
+<div id="default_value" class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :default_value, input_html: {col: 2}  %>
+</div>
+<div id="list_field" class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :list_field, as: :text, :input_html => {rows: 5} %>
+</div>
+
+<div id="date_field" class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :date_field, input_html: {type: 'date', col:2, style: "max-width: 8rem;"} %>
+</div>
+
+<div id="datetime_field" class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :datetime_field, as: :datetime_local, input_html: {type: "datetime", col: 3, style: "max-width: 10rem;"} %>
+</div>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :required %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :field_size, input_html: {col: 1, min: '1', max: '12' } %>
+</div>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :comment, as: :text, :input_html => {col: 8, rows: 5} %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :search_cond, as: :boolean%>
+  <%= form.input :display_result_list, as: :boolean %>
+</div>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :site_ids, as: :check_boxes,
+                 collection: @sites.map{|x| [x.site_name,x.id]},
+                 item_wrapper_class: "form-check-inline"
+  %>
+</div>
+
+<script>
+$(function() {
+  $("#custom_field_type").change(function() {
+    if ($(this).prop('value') == '<%= CustomField.custom_field_type_id_by_key(:issue) %>') {
+      $("#issue_type").show();
+    } else {
+      $("#issue_type").hide();
+    }
+  });
+
+});
+</script>

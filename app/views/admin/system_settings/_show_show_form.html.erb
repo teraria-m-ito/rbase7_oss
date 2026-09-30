@@ -1,0 +1,56 @@
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :site_ids, as: :check_boxes,
+                 collection: @sites.map{|x| [x.site_name,x.id]},
+                 item_wrapper_class: "form-check-inline"
+  %>
+</div>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :setting_category_div, as: :select, collection: @setting_category_div_entries.map{|x|[x.name, x.id]}, input_html: {col: 2} %>
+  <%= form.input :setting_div, as: :select, collection: @setting_div_entries.map{|x|[x.name, x.id]}, input_html: {col: 3}  %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :hint, as: :text, input_html: {col:8, rows: 5, readonly: true} %>
+</div>
+
+<% if ::SystemSetting.setting_div_entry_by_id(form.object.setting_div)[:input_type] == :string %>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%= form.input :setting_value, autofucus: true, as: :text, input_html: {col: 8, rows: 5} %>
+  </div>
+<% end %>
+<% if ::SystemSetting.setting_div_entry_by_id(form.object.setting_div)[:input_type] == :boolean %>
+  <div class="form-group form-inline input-group-sm align-items-start">
+    <%= form.input :setting_value, autofucus: true, as: :boolean %>
+  </div>
+<% end %>
+
+<% if @system_setting.input_type == :file %>
+  <% unless form.object.system_setting_attachments.empty? %>
+    <table class="table table-hover table-striped table-condensed">
+      <thead>
+        <tr>
+          <th>#</th>
+          
+          <th colspan="2"><%= t(:"views.system_settings.fields.filename") %></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if form.object.system_setting_attachments.empty? %>
+          <tr>
+            <td colspan="4">No data</td>
+          </tr>
+        <% end %>    
+        <%  form.object.system_setting_attachments.each_with_index do |system_setting_attachment, idx| %>
+          <tr>
+            <td><%= idx+1 %></td>
+            <td><%= image_tag system_setting_attachment.document.to_s, class: "system-setting-icon", style: "max-height: 64px;" %></td>
+            <td><%= link_to system_setting_attachment.filename, system_setting_attachment.document.url,download: system_setting_attachment.filename %></td>
+            <td><%= link_to t(:"views.system_settings.edit.table_system_settings.button_destroy"), admin_system_setting_system_setting_attachment_path(form.object, system_setting_attachment), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="<%= @setting.sp_entity_id %>">
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" AuthnRequestsSigned="true" WantAssertionsSigned="false">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>
+            <% if @x509_certificate %>
+              <%= @x509_certificate %>
+            <% else %>
+              <%= @logic.sp_cert_fingerprint %>
+            <% end %>
+          </ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>
+            <% if @x509_certificate %>
+              <%= @x509_certificate %>
+            <% else %>
+              <%= @logic.sp_cert_fingerprint %>
+            <% end %>
+          </ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="<%= request.base_url %>/admin_users/sign_out"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="<%= request.base_url %>/" index="0"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="<%= request.base_url %>/" index="1"/>
+
+    <md:NameIDFormat><%= @setting.name_identifier_format %></md:NameIDFormat>
+  </md:SPSSODescriptor>
+  <md:Organization>
+    <md:OrganizationName xml:lang="ja"><%= @logic.display_name %></md:OrganizationName>
+    <md:OrganizationDisplayName xml:lang="ja"><%= @logic.display_name %></md:OrganizationDisplayName>
+    <md:OrganizationURL xml:lang="ja"><%= request.host %></md:OrganizationURL>
+  </md:Organization>
+  <md:ContactPerson contactType="technical">
+    <md:EmailAddress>mailto:<%= @logic.mailto %></md:EmailAddress>
+  </md:ContactPerson>
+</md:EntityDescriptor>

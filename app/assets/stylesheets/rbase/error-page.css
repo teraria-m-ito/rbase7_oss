@@ -1,0 +1,25 @@
+.error_page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  text-align: center;
+}
+
+.error_page .wrapper {
+}
+.error_page h1 {
+  margin-bottom: 0;
+  text-align: center
+}
+.error_page h2 {
+  margin-top: 0;
+  margin-bottom: 40px;
+  text-align: center
+}
+
+.error_page p {
+  margin-top: 0;
+  margin-bottom: 40px;
+  text-align: center
+}

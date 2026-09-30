@@ -1,0 +1,9 @@
+<%= hidden_field_tag :data_type, @data_type%>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :title, input_html: {col: 3} %>
+</div>
+<%= form.input :target_class, as: :hidden %>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :shared, as: boolean %>
+</div>
+

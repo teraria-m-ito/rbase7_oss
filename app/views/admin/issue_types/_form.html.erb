@@ -1,0 +1,17 @@
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :issue_type_name, input_html: {col: 5} %>
+  <%= form.input :issue_type_short_name, input_html: {col: 3}  %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :issue_type_class, as: :select, collection: IssueType.issue_type_class_options, input_html: {col: 5} %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :deletable %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :site_ids, as: :check_boxes,
+                 collection: @sites.map{|x| [x.site_name,x.id]},
+                 item_wrapper_class: "form-check-inline",
+                 input_html: {col: 3}
+  %>
+</div>

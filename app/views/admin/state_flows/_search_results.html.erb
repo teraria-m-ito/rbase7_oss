@@ -1,0 +1,43 @@
+<table class="table table-hover table-striped table-condensed">
+  <% if @workflow.workflow_states.to_a.empty? %>
+    <thead>
+      <tr>
+        <th>No data</th>
+      </tr>
+    <thead>
+  <% else %>
+    <thead>
+      <tr>
+        <th class="text-right"><%= t(:"views.state_flows.index.table_istate_flows.title.to_state_name") %></th>
+        <% @workflow.workflow_states.each do |workflow_state|%>
+          <th rowspan="2"><%= workflow_state.state_name %></th>
+        <% end %> 
+      </tr>
+      <tr>
+        <th><%= t(:"views.state_flows.index.table_istate_flows.title.from_state_name") %></th>
+      </tr>
+    </thead>
+  <% end %>
+  <tbody>
+    <% @workflow.workflow_states.each_with_index do |workflow_state_i, idx_i|%>
+      <tr>
+        <th><%= workflow_state_i.state_name %></th>
+        <% @workflow.workflow_states.each_with_index do |workflow_state_j, idx_j|%>
+          <% state_flow_workflow_state = StateFlowWorkflowState.where(state_flow_id: @state_flow.id).where(current_workflow_state_id: workflow_state_i.id).where(next_workflow_state_id: workflow_state_j.id).first %>
+          <%= form.simple_fields_for :state_flow_workflow_states, state_flow_workflow_state || StateFlowWorkflowState.new({state_flow_id: @state_flow.id, current_workflow_state_id: workflow_state_i.id}) do |fa|%>
+            <td <%= "class=warning" if idx_i == idx_j %>>
+              <% unless idx_i == idx_j %>
+                <%= fa.check_box :next_workflow_state_id, {class: "check_workflow_state check_state_flow_workflow_states check_for_check_state_flow_workflow_states", id: "check_state_flow_workflow_states_#{state_flow_workflow_state.id}"}, workflow_state_j.id, nil unless fa.object.new_record?%>
+                <%= fa.check_box :next_workflow_state_id, {class: "check_workflow_state check_for_check_state_flow_workflow_states"}, workflow_state_j.id, nil if fa.object.new_record?%>
+
+                <%= fa.input(:current_workflow_state_id, as: :hidden, value: workflow_state_i.id) %>
+
+                <%= fa.input(:_destroy, as: :hidden, value: false, input_html: {id: "check_state_flow_workflow_states_#{state_flow_workflow_state.id}_destroy"}) unless fa.object.new_record?%>
+              <% end %>
+            </td>
+          <% end %> 
+        <% end %> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,4 @@
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :site_name, input_html:{col: 3} %>
+  <%= form.input :status_div, as: :select, collection: Site.status_div_options, :include_blank => false, input_html:{col: 5} %>
+</div>

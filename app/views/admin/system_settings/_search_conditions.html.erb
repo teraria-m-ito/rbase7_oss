@@ -1,0 +1,11 @@
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :sites, as: :check_boxes,
+                 label: t(:"views.system_settings.index.conditions.sites"),
+                 collection: @sites.map{|x| [x.site_name,x.id]},
+                 item_wrapper_class: "form-check-inline"
+  %>
+</div>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= form.input :setting_category_div, label: t(:"views.system_settings.index.conditions.setting_category_div"), as: :select, collection: SystemSetting.setting_category_div_options, input_html: {col: 3}, include_blank: true %>
+  <%= form.input :setting_div, label: t(:"views.system_settings.index.conditions.setting_div"), as: :select, collection: SystemSetting.setting_div_options, input_html: {col: 3}, include_blank: true %>
+</div>

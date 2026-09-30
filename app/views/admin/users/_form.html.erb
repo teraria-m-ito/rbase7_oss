@@ -1,0 +1,38 @@
+<%= f.error_notification %>
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= f.input :name, input_html: {col: 2, autocomplete: "name"} %>
+  <%= f.input :email, input_html: {col: 3} %>
+</div>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= f.input :password, input_html: {col: 2, autocomplete: "new-password"} %>
+  <span class="input-group-addon">
+    <i class="bi bi-eye-slash" id="toggle-password"></i>
+  </span>
+  <%= f.input :password_confirmation, required: true, input_html: {col: 2, autocomplete: "new-password_confirmation"} %>
+  <span class="input-group-addon">
+    <i class="bi bi-eye-slash" id="toggle-password-confirm"></i>
+  </span>
+</div>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <% if current_admin_user.admin? %>
+    <%= f.input :role_id, as: :select, collection: AdminUser.role_id_options, :include_blank => false%>
+  <% else %>
+    <%= f.input :role_id, as: :select, collection: AdminUser.role_id_options.select{|x|x[1] !=1}, :include_blank => false%>
+  <% end %>
+</div>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+  <%= f.input :status_div, as: :select, collection: AdminUser.status_div_options, :include_blank => false %>
+</div>
+
+<div class="form-group form-inline input-group-sm align-items-start">
+    <%= f.input :site_ids, as: :check_boxes,
+                collection: @sites.map{|x| [x.site_name,x.id]},
+                item_wrapper_class: "form-check-inline"
+    %>
+</div>
+<div id = "custom_field">
+  <%= render partial: 'form_user_custom_fields', locals: {form: f} %>
+</div>

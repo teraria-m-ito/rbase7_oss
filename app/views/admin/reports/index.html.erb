@@ -1,0 +1,54 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.reports.index.title")%></h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="float-sm-right">
+          <%= link_to t(:"views.reports.index.button_new"), new_admin_report_path, class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-title"></div>
+          <div class="card-body">
+            <%= page_entries_info @reports %>
+            <table class="table table-hover table-striped table-sm">
+              <% unless @reports.empty? %>
+                <thead class="thead-dark">
+                  <tr>
+                    <th><%= t(:"views.reports.fields.title") %></th>
+                    <th><%= t(:"views.reports.fields.report_class") %></th>
+                    <th colspan="2"><%= t(:"views.reports.fields.action") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @reports.each do |report| %>
+                    <tr>
+                      <td><%= link_to report.title, admin_report_path(report) %></td>
+                      <td><%= report.report_class_name %></td>
+                      <td>
+                        <%= link_to t(:"views.reports.index.table_reports.button_edit"), edit_admin_report_path(report), class: "btn btn-primary btn-sm" %>
+                        <%= link_to t(:"views.reports.index.table_reports.button_preview"), preview_admin_report_path(report), class: "btn btn-default btn-sm", target: "_blank" %>
+                        <%= link_to t(:"views.reports.index.table_reports.button_destroy"), admin_report_path(report), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              <% end %>
+            </table>
+            <%= paginate @reports %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

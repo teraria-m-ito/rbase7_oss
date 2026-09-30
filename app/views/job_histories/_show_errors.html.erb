@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-title"></div>
+  <div class="card-body">
+    <%= simple_form_for @job_manage, builder: RbaseFormBuilder, url: job_history_path(@job_manage) do |form| %>
+      <div class="form-group form-inline input-group-sm align-items-start">
+        <%= form.input :job_type, input_html: { col: 3, value: @job_manage.job_type_name } %>
+        <%= form.input :status, input_html: { col: 1, value: @job_manage.status_name } %>
+      </div>
+      <div class="form-group form-inline input-group-sm align-items-start">
+        <%= form.input :request_by, as: :string, input_html: { col: 2, value: @job_manage.request_by_user.name } %>
+        <%= form.input :requested_at, as: :string, input_html: { col: 2, value: datetime_string(@job_manage.requested_at)} %>
+      </div>
+  <% end %>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <%= t(:"views.job_histories.show.error_list_title")%>
+  </div>
+  <div class="card-body">
+    <%= page_entries_info @job_manage_errors %>
+    <table class="table table-hover table-striped table-sm">
+      <% unless @job_manage_errors.empty? %>
+        <thead class="thead-dark">
+        <tr>
+          <th><%= t("views.job_histories.show.table_show_errors.row_no") %></th>
+          <th><%= t("views.job_histories.show.table_show_errors.target_name") %></th>
+          <th><%= t("views.job_histories.show.table_show_errors.message") %></th>
+          <th><%= t("views.job_histories.show.table_show_errors.created_at") %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @job_manage_errors.each do |err| %>
+          <tr>
+            <td><%= err.row_no %></td>
+            <td><%= err.target_name %></td>
+            <td><%= err.message %></td>
+            <td><%= datetime_string(err.created_at) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      <% end %>
+    </table>
+    <%= paginate @job_manage_errors %>
+  </div>
+</div>

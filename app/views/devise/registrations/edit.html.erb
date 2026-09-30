@@ -1,0 +1,33 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><%= t(:"views.admin_users.edit.title")%></h1>
+        <small><%= t(:"views.admin_users.edit.header_guide")%></small>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), builder: RbaseFormBuilder, html: {data: {turbo_confirm: t(:"views.common.update_confirm_message"), turbo: true, method: :put, multipart: true, id: :fileupload}}) do |f| %>
+
+            <div class="card-body">
+              <%= f.error_notification %>
+              <div class="form-group">
+                <%= render partial: 'form', locals: {form: f} %>
+              </div>
+            </div>
+            <div class="card-footer">
+              <%= f.submit t(:"views.admin_users.edit.button_update"), class: "btn btn-primary btn-sm"%>
+              <%= link_to t(:"views.admin_users.edit.button_cancel"), root_path, class: "btn btn-default btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

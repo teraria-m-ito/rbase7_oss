@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "entry-forms" do %>
+  <%= render partial: "#{@data_type}/search_conditions" %>
+<% end %>
+
+<%= turbo_stream.replace "entry-selects" do %>
+  <%= render partial: "select_fields" %>
+<% end %>

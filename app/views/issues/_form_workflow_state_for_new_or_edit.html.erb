@@ -1,0 +1,5 @@
+<%= turbo_frame_tag 'entry-selects', style: "display: contents" do %>
+  <%= simple_fields_for @issue do |ff| %>
+    <%= ff.input(:workflow_state_id, as: :select, collection: @workflow_states.map{|x|[x.state_name, x.id]}, include_blank: false, input_html: {col: 5})%>
+  <% end %>
+<% end %>
