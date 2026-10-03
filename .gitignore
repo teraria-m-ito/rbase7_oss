@@ -52,6 +52,8 @@ config/public.key
 /config/credentials/production.key
 /.settings/org.eclipse.ltk.core.refactoring.prefs
 /.idea/*
+/.cursor/*
+
 !/tmp/.keep
 /tmp/cache/
 /config/database.yml

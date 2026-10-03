@@ -115,6 +115,20 @@ function waitWidgetUpdates() {
   }, 3000);
 }
 
+// Redash visualization の iframe を GridStack セルに合わせる
+function drawGraph(AUTOID) {
+  setTimeout(function() {
+    $('#' + AUTOID).each(function() {
+      const $gridItem = $(this).closest('.grid-stack-item');
+
+      $(this).find('iframe').css({
+        width: $gridItem.width() + 'px',
+        height: ($gridItem.height() - 8) + 'px'
+      });
+    });
+  }, 1000);
+}
+
 module.exports = {
   COLOR: COLOR,
   COLOR_MAP: COLOR_MAP,
@@ -128,5 +142,7 @@ module.exports = {
   ensurePrintReadyFallback: ensurePrintReadyFallback,
   startWidgetUpdates: startWidgetUpdates,
   waitWidgetUpdates: waitWidgetUpdates,
+  drawGraph: drawGraph,
+  drapGraph: drawGraph,
 }
 
