@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <%= simple_form_for([:admin, @report], builder: RbaseFormBuilder, html: {data: {turbo_confirm: t(:"views.common.update_confirm_message"), turbo: true, action: "change->admin--reports#form_change"}}) do |f| %>
+          <%= simple_form_for([:admin, @report], builder: RbaseFormBuilder, html: {id: :fileupload, multipart: true, data: {turbo_confirm: t(:"views.common.update_confirm_message"), turbo: true, action: "change->admin--reports#form_change"}}) do |f| %>
 
             <div class="card-body">
               <%= f.error_notification %>

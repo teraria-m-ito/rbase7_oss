@@ -24,22 +24,25 @@ module CustomFieldDynamicAccessors
     end
 
     def database_ready_for_custom_field_dynamic_access?
-      return @custom_field_dynamic_db_ready unless @custom_field_dynamic_db_ready.nil?
+      return true if @custom_field_dynamic_db_ready
 
-      @custom_field_dynamic_db_ready =
+      ready =
         ActiveRecord::Base.connected? &&
         (conn = ActiveRecord::Base.connection) &&
         conn.data_source_exists?(:custom_fields) &&
         @custom_field_dynamic_data_source.present? &&
         conn.data_source_exists?(@custom_field_dynamic_data_source)
+      @custom_field_dynamic_db_ready = true if ready
+      ready
     end
 
     def custom_field_definitions_for_dynamic_access
+      return [] unless database_ready_for_custom_field_dynamic_access?
+
       @custom_field_dynamic_definitions ||= _load_custom_field_definitions_ordered
     end
 
     def _load_custom_field_definitions_ordered
-      return [] unless database_ready_for_custom_field_dynamic_access?
       return [] if @custom_field_dynamic_scope_proc.blank?
 
       @custom_field_dynamic_scope_proc.call.to_a
@@ -47,11 +50,13 @@ module CustomFieldDynamicAccessors
 
     def custom_field_dynamic_method_name_index
       @custom_field_dynamic_method_name_index ||= custom_field_definitions_for_dynamic_access.each_with_object({}) do |cf, h|
-        raw = cf.field_name.to_s.strip
-        next if raw.blank?
+        raw = cf.field_name.to_s
+        next if raw.strip.blank?
 
-        h[raw] = cf
-        h[raw.downcase] = cf
+        [raw, raw.strip].uniq.each do |key|
+          h[key] = cf
+          h[key.downcase] = cf
+        end
       end
     end
 

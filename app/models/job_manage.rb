@@ -20,7 +20,10 @@ class JobManage < ApplicationRecord
     entry 'processing', :processing, '処理中'
     entry 'done', :done, '処理完了'
     entry 'error', :error, 'エラー'
+    update_with_plugins(:JobManage, :added_entries_for_status)
   end
+
+  def self.added_entries_for_status(mod); end
 
   selectable_attr :status_user do
     update_with_plugins(:JobManage, :added_entries_for_status_user)
