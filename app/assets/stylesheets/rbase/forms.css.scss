@@ -225,6 +225,16 @@ abbr.nec {
   margin-right: 1rem;
 }
 
+.form-group ul.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+}
+
+.form-group li.page-item {
+  margin-right: 0;
+}
+
 .form-group li input[type=text] {
   width: 100%;
 }

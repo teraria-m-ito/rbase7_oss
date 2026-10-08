@@ -27,7 +27,7 @@ set :stages, %w(development)
 set :default_stage, "development"
 
 set :linked_dirs, %w(log tmp/pids tmp/cache public/system public/uploads tmp/images public/images app/javascript/widgets config/credentials)
-set :default_env, { path: '/home/xec/.rvm/gems/ruby-3.1.2/bin:/home/xec/.rvm/rubies/ruby-3.1.2/bin:$PATH' } 
+set :default_env, { path: '/home/xec/.rvm/gems/ruby-3.1.2/bin:/home/xec/.rvm/rubies/ruby-3.1.2/bin:$PATH' }
 
 set :linked_files, fetch(:linked_files, []).push('config/secrets.yml').push('config/database.yml').push('rbase_plugins.yml').push('.env')
 

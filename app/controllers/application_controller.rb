@@ -208,6 +208,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_ability
+    Thread.current[:request] = request
     force = request.path.start_with?("/uploads") || request.path.start_with?("/docs") || request.path.start_with?("/api")  || request.path.start_with?("/admin_users/sign_in")
     @current_ability = Ability.new(current_admin_user, request[:controller], request[:action], force)
     @current_ability
