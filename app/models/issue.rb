@@ -43,10 +43,6 @@ class Issue < ApplicationRecord
   validates :issue_type_id, presence: true
   validates :workflow_state_id, presence: true
 
-  attr_accessor :current_admin_user
-  attr_accessor :creator_name
-  attr_accessor :updater_name
-  
   attr_accessor :next_workflow_state
   
   attr_accessor :target_instance
@@ -130,11 +126,11 @@ class Issue < ApplicationRecord
   end
   
   def creator_name
-    ::AdminUser.where(id: self.creator_id).first.try(:name)
+    self.creator&.name
   end
   
   def updater_name
-    ::AdminUser.where(id: self.updater_id).first.try(:name)
+    self.updater&.name
   end
 
   def change_deleted_state
@@ -174,16 +170,5 @@ class Issue < ApplicationRecord
 
   def set_prev_workflow_state
     self.prev_workflow_state_id = self.workflow_state_id_was if self.workflow_state_id_was != self.workflow_state_id
-  end
-  
-  
-  def set_creator
-    self.creator_id = self.current_admin_user.id
-  end
-  def set_updater
-    self.updater_id = self.current_admin_user.id
-  end
-  def set_deleter
-    self.deleter_id = self.current_admin_user.id
   end
 end

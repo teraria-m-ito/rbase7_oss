@@ -12,11 +12,9 @@ module Ddb #:nodoc:
           return if self.included_modules.include?(Ddb::Userstamp::Stamper::InstanceMethods)
           # send(:extend, Ddb::Userstamp::Stamper::InstanceMethods)
         end
-      end
 
-      module InstanceMethods
-        # Used to set the stamper for a particular request. See the Userstamp module for more
-        # details on how to use this method.
+        # リクエスト（スレッド）単位で記録者を設定する。
+        # Thread.current はスレッドが再利用されるため、必ず reset_stamper と対で使うこと。
         def stamper=(object)
           object_stamper = if object.is_a?(ActiveRecord::Base)
             object.send("#{object.class.primary_key}".to_sym)
@@ -24,17 +22,34 @@ module Ddb #:nodoc:
             object
           end
 
-          Thread.current["#{self.class.to_s.downcase}_stamper"] = object_stamper
+          Thread.current[stamper_key] = object_stamper
         end
 
-        # Retrieves the existing stamper for the current request.
         def stamper
-          Thread.current["#{self.class.to_s.downcase}_stamper"]
+          Thread.current[stamper_key]
         end
 
-        # Sets the stamper back to +nil+ to prepare for the next request.
         def reset_stamper
-          Thread.current["#{self.class.to_s.downcase}_stamper"] = nil
+          Thread.current[stamper_key] = nil
+        end
+
+        private
+          def stamper_key
+            "#{self.to_s.downcase}_stamper"
+          end
+      end
+
+      module InstanceMethods
+        def stamper=(object)
+          self.class.stamper = object
+        end
+
+        def stamper
+          self.class.stamper
+        end
+
+        def reset_stamper
+          self.class.reset_stamper
         end
       end
     end

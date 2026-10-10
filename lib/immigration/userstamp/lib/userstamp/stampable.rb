@@ -48,9 +48,7 @@ module Ddb #:nodoc:
           class_attribute  :deleter_attribute
 
           class_attribute  :use_stampable
-
-          use_stampable = false
-          # self.stampable
+          self.use_stampable = false
         end
       end
 
@@ -92,8 +90,8 @@ module Ddb #:nodoc:
                                  foreign_key: self.updater_attribute,
                                  optional: true
                                  
-            before_validation     :set_updater_attribute
-            before_validation   :set_creator_attribute
+            before_save   :set_updater_attribute
+            before_create :set_creator_attribute
 
             if defined?(Paranoia)
             # if defined?(Caboose::Acts::Paranoid)
@@ -116,40 +114,44 @@ module Ddb #:nodoc:
           original_value = self.record_userstamp
           self.record_userstamp = false
           yield
+        ensure
           self.record_userstamp = original_value
         end
 
         def stamper_class #:nodoc:
-          stamper_class_name.to_s.constantize rescue nil
+          stamper_class_name.to_s.safe_constantize
         end
       end
 
       module InstanceMethods #:nodoc:
         private
-          def has_stamper?
-            !self.class.stamper_class.nil? && self.use_stampable rescue false
+          # 記録者が設定されていない（バッチ・コンソール等）場合は nil を返し、既存値を上書きしない
+          def current_stamper
+            return nil unless self.record_userstamp && self.use_stampable
+
+            self.class.stamper_class&.stamper
           end
 
           def set_creator_attribute
-            return unless self.record_userstamp
-            if respond_to?(self.creator_attribute.to_sym) && has_stamper?
-              self.send("#{self.creator_attribute}=".to_sym, self.class.stamper_class.new.stamper)
-            end
+            stamper = current_stamper
+            return if stamper.nil? || self.send(self.creator_attribute).present?
+
+            self.send("#{self.creator_attribute}=".to_sym, stamper)
           end
 
           def set_updater_attribute
-            return unless self.record_userstamp
-            if respond_to?(self.updater_attribute.to_sym) && has_stamper?
-              self.send("#{self.updater_attribute}=".to_sym, self.class.stamper_class.new.stamper)
-            end
+            stamper = current_stamper
+            return if stamper.nil?
+
+            self.send("#{self.updater_attribute}=".to_sym, stamper)
           end
 
           def set_deleter_attribute
-            return unless self.record_userstamp
-            if respond_to?(self.deleter_attribute.to_sym) && has_stamper?
-              self.send("#{self.deleter_attribute}=".to_sym, self.class.stamper_class.new.stamper)
-              save
-            end
+            stamper = current_stamper
+            return if stamper.nil? || !persisted?
+
+            # バリデーションやコールバックで削除が妨げられないよう列のみ更新する
+            update_columns(self.deleter_attribute => stamper)
           end
         #end private
       end
