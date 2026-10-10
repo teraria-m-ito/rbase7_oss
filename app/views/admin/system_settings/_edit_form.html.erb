@@ -10,7 +10,7 @@
     </div>
     <div class="card-footer">
       <% if @system_setting.input_type == :file %>
-        <%= link_to t(:"views.system_settings.edit.button_update"), "#", onclick: "confirm_alert('#{t(:"views.common.update_confirm_message")}', 'callback', 'forced_upload()');return false;", class: "btn btn-primary btn-sm" %>
+        <%= f.submit t(:"views.system_settings.edit.button_update"), class: "btn btn-primary btn-sm"%>
       <% else %>
         <%= f.submit t(:"views.system_settings.edit.button_update"), data: { confirm: t(:"views.common.update_confirm_message") }, class: "btn btn-primary btn-sm"%>
       <% end %>

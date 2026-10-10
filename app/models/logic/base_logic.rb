@@ -12,9 +12,10 @@ module Logic
     end
     
     def update_status(prev_workflow_state, current_workflow_state)
-      raise unless prev_workflow_state.present? && current_workflow_state.present?
+      raise ArgumentError, "current_workflow_state is required" if current_workflow_state.blank?
 
-      return if prev_workflow_state.id == current_workflow_state.id
+      # 新規作成時など、遷移元の状態が無い場合は状態変更として扱わない
+      return if prev_workflow_state.blank? || prev_workflow_state.id == current_workflow_state.id
       
       ::Rails.logger.info("change status #{prev_workflow_state.state_cd}(#{prev_workflow_state.state_name}) -> #{current_workflow_state.state_cd}(#{current_workflow_state.state_name})")
 

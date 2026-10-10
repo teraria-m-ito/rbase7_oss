@@ -54,6 +54,7 @@ import "admin-lte/dist/js/adminlte.min"
 import "@fortawesome/fontawesome-free/js/all"
 
 import * as Rbase from "./rbase_common.js"
+window.Rbase = Rbase;
 
 import Widget from "./widget_common.js"
 window.Widget = Widget;

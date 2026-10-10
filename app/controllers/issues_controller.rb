@@ -122,14 +122,14 @@ class IssuesController < UserApplicationController
   end
 
   def destroy
-    @issue.current_admin_user = current_admin_userit
+    @issue.current_admin_user = current_admin_user
     flash[:notice] = t("views.common.destroy_complete_message") if @issue.destroy
     respond_with(@issue, location: issues_url)
   end
     
   desc :auth_as => :index
   def change_issue_type_for_index
-    @condition = session[:issues_condition].nil? ? ::Issues::SearchConditions.new : Psych.safe_load(session[:issues_condition])
+    @condition = session[:issues_condition].nil? ? ::Issues::SearchConditions.new : Psych.safe_load(session[:issues_condition], permitted_classes: [::Issues::SearchConditions])
   end
 
   desc :auth_as => :new

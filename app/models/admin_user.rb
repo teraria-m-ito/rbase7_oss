@@ -146,8 +146,8 @@ class AdminUser < ApplicationRecord
     pkeys.each do |k|
       users = users.where("admin_users.#{k} = ?", self.send(k))
     end
-    target_users = AdminUser.where("id IN (?)", users.map(&:id)).all
-    if target_users.size > 1
+    users = users.where.not(admin_user_id: self.id) if self.persisted?
+    if users.exists?
       self.errors.add(pkeys.first, I18n.t(:"activerecord.errors.messages.taken"))
     end
   end

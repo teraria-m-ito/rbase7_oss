@@ -100,11 +100,11 @@ class Issue < ApplicationRecord
     targets = []
     case mail_template.from_address_key
     when :issue_creator
-      targets << AdminUser.where(id: self.creator_id).first.email
+      targets += AdminUser.where(id: self.creator_id).pluck(:email)
     when :issue_updater
-      targets << AdminUser.where(id: self.updater_id).first.email
+      targets += AdminUser.where(id: self.updater_id).pluck(:email)
     when :issue_assigned
-      targets << AdminUser.where(id: self.issued_id).first.email unless issue.issued_id
+      targets += AdminUser.where(id: self.assigned_id).pluck(:email) if self.assigned_id
     when :system_setting
     end
     targets
@@ -117,23 +117,18 @@ class Issue < ApplicationRecord
       admin_useres = AdminUser.joins(:admin_user_sites).where("admin_user_sites.site_id = ?", self.site_id).all
       targets += admin_useres.map(&:email)
     when :issue_creator
-      targets << AdminUser.where(id: self.creator_id).email
+      targets += AdminUser.where(id: self.creator_id).pluck(:email)
     when :issue_updater
-      targets << AdminUser.where(id: self.updater_id).email
+      targets += AdminUser.where(id: self.updater_id).pluck(:email)
     when :issue_assigned
-      targets << AdminUser.where(id: self.issued_id).email unless issue.issued_id
+      targets += AdminUser.where(id: self.assigned_id).pluck(:email) if self.assigned_id
     when :issue_creator_and_assigned
-      targets << AdminUser.where(id: self.creator_id).email
-      targets << AdminUser.where(id: self.issued_id).email unless issue.issued_id
+      targets += AdminUser.where(id: [self.creator_id, self.assigned_id].compact).pluck(:email)
     when :system_setting
     end
     targets
   end
   
-  def prev_workflow_state
-    WorkflowState.find(self.prev_workflow_state_id)
-  end
-
   def creator_name
     ::AdminUser.where(id: self.creator_id).first.try(:name)
   end
@@ -147,9 +142,9 @@ class Issue < ApplicationRecord
     deleted_workflow_state = nil
     role_id = self.current_admin_user.role.id
     self.workflow_state.state_flow_workflow_states.joins(:state_flow).where(state_flows: {role_id: role_id}).each do |state_flow_workflow_state|
-      next_workflow_states = state_flow_workflow_state.next_workflow_state
-      deleted_workflow_state = state_flow_workflow_state.next_workflow_state.where("workflow_states.deleted_state = ?", true).first
-      unless deleted_workflow_state.nil?
+      next_workflow_state = state_flow_workflow_state.next_workflow_state
+      if next_workflow_state&.deleted_state
+        deleted_workflow_state = next_workflow_state
         break
       end
     end
