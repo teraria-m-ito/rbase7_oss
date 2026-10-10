@@ -125,7 +125,8 @@ module Ddb #:nodoc:
 
       module InstanceMethods #:nodoc:
         private
-          # 記録者が設定されていない（バッチ・コンソール等）場合は nil を返し、既存値を上書きしない
+          # 記録者が設定されていない（バッチ・コンソール等）場合は nil を返し、既存値を上書きしない。
+          # 記録列を持たないテーブル（プラグイン等）では各 set_*_attribute が何もしない
           def current_stamper
             return nil unless self.record_userstamp && self.use_stampable
 
@@ -134,21 +135,22 @@ module Ddb #:nodoc:
 
           def set_creator_attribute
             stamper = current_stamper
-            return if stamper.nil? || self.send(self.creator_attribute).present?
+            return if stamper.nil? || !has_attribute?(self.creator_attribute) || self.send(self.creator_attribute).present?
 
             self.send("#{self.creator_attribute}=".to_sym, stamper)
           end
 
           def set_updater_attribute
             stamper = current_stamper
-            return if stamper.nil?
+            return if stamper.nil? || !has_attribute?(self.updater_attribute)
 
             self.send("#{self.updater_attribute}=".to_sym, stamper)
           end
 
           def set_deleter_attribute
             stamper = current_stamper
-            return if stamper.nil? || !persisted?
+            # deleted_at が無いテーブルは deleter 列を持たないため対象外
+            return if stamper.nil? || !persisted? || !has_attribute?(self.deleter_attribute)
 
             # バリデーションやコールバックで削除が妨げられないよう列のみ更新する
             update_columns(self.deleter_attribute => stamper)

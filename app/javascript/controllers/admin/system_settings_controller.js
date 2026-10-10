@@ -5,9 +5,12 @@ import { get, post, put, patch, destroy } from '@rails/request.js'
 
 const SEARCH_FORM_NAME = 'system_setting_conditions';
 const FORM_NAME = 'system_setting';
+// Turbo 遷移後も document のハンドラは残るため、対象はシステム設定の登録・編集フォームに限定する
+const FORM_SELECTOR = 'form.new_system_setting, form.edit_system_setting';
+const SUBMIT_SELECTOR = 'form.new_system_setting input[type=\'submit\'], form.edit_system_setting input[type=\'submit\']';
 
 function formParamsWithoutSettingValue() {
-  var data = $('form').serializeJSON();
+  var data = $(FORM_SELECTOR).serializeObject();
   if (data.system_setting) {
     delete data.system_setting.setting_value;
   }
@@ -28,12 +31,12 @@ function initFunc(self) {
       return true;
     },
     done: function (e, data) {
-      $("form").submit();
+      $(FORM_SELECTOR).submit();
     }
   });
   
-  $(document).off("click", "input[type='submit']");
-  $(document).on("click", "input[type='submit']", function() {
+  $(document).off("click.systemSettingSubmit");
+  $(document).on("click.systemSettingSubmit", SUBMIT_SELECTOR, function() {
     console.log("submit");
     if (window.confirm(self.paramsValue.confirm_message)) {
       if ($(".template-upload").length > 0) {
@@ -45,7 +48,7 @@ function initFunc(self) {
           }
         });
       } else {
-        $("form").submit();
+        $(FORM_SELECTOR).submit();
       }
     }
     return false;

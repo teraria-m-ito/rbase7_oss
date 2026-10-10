@@ -1,5 +1,7 @@
 # i18n-active_record の Translation を管理画面向けに拡張する
 class Translation < I18n::Backend::ActiveRecord::Translation
+  stampable
+
   validates :locale, presence: true
   validates :key, presence: true
   validates :key, uniqueness: { scope: :locale }

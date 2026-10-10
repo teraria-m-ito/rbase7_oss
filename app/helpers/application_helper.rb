@@ -282,7 +282,7 @@ module ApplicationHelper
   end
 
   def display_require_mark
-    I18n.t("simple_form.required.html").html_safe
+    content_tag(:abbr, I18n.t("simple_form.required.mark"), title: I18n.t("simple_form.required.text"))
   end
 
   def date_string(d)

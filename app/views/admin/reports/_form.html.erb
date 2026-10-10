@@ -82,7 +82,7 @@ $(function () {
       method: 'patch',
       url: '<%=  admin_report_report_attachments_path(Report.new({id: 0}))%>',
       stop: function (e, data) {
-        $('form').submit();
+        $('#fileupload').submit();
       }
         
     });
@@ -93,7 +93,7 @@ function forced_upload() {
     if ($(".template-upload").length > 0) {
       $('#upload-btn').click();
     } else {
-      $('form').submit();
+      $('#fileupload').submit();
     }
   }
 }

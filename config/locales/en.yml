@@ -516,6 +516,7 @@ en:
           button_destroy: "Delete"
       show:
         title: "Role details"
+        header_guide: "Review the role details."
         button_back: "Back"
       new:
         title: "New role"
@@ -603,6 +604,7 @@ en:
           button_destroy: "Delete"
       show:
         title: "Workflow details"
+        header_guide: "Review the workflow details."
         button_back: "Back"
       new:
         title: "New workflow"
@@ -708,6 +710,7 @@ en:
           button_destroy: "Delete"
       show:
         title: "Mail template details"
+        header_guide: "Review the mail template details."
         button_back: "Back"
       new:
         title: "New mail template"
@@ -773,6 +776,7 @@ en:
           button_destroy: "Delete"
       show:
         title: "Report details"
+        header_guide: "Review the report details."
         button_back: "Back"
       new:
         title: "New report"
@@ -789,8 +793,10 @@ en:
     system_settings:
       fields:
         site_name: "Site name"
+        setting_category_div: "Category"
         setting_div_name: "Setting"
         setting_value: "Value"
+        action: "Action"
         filename: "File name"
         add_file: "Add file..."
       index:
@@ -923,3 +929,13 @@ en:
       show:
         title: "Job execution result details"
         button_cancel: "Back"
+        error_list_title: "Error details"
+        back_to_job_histories: "Back to job history"
+        empty: "No errors have been registered."
+        forbidden: "You do not have permission to view the errors of this job."
+        job_manage_id_label: "Job management ID"
+        table_show_errors:
+          row_no: "Row"
+          target_name: "Target"
+          message: "Error message"
+          created_at: "Registered at"

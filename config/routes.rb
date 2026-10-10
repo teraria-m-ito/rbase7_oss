@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'admin/index'
-
   resources :top do
   end
 
@@ -104,11 +102,6 @@ Rails.application.routes.draw do
       post 'consume'
     end
   end
-
-  match '/admin_users/:admin_user_id/admin_user_attachments(.:format)', to: 'admin_user_attachments#create', via: :patch
-  match '/admin_users/:admin_user_id/admin_user_attachments/:id(.:format)', to: 'admin_user_attachments#destroy', via: :delete
-
-  resources :admin_user_attachments
 
   def draw(route_file)
     instance_eval(File.read(Rails.root.join("config/routes/#{route_file}.rb")))

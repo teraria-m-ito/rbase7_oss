@@ -21,7 +21,8 @@ export default class extends RbaseController {
     }
     Rbase.restoreWebStorageFormValueNoTrigger(FORM_NAME);
     
-    $(".check_sites").change(async function() {
+    $(document).off("change.workflowSites");
+    $(document).on("change.workflowSites", ".check_sites", async function() {
       var site_ids = new Array();
       $('.check_sites:checked').each(function(){
         site_ids.push($(this).val());
@@ -51,7 +52,8 @@ export default class extends RbaseController {
     }
     Rbase.restoreWebStorageFormValueNoTrigger(FORM_NAME);
     
-    $(".check_sites").change(async function() {
+    $(document).off("change.workflowSites");
+    $(document).on("change.workflowSites", ".check_sites", async function() {
       var site_ids = new Array();
       $('.check_sites:checked').each(function(){
         site_ids.push($(this).val());
