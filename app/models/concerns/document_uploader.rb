@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class DocumentUploader < CarrierWave::Uploader::Base
+  include ::Rbase::PluginModule::Extendable # 継承を許可する宣言（必須）
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -49,6 +50,11 @@ class DocumentUploader < CarrierWave::Uploader::Base
   # end
   def filename
     original_filename.gsub(/\.JPG/, ".jpg").gsub(/\.JPEG/, ".jpeg").gsub(/\.PNG/, ".png").gsub(/\.TIF/, ".tif") if original_filename
+  end
+
+  # ファイルとして読むときに使う（保存先がローカルでないプラグインで拡張する）
+  def local_path
+    path
   end
 
 end

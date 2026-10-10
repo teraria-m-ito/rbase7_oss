@@ -20,7 +20,7 @@ module Reports
     end
     
     def build_pdf(report = nil)
-      report = ::Thinreports::Report.new(layout: File.join(Rails.root, 'public', self.report_model.report_attachments[0].document.url)) unless report
+      report = ::Thinreports::Report.new(layout: self.report_model.report_attachments[0].document.local_path) unless report
       report.start_new_page do |page|
         page.item(:text).value('Test')
       end

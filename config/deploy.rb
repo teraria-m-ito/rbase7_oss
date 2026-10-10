@@ -33,6 +33,7 @@ set :linked_files, fetch(:linked_files, []).push('config/secrets.yml').push('con
 
 set :keep_releases, 3
 
+# Capistrano は staging（従来サーバ）用。production サーバレスは infra/aws + scripts/aws を使う。
 set :delayed_job_workers, 3
 
 
