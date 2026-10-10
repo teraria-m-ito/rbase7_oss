@@ -252,7 +252,7 @@ class SystemSetting < ApplicationRecord
     setting = self.joins(:system_setting_sites).where("system_setting_sites.site_id = ?", site_id).where("system_settings.setting_div = ?", self.setting_div_id_by_key(setting_div_key)).first
 
     unless entity_name.nil?
-      enum_value = eval("#{entity_name.classify}.#{value_div_name}_enum")
+      enum_value = entity_name.to_s.classify.constantize.public_send("#{value_div_name}_enum")
       unless enum_value[value_div].id.to_s == value_div.to_s
         return nil
       end
@@ -329,7 +329,7 @@ class SystemSetting < ApplicationRecord
     setting = self.joins(:system_setting_sites).where("system_setting_sites.site_id = ?", site_id).where("system_settings.setting_div = ?", self.setting_div_id_by_key(setting_div_key)).first
 
     unless entity_name.nil?
-      enum_value = eval("#{entity_name.classify}.#{value_div_name}_enum")
+      enum_value = entity_name.to_s.classify.constantize.public_send("#{value_div_name}_enum")
       unless enum_value[value_div].id.to_s == value_div.to_s
         return nil
       end

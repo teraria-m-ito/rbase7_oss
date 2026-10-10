@@ -39,7 +39,7 @@ class QueriesController < UserApplicationController
     condition_hash = params[query_params[:target_class].gsub(/\//,"_")]
     condition_hash.permit!
     
-    @condition = eval("::#{@data_type.camelize}::SearchConditions.new(condition_hash)")
+    @condition = search_conditions_class.new(condition_hash)
     @query.query_content = @condition.blank? ? "" : @condition.to_yaml
     # @query.query_fields = session[:query_fields].blank? ? "" : session[:query_fields]
     # @query.selected_query_fields = session[:selected_query_fields].blank? ? "" : session[:selected_query_fields]
@@ -56,7 +56,7 @@ class QueriesController < UserApplicationController
       # session[:query_fields] =  Psych.load(@query.query_fields).to_yaml
       # session[:selected_query_fields] =  Psych.safe_load(@query.selected_query_fields).to_yaml
 
-      redirect_to eval("#{@data_type}_path"), turbo: false
+      redirect_to url_for(controller: "/#{@data_type}", action: :index), turbo: false
     else
       render :new, status: :unprocessable_entity
     end
@@ -70,7 +70,7 @@ class QueriesController < UserApplicationController
       condition_hash = params[query_params[:target_class].gsub(/\//,"_")]
       condition_hash.permit!
 
-      @condition = eval("::#{@data_type.camelize}::SearchConditions.new(condition_hash)")
+      @condition = search_conditions_class.new(condition_hash)
       @query.query_content = @condition.blank? ? "" : @condition.to_yaml
 # 
       # @query_fields = Psych.safe_load(session[:query_fields])
@@ -85,7 +85,7 @@ class QueriesController < UserApplicationController
         # session[:query_fields] =  Psych.safe_load(@query.query_fields).to_yaml
         # session[:selected_query_fields] =  Psych.safe_load(@query.selected_query_fields).to_yaml
        
-        redirect_to eval("#{@data_type}_path"), turbo: false
+        redirect_to url_for(controller: "/#{@data_type}", action: :index), turbo: false
       else
         render :edit, status: :unprocessable_entity
       end
@@ -104,13 +104,13 @@ class QueriesController < UserApplicationController
       @selected_query_fields = Psych.load(session[:selected_query_fields]).to_a + @query_fields.select{|x| x[1] == params[:select_field_type]}
       @query_fields.select!{|x| x[1] != params[:select_field_type]}
     else
-      @query_fields = eval("::#{@data_type.camelize}::SearchConditions.condition_field_type_options")
+      @query_fields = search_conditions_class.condition_field_type_options
       @selected_query_fields = [@query_fields.shift]
     end
     session[:query_fields] = @query_fields.to_yaml
     session[:selected_query_fields] = @selected_query_fields.to_yaml
 
-    @condition = eval("::#{@data_type.camelize}::SearchConditions.new")
+    @condition = search_conditions_class.new
     
     # render turbo_stream: turbo_stream.replace("entry-forms", partial: "#{@data_type}/search_conditions")
   end
@@ -122,18 +122,27 @@ class QueriesController < UserApplicationController
   
   desc :auth_as => :index
   def load
-    return_controller = @query.target_class.split("/")[0]
-    session[:"#{return_controller}_condition"] =  Psych.safe_load(@query.query_content, permitted_classes: [::Issues::SearchConditions]).to_yaml
+    @data_type = @query.target_class.split("/")[0]
+    search_conditions_class
+    session[:"#{@data_type}_condition"] =  Psych.safe_load(@query.query_content, permitted_classes: [::Issues::SearchConditions]).to_yaml
     session[:query_fields] =  Psych.safe_load(@query.query_fields).to_yaml
     session[:selected_query_fields] =  Psych.safe_load(@query.selected_query_fields).to_yaml
         
-    redirect_to eval("#{return_controller}_path(edited: true)"), status: :see_other
+    redirect_to url_for(controller: "/#{@data_type}", action: :index, edited: true), status: :see_other
   end
   
   private
 
   def set_query
-    @query = Query.find(params[:id])
+    queries = Query.where(admin_user_id: current_admin_user.id)
+    queries = queries.or(Query.where(shared: true)) if %w[show load].include?(action_name)
+    @query = queries.find(params[:id])
+  end
+
+  def search_conditions_class
+    klass = "::#{@data_type.camelize}::SearchConditions".safe_constantize if @data_type.to_s.match?(/\A[a-z_]+\z/)
+    raise ActionController::BadRequest, "invalid data_type" unless klass.is_a?(Class)
+    klass
   end
 
   def set_queries
@@ -159,7 +168,7 @@ class QueriesController < UserApplicationController
   end
   
   def set_field_list
-    @condition = eval("::#{@data_type.camelize}::SearchConditions.new")
+    @condition = search_conditions_class.new
     
     case @data_type
     when 'issues'

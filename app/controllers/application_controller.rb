@@ -47,8 +47,7 @@ class ApplicationController < ActionController::Base
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  # protect_from_forgery with: :exception
-  protect_from_forgery prepend: true
+  protect_from_forgery with: :exception, prepend: true
   
   include DeviseHelper
   
@@ -380,6 +379,8 @@ class ApplicationController < ActionController::Base
           when "saml2" then
             session[:direct_url] = Thread.current[:request].fullpath
             redirect_to_saml_idp
+          else
+            redirect_to new_admin_user_session_path(site_id: site_id)
           end
         else
           uri = URI.parse(Thread.current[:request].url)
@@ -438,7 +439,7 @@ class ApplicationController < ActionController::Base
         @sso_url = nil
         case sso_type
         when "saml2" then
-          logic = eval("::Logic::Sso#{sso_type.classify}Logic.new")
+          logic = sso_logic(sso_type)
           if logic
             settings = logic.settings(site_id)
             logout_request = OneLogin::RubySaml::Logoutrequest.new
@@ -508,8 +509,13 @@ class ApplicationController < ActionController::Base
     sso_type = ::SystemSetting.get_setting(:sso_type, site_id)
     return nil if sso_type.blank?
 
-    logic = eval("::Logic::Sso#{sso_type.classify}Logic.new")
-    logic.settings(site_id)
+    logic = sso_logic(sso_type)
+    logic&.settings(site_id)
+  end
+
+  def sso_logic(sso_type)
+    klass = "::Logic::Sso#{sso_type.to_s.classify}Logic".safe_constantize
+    klass.new if klass.is_a?(Class) && klass.name.start_with?("Logic::Sso")
   end
 
   protected

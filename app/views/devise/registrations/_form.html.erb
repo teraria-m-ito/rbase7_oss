@@ -44,7 +44,6 @@
 <div class="form-group form-inline input-group-sm align-items-start">
   <%=form.input :role_id, as: :select, collection: AdminUser.role_id_options, :include_blank => false, disabled: true, input_html: {name: "admin_user_dummy[role_id]"} %>
 </div>
-<%=form.input :role_id, as: :hidden %>
 
 <div class="form-group form-inline input-group-sm align-items-start">
   <%=form.input :site_ids, as: :check_boxes,

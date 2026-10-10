@@ -2,8 +2,6 @@ module Admin
   class ReportAttachmentsController < AdminApplicationController
     include ::Rbase::PluginModule::Extendable # 継承を許可する宣言（必須）
 
-    protect_from_forgery except: [:create, :destroy]
-    
     before_action :set_sites, only: [:create]
     before_action :set_report, only: [:destroy]
 
@@ -20,7 +18,7 @@ module Admin
     end
 
     def destroy
-      @report_attachment = ReportAttachment.find(params[:id])
+      @report_attachment = @report.report_attachments.find(params[:id])
       @report_attachment.destroy
       respond_with(@report, location: edit_admin_report_path(@report))
     end

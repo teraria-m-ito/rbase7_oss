@@ -75,7 +75,6 @@ module Rbase7
     config.action_dispatch.default_headers['Referrer-Policy'] = 'unsafe-url'
     config.action_dispatch.default_headers.delete('X-Frame-Options')
     config.action_controller.forgery_protection_origin_check = false
-    config.action_controller.allow_forgery_protection = false
     
     config.action_controller.include_all_helpers = false
     
