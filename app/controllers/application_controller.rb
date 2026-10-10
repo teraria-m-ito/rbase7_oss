@@ -9,6 +9,9 @@ class ApplicationController < ActionController::Base
   before_action :check_flash
   before_action :restore_turbo_redirect_flash
   before_action :configure_permitted_parameters, if: :devise_controller?
+  # パスワード再設定・確認などの URL にはトークンが含まれるため、認証画面では外部サイトへリファラーを送らない
+  # （サイト全体は LMS 経由の連携先へ完全な URL を渡すため unsafe-url）
+  before_action(if: :devise_controller?) { response.headers["Referrer-Policy"] = "same-origin" }
 
   private
   #flashが消える現象があり、読み込むことで回避する

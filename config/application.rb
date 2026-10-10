@@ -67,14 +67,18 @@ module Rbase7
 
     config.session_store :cookie_store
     
-    config.action_controller.forgery_protection_origin_check = false
-    
     #host設定 すべて受け付ける
     config.hosts.clear
     
     config.lti_settings = Rails.application.config_for(:lti_settings)
+    # LMS から RBASE を経由して表示する連携先が、遷移元の完全な URL（クエリ文字列を含む）を必要とするため unsafe-url とする。
+    # トークンを URL に含む認証画面は ApplicationController で same-origin に絞る
     config.action_dispatch.default_headers['Referrer-Policy'] = 'unsafe-url'
+    # 埋め込みの可否は Content-Security-Policy の frame-ancestors（LMS_HOST）で制御する。
+    # X-Frame-Options: SAMEORIGIN が残ると LMS からの埋め込みも拒否されるため削除する
     config.action_dispatch.default_headers.delete('X-Frame-Options')
+    # 連携先のサイトから RBASE へ POST で戻る場合があるため、送信元（Origin）の一致は確認しない。
+    # CSRF トークンの検証は有効（外部から受ける POST は、各アクションで署名検証などを行ったうえで個別に除外する）
     config.action_controller.forgery_protection_origin_check = false
     
     config.action_controller.include_all_helpers = false
