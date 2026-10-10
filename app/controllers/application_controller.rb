@@ -127,7 +127,7 @@ class ApplicationController < ActionController::Base
     flash[:alert] = exception.message
     session[:_rbase_turbo_flash_alert] = exception.message
 
-    # move_up 等は成功時が turbo_stream.replace のため、権限エラーも Turbo Stream でメッセージを返す
+    # 並べ替えなど画面遷移しないリクエストは、権限エラーも Turbo Stream でメッセージを返す
     # （303 HTML リダイレクトでは Turbo が最終 200 のみ見て flash / X-Flash が届かない）
     if access_denied_reply_with_turbo_stream?
       render turbo_stream: turbo_stream.replace(
@@ -197,8 +197,8 @@ class ApplicationController < ActionController::Base
     accept = request.headers["Accept"].to_s
     return true if accept.include?("text/vnd.turbo-stream.html")
 
-    # workflow_states の move_up / move_down（HTML Accept でも成功レスポンスは turbo_stream）
-    request.path.match?(%r{/admin/workflows/\d+/workflow_states/\d+/move_(up|down)\z})
+    # ドラッグでの並べ替え（fetch で送信するため、リダイレクトではなくエラーステータスで返す）
+    request.path.match?(%r{/admin/(workflows/\d+/workflow_states|custom_fields)/sort\z})
   end
 
   def exception_redirect

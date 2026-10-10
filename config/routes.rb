@@ -41,9 +41,8 @@ Rails.application.routes.draw do
         post 'change_sites'
       end
       resources :workflow_states do
-        member do
-          patch 'move_up'
-          patch 'move_down'
+        collection do
+          patch 'sort'
         end
       end
     end

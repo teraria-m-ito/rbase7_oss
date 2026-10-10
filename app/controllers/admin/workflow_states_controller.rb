@@ -1,7 +1,7 @@
 module Admin
   class WorkflowStatesController < AdminApplicationController
     before_action :set_workflow
-    before_action :set_workflow_state, only: [:show, :edit, :update, :destroy, :move_up, :move_down]
+    before_action :set_workflow_state, only: [:show, :edit, :update, :destroy]
 
     respond_to :html
 
@@ -42,40 +42,20 @@ module Admin
       redirect_to edit_admin_workflow_path(@workflow), status: :see_other
     end
 
-    # desc :auth_as => :other, :display_name => 'admin/workflow_states_move_up'
+    # ドラッグで並べ替えた順に表示順を振り直す（対象ワークフローの状態のみ更新する）
     desc :auth_as => :edit
-    def move_up
-      display_order = @workflow_state.display_order
-      prev_workflow_state = WorkflowState.where("workflow_id = ? and display_order = ?", @workflow_state.workflow_id , @workflow_state.display_order - 1).first
-      
-      # 先頭の状態では入れ替え相手が無いため、並び順を変えずに再描画する
-      if prev_workflow_state
-        WorkflowState.transaction do
-          prev_workflow_state.update!({display_order: display_order})
-          @workflow_state.update!({display_order: display_order - 1})
+    def sort
+      workflow_state_ids = params[:workflow_state_ids]
+      return head :unprocessable_entity unless workflow_state_ids.is_a?(Array)
+
+      WorkflowState.transaction do
+        workflow_state_ids.map(&:to_i).each_with_index do |id, idx|
+          @workflow.workflow_states.where(id: id).update_all(display_order: idx + 1)
         end
       end
-      @workflow_states = @workflow_state.workflow.workflow_states.order(:display_order)
-      render turbo_stream: turbo_stream.replace('entry-state-forms', partial: 'admin/workflows/form_workflow_states')
-    end
 
-    #    desc :auth_as => :other, :display_name => 'admin/workflow_states_move_down'
-    desc :auth_as => :edit
-    def move_down
-      display_order = @workflow_state.display_order
-      prev_workflow_state = WorkflowState.where("workflow_id = ? and display_order = ?", @workflow_state.workflow_id, @workflow_state.display_order + 1).first
-      
-      # 末尾の状態では入れ替え相手が無いため、並び順を変えずに再描画する
-      if prev_workflow_state
-        WorkflowState.transaction do
-          prev_workflow_state.update!({display_order: display_order})
-          @workflow_state.update!({display_order: display_order + 1})
-        end
-      end
-      @workflow_states = @workflow_state.workflow.workflow_states.order(:display_order)
-      render turbo_stream: turbo_stream.replace('entry-state-forms', partial: 'admin/workflows/form_workflow_states')
+      head :ok
     end
-
 
     private
 
