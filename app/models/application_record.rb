@@ -15,27 +15,4 @@ class ApplicationRecord < ActiveRecord::Base
       raise ActiveRecord::Rollback
     end
   end
-
-  def created_userstamp
-    ::Rails.logger.debug("created_userstamp class:#{self.class.name}")
-    self.current_admin_user = get_current_admin_user if self.current_admin_user.nil?
-    return if self.current_admin_user.nil?
-
-    self.creator_id = self.current_admin_user.id
-    self.updater_id = self.current_admin_user.id
-  end
-
-  def updated_userstamp
-    ::Rails.logger.debug("updated_userstamp class:#{self.class.name}")
-    self.current_admin_user = get_current_admin_user if self.current_admin_user.nil?
-    return if self.current_admin_user.nil?
-
-    self.updater_id = self.current_admin_user.id
-  end
-
-  def destroyed_userstamp
-    ::Rails.logger.debug("destroyed_userstamp class:#{self.class.name}")
-    self.current_admin_user = get_current_admin_user if self.current_admin_user.nil?
-    self
-  end
 end

@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   #パラメータが抜ける不具合が発生。一旦コメントアウト
   before_action :current_ability
   before_action :check_permission
-  before_action :set_stamper
+  around_action :set_stamper
   before_action :sso_logout_link
   # before_action :check_sign_in
 
@@ -422,8 +422,12 @@ class ApplicationController < ActionController::Base
     render "errors/500", status: :internal_server_error, layout: "error"
   end
 
+  # スレッド再利用で前リクエストの記録者が残らないよう、例外時も含め必ず解除する
   def set_stamper
-    current_admin_user.stamper = current_admin_user if current_admin_user
+    AdminUser.stamper = current_admin_user
+    yield
+  ensure
+    AdminUser.reset_stamper
   end
 
   def sso_logout_link
