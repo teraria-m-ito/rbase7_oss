@@ -1,5 +1,6 @@
 <% raw_return = params[:return_to].to_s.strip %>
-<% safe_return_to = (raw_return.start_with?("/") && !raw_return.start_with?("//")) ? raw_return : nil %>
+<%# 「/\evil.example」のようにブラウザが外部URLと解釈する形式を除外し、自サイト内のパスのみ許可する %>
+<% safe_return_to = (raw_return.start_with?("/") && !raw_return.start_with?("//") && !raw_return.match?(/[\\\x00-\x1f]/) && (URI.parse(raw_return).host.nil? rescue false)) ? raw_return : nil %>
 <% back_href = safe_return_to.presence || job_histories_path(clear: true) %>
 <div class="content-header">
   <div class="container-fluid">

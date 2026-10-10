@@ -30,7 +30,8 @@ module SamlIdp
       self.algorithm = :sha1
       self.reference_id_generator = ->() { SecureRandom.uuid }
       self.service_provider = OpenStruct.new
-      self.service_provider.finder = ->(_) { Default::SERVICE_PROVIDER }
+      # 未登録の issuer を受け付けないよう、既定では SP を返さない（利用側で finder を設定する）
+      self.service_provider.finder = ->(_) { nil }
       self.service_provider.metadata_persister = ->(id, settings) {  }
       self.service_provider.persisted_metadata_getter = ->(id, service_provider) {  }
       self.session_expiry = 0

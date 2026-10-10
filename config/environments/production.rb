@@ -75,6 +75,12 @@ Rails.application.configure do
     openssl_verify_mode: 'none'
   }
 
+  # パスワード再設定などのメール本文に載せる URL のホスト。環境変数 MAILER_HOST で指定する
+  config.action_mailer.default_url_options = {
+    host: ENV.fetch('MAILER_HOST', 'CHANGE_ME'),
+    protocol: ENV.fetch('MAILER_PROTOCOL', 'https')
+  }
+
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true

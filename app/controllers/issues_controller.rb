@@ -105,7 +105,7 @@ class IssuesController < UserApplicationController
     if @issue.save
       @issue.invoke
       flash[:notice] = t("views.common.create_complete_message")
-      redirect_to issues_path
+      redirect_to issues_path, status: :see_other
     else
       render :new, status: :unprocessable_entity
     end
@@ -120,7 +120,7 @@ class IssuesController < UserApplicationController
       if @issue.save
         @issue.invoke
         flash[:notice] = t("views.common.update_complete_message")
-        redirect_to issues_path
+        redirect_to issues_path, status: :see_other
       else
         render :edit, status: :unprocessable_entity
       end
@@ -210,8 +210,8 @@ class IssuesController < UserApplicationController
   end
 
   def set_fields
-    @issue_types = IssueType.joins(:issue_type_sites).where("issue_type_sites.site_id IN (1)")
-    # @workflow_states = WorkflowState.joins(workflow: :workflow_sites).where("workflow_sites.site_id IN (1)")
+    site_id = @issue&.site_id || session[:active_site_id]
+    @issue_types = IssueType.joins(:issue_type_sites).where(issue_type_sites: {site_id: site_id}).distinct
   end
 
 end

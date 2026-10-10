@@ -49,8 +49,21 @@ namespace :rbase do
           role_action_ids << target_role_action.id
         end
       end
-      # 消去した権限を削除する
-      RoleAction.where.not(id: role_action_ids).delete_all
+      # コントローラーから消えた権限は、プラグインの一時的な読み込み失敗などでロール設定を失わないよう、
+      # 既定では削除せず一覧を表示するだけにする。削除する場合は PRUNE=true を指定する。
+      obsolete_role_actions = RoleAction.where.not(id: role_action_ids)
+      if obsolete_role_actions.exists?
+        if ENV["PRUNE"] == "true"
+          RoleRoleAction.where(role_action_id: obsolete_role_actions.select(:id)).delete_all
+          deleted_count = obsolete_role_actions.delete_all
+          puts "deleted #{deleted_count} obsolete role actions"
+        else
+          puts "WARNING: 以下の権限はコントローラーに存在しません。削除する場合は PRUNE=true を指定して再実行してください。"
+          obsolete_role_actions.order(:controller_path, :action_name).each do |role_action|
+            puts "  [#{role_action.controller_path}][#{role_action.action_name}]"
+          end
+        end
+      end
     end
   end
 end

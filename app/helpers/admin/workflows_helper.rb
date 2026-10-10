@@ -5,9 +5,9 @@ module Admin
     def show_sort(m)
       result = ""
       result += link_to("<i class='fa fa-arrow-up'></i>".html_safe, 
-        move_up_admin_workflow_workflow_state_path(@workflow, m), method: :get, class: "btn btn-default btn-sm", data: {turbo: true}) if m.display_order > 1
+        move_up_admin_workflow_workflow_state_path(@workflow, m), class: "btn btn-default btn-sm", data: {turbo_method: :patch}) if m.display_order > 1
       result += link_to("<i class='fa fa-arrow-down'></i>".html_safe, 
-        move_down_admin_workflow_workflow_state_path(@workflow, m), method: :get, class: "btn btn-default btn-sm", data: {turbo: true}) unless (WorkflowState.where(workflow_id: @workflow.id).maximum(:display_order)) == m.display_order
+        move_down_admin_workflow_workflow_state_path(@workflow, m), class: "btn btn-default btn-sm", data: {turbo_method: :patch}) unless (WorkflowState.where(workflow_id: @workflow.id).maximum(:display_order)) == m.display_order
       result.html_safe
     end
   end

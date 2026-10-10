@@ -1,6 +1,16 @@
 class Ability
   include ::Rbase::PluginModule::Extendable # 継承を許可する宣言（必須）
   include CanCan::Ability
+
+  # rbase:setup_role で権限定義を作らない（ロールで制御しない）コントローラー
+  PERMISSION_FREE_CONTROLLERS = %w[
+    errors
+    admin_users/sessions
+    admin_users/passwords
+    admin_users/confirmations
+    admin_users/unlocks
+    admin_users/omniauth_callbacks
+  ].freeze
   # def initialize(user)
     # if user.nil?
       # cannot :manage, :all
@@ -53,6 +63,12 @@ class Ability
       return 
     end
 
+    # ログイン・ログアウト・パスワード再設定などの認証画面とエラー画面は、権限定義の対象外のため許可する
+    if PERMISSION_FREE_CONTROLLERS.include?(controller_name.to_s) || controller_name.to_s.start_with?("devise/")
+      can :manage, :all
+      return
+    end
+
     user_role_action = user.role.role_actions.where(controller_path: controller_name).where(action_name: convert_action(action_name)).first
     role_action = RoleAction.where(controller_path: controller_name).where(action_name: convert_action(action_name)).first
 
@@ -65,15 +81,9 @@ class Ability
     ::Rails.logger.debug("------------------------------------------------------------------------------------------------------")
     ::Rails.logger.debug("controller_path: #{controller_name} action_name: #{convert_action(action_name)}(#{action_name})")
 
-    # assetsのエラーは許可で通す
-    if controller_name == "errors" and action_name == "routing_error"
-      can :manage, :all
-      return
-    end
-
-    # role_actionがnilの場合は、定義されていないアクションであり、その場合は許可する
-    if !role_action.nil? && user_role_action.nil? && !user.role.role_actions.to_a.empty?
-      ::Rails.logger.debug("cannot controller_path:#{role_action.try(:controller_path)} action_name:#{role_action.try(:action_name)}")
+    # 権限定義（RoleAction）が未登録のアクションや、ロールに許可されていないアクションは拒否する
+    if role_action.nil? || user_role_action.nil?
+      ::Rails.logger.debug("cannot controller_path:#{controller_name} action_name:#{convert_action(action_name)}")
       ::Rails.logger.debug("------------------------------------------------------------------------------------------------------")
       cannot :manage, :all
       return

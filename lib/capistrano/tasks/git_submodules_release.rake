@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "cgi"
+require "shellwords"
+require "stringio"
 require "uri"
 
 # :repo_url が git@github.com:user/repo.git のように SSH 形式のとき、
@@ -34,7 +36,7 @@ end
 # git clone --recursive は .gitmodules の URL のまま clone するため、
 # プライベートな GitHub HTTPS サブモジュールでは認証が付かず失敗する。
 # :git_http_username / :git_http_password（GitHub では PAT）が設定されている場合は、
-# 親リポジトリと同一ホストの submodule URL に同じ資格情報を埋め込んでから update する。
+# 親リポジトリと同一ホストの submodule に対して、一時的な credential store 経由で資格情報を渡して update する。
 #
 # 参考: https://stackoverflow.com/questions/19403138/capistrano-v3-deploy-git-repository-and-its-submodules
 
@@ -87,10 +89,10 @@ namespace :git do
 
             user = fetch(:git_http_username, nil)
             pass = fetch(:git_http_password, nil)
+            credential_hosts = []
             if has_gitmodules && user && !pass.to_s.empty?
               parent_host = CapistranoGitSubmodulesRelease.git_remote_host(fetch(:repo_url))
               match_parent_only = fetch(:git_submodule_auth_match_parent_host_only, true)
-              escaped_pass = CGI.escape(pass.to_s)
 
               # キーが無い場合も exit 1 になるため raise_on_non_zero_exit: false
               raw = capture(
@@ -101,27 +103,44 @@ namespace :git do
                 key, url = line.strip.split(/\t+/, 2)
                 key, url = line.strip.split(/\s+/, 2) if url.nil?
                 next if url.nil? || url.empty?
-
-                path = key.delete_prefix("submodule.").delete_suffix(".url")
-                # git@host:path.git や ssh:// は URI.parse できない。HTTPS 埋め込みは https のみ対象。
+                # git@host:path.git や ssh:// は URI.parse できない。HTTPS のみ対象。
                 next unless url.start_with?("https://")
 
                 uri = URI.parse(url)
                 next unless uri.scheme == "https"
                 next if match_parent_only && parent_host && uri.host != parent_host
 
-                uri.user = user.to_s
-                uri.password = escaped_pass
-                execute :git, :config, "submodule.#{path}.url", uri.to_s
+                credential_hosts << uri.host
               end
+              credential_hosts.uniq!
             elsif has_gitmodules
               warn "[git:create_release] :git_http_username / :git_http_password が未設定です。" \
                      "プライベートな HTTPS サブモジュールは clone に失敗する可能性があります。"
             else
-              info "[git:create_release] .gitmodules が無い、または空のためサブモジュール URL の書き換えをスキップします。"
+              info "[git:create_release] .gitmodules が無い、または空のためサブモジュールの資格情報設定をスキップします。"
             end
 
-            execute :git, :submodule, "update", "--recursive"
+            if credential_hosts.empty?
+              execute :git, :submodule, "update", "--recursive"
+            else
+              # 資格情報を URL に埋め込むと .git/config やデプロイログに残るため、
+              # 権限 700 の一時ディレクトリに credential store 形式のファイルを置き、git -c で渡す
+              credential_dir = capture(:mktemp, "-d")
+              credential_file = "#{credential_dir}/git-credentials"
+              begin
+                lines = credential_hosts.map do |host|
+                  "https://#{CGI.escape(user.to_s)}:#{CGI.escape(pass.to_s)}@#{host}\n"
+                end
+                upload!(StringIO.new(lines.join), credential_file)
+                execute :chmod, "600", credential_file
+                execute :git,
+                        "-c", Shellwords.escape("credential.helper="),
+                        "-c", Shellwords.escape("credential.helper=store --file=#{credential_file}"),
+                        :submodule, "update", "--recursive"
+              ensure
+                execute :rm, "-rf", credential_dir
+              end
+            end
             # 既定 false: Gemfile の git: ソース解決などがリリース直下の .git を参照するため削除しない
             execute :rm, "-rf", release_path.join(".git") if fetch(:git_trim_release_git_dir, false)
           end

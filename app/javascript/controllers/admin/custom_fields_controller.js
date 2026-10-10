@@ -50,13 +50,8 @@ export default class extends RbaseController {
   }
   
   custom_field_type_change(event) {
-    var target = $(event.target);
     console.log("change custom_field_type_change:"+event.target.name);
-    if (target.val() == this.paramsValue.custom_field_type_id) {
-      $("#issue_type").show();
-    } else {
-      $("#issue_type").hide();
-    }
+    toggle_issue_type($(event.target), this.paramsValue);
   }
   
   field_type_change(event) {
@@ -83,7 +78,17 @@ function init(params) {
   
   $(function() {
     display_init($("#field_type"));
+    toggle_issue_type($("#custom_field_type"), params);
   });
+}
+
+// 課題種別の選択欄は、カスタムフィールド種別が「課題」のときだけ表示する
+function toggle_issue_type(target, params) {
+  if (target.val() == params["custom_field_type_id"]) {
+    $("#issue_type").show();
+  } else {
+    $("#issue_type").hide();
+  }
 }
 
 function display_init(target) {

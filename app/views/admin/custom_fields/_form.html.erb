@@ -5,7 +5,9 @@
 <div class="form-group form-inline input-group-sm align-items-start">
   <%= form.input :custom_field_type, as: :select, collection: CustomField.custom_field_type_options,
                  input_html: {col: 3, id: "custom_field_type", data: {turbo: true, action: "change->admin--custom_fields#custom_field_type_change"}} %>
-  <%= form.input :issue_type, as: :select, collection: @issue_types.map{|x|[x.issue_type_name, x.id]}, required: false, input_html: {col: 3}%>
+  <div id="issue_type">
+    <%= form.input :issue_type, as: :select, collection: @issue_types.map{|x|[x.issue_type_name, x.id]}, required: false, input_html: {col: 3}%>
+  </div>
 </div>
 <div class="form-group form-inline input-group-sm align-items-start">
   <%= form.input :field_type, as: :select, collection: CustomField.field_type_options,
@@ -51,15 +53,3 @@
   %>
 </div>
 
-<script>
-$(function() {
-  $("#custom_field_type").change(function() {
-    if ($(this).prop('value') == '<%= CustomField.custom_field_type_id_by_key(:issue) %>') {
-      $("#issue_type").show();
-    } else {
-      $("#issue_type").hide();
-    }
-  });
-
-});
-</script>

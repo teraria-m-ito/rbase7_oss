@@ -124,10 +124,14 @@ module Admin
       ActiveRecord::Base.transaction do
         @system_setting.assign_attributes(system_setting_params)
         if @system_setting.save
-          SystemSettingAttachment.delete(@system_setting.system_setting_attachments.map(&:id))
-          SystemSettingAttachment.where(["token = ?", @system_setting.uuid]).each do |attach|
-            attach.system_setting = @system_setting
-            attach.save!
+          # 新しいファイルがアップロードされた場合のみ、既存の添付を差し替える（ファイル実体も削除するため destroy を使う）
+          new_attachments = SystemSettingAttachment.where(token: @system_setting.uuid).to_a
+          if new_attachments.present?
+            SystemSettingAttachment.where(system_setting_id: @system_setting.id).where.not(id: new_attachments.map(&:id)).each(&:destroy!)
+            new_attachments.each do |attach|
+              attach.system_setting = @system_setting
+              attach.save!
+            end
           end
           saved = true
         end

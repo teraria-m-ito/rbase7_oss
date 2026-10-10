@@ -3,7 +3,6 @@ class Issue < ApplicationRecord
   include ::SelectableAttr::Base
   include CustomFieldDynamicAccessors
 
-  after_find :set_limited_at
   before_save :set_prev_workflow_state
 
   belongs_to :site, optional: true
@@ -167,10 +166,6 @@ class Issue < ApplicationRecord
     klass = "::Logic::#{logic_name.to_s.classify}".safe_constantize
     raise ArgumentError, "invalid issue_type_class: #{logic_name.inspect}" unless klass.is_a?(Class) && klass.name.start_with?("Logic::")
     klass.new(self)
-  end
-
-  def set_limited_at
-    self.limited_at = self.limited_at.strftime('%Y/%m/%d') unless self.limited_at.blank?
   end
 
   def set_prev_workflow_state

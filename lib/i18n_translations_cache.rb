@@ -7,13 +7,22 @@ module I18nTranslationsCache
   @simple_form_cache = {}
   @t_cache = {}
   @han_cache = {}
+  @checked_at = nil
+
+  # 他ワーカーの更新を確認する間隔（秒）。リクエストごとに DB へ問い合わせないよう間引く
+  REFRESH_INTERVAL = ENV.fetch("I18N_REFRESH_INTERVAL", "5").to_f
 
   class << self
     def refresh_if_stale!
-      @mutex.synchronize do
-        current = db_fingerprint
-        return if current.nil?
+      now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      return if @checked_at && now - @checked_at < REFRESH_INTERVAL
+      @checked_at = now
 
+      # DB への問い合わせはロックの外で行い、他スレッドの待ち時間を増やさない
+      current = db_fingerprint
+      return if current.nil?
+
+      @mutex.synchronize do
         if @fingerprint && current != @fingerprint
           clear_ar_snapshots!
           reload_backends!
