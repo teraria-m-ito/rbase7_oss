@@ -105,8 +105,9 @@ class AdminUsers::RegistrationsController < Devise::RegistrationsController
   
   protected
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :email, :password, :password_confirmation, :role_id, {:site_ids => []}])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email, :password, :password_confirmation, :current_password, :role_id, {:site_ids => [], :admin_user_custom_fields_attributes => [:id, :field_value]}])
+    # role_id / site_ids は本人に変更させない（権限昇格防止）。管理者が管理画面から設定する。
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :email, :password, :password_confirmation])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email, :password, :password_confirmation, :current_password, {:admin_user_custom_fields_attributes => [:id, :field_value]}])
   end
 
   def update_resource(resource, params)

@@ -168,8 +168,9 @@ class Issue < ApplicationRecord
     logic_name = self.issue_type.issue_type_class
     @prev_workflow_state = WorkflowState.where(id: self.prev_workflow_state_id).first #初回時はnilが有り得る
     @current_workflow_state = WorkflowState.find(self.workflow_state_id)
-    logic = eval("::Logic::#{logic_name.classify}.new(self)")
-    logic
+    klass = "::Logic::#{logic_name.to_s.classify}".safe_constantize
+    raise ArgumentError, "invalid issue_type_class: #{logic_name.inspect}" unless klass.is_a?(Class) && klass.name.start_with?("Logic::")
+    klass.new(self)
   end
 
   def set_limited_at

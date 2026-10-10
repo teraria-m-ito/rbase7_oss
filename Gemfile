@@ -96,7 +96,7 @@ end
 gem 'request_store'
 gem 'activerecord-session_store'
 
-gem 'rubyzip', '1.1.0'
+gem 'rubyzip', '~> 1.3.0'
 
 gem 'devise', "~> 4.9.2"
 
@@ -156,7 +156,7 @@ gem 'rest-client'
 
 gem 'daemons'
 gem 'sshkit-sudo'
-gem 'ruby-saml'
+gem 'ruby-saml', '>= 1.18.0'
 gem 'dotenv-rails'
 gem 'uri', '1.1.1'
 gem 'saml_idp', path: 'lib/immigration/saml_idp'

@@ -17,7 +17,7 @@ module Admin
     end
 
     def destroy
-      @admin_user_attachment = AdminUserAttachment.find(params[:id])
+      @admin_user_attachment = @admin_user.admin_user_attachments.find(params[:id])
       @admin_user_attachment.destroy
       flash[:notice] = t("views.common.destroy_complete_message")
 

@@ -2,6 +2,9 @@ class SsoController < ApplicationController
   include ::Rbase::PluginModule::Extendable # 継承を許可する宣言（必須）
   respond_to :html
 
+  # IdP からの SAMLResponse POST には CSRF トークンが付かない
+  skip_forgery_protection only: :consume
+
   before_action :set_sso_type, only: [:index, :consume, :metadata]
   def index
     if request_site_id.blank?
@@ -24,24 +27,24 @@ class SsoController < ApplicationController
 
     case @sso_type
     when "saml2" then
-      response = OneLogin::RubySaml::Response.new(params[:SAMLResponse], {skip_conditions: true})
+      response = OneLogin::RubySaml::Response.new(params[:SAMLResponse], {allowed_clock_drift: 60.seconds})
       response.settings = saml_settings
       # We validate the SAML Response and check if the user already exists in the system
       if response.is_valid?
-        admin_user = AdminUser.where(email: response.nameid.strip).first
+        site_id = request_site_id
+        admin_user = AdminUser.define_site(site_id).where(email: response.nameid.strip).first
         unless admin_user
           admin_user = ::AdminUser.new
           admin_user.login_from = response.settings.idp_entity_id
           admin_user.name = response.attributes["username"]
           admin_user.email = response.attributes["email"]
-          site_id = request_site_id
           admin_user.site_ids = [site_id] if site_id
           if response.attributes["userRole"].present?
-            admin_user.role_id = ::Role.where(role_short_name: response.attributes["userRole"]).first.id
+            admin_user.role_id = ::Role.where(role_short_name: response.attributes["userRole"]).first&.id
           else
-            admin_user.role_id = ::Role.where("role_short_name = 'STUDENT'").order(:id).first.id
-            admin_user.role_id = ::Role.where("role_short_name = 'member'").order(:id).first.id unless admin_user.role_id
-            admin_user.role_id = ::Role.where("role_short_name <> 'admin'").order(:id).first.id unless admin_user.role_id
+            admin_user.role_id = ::Role.where("role_short_name = 'STUDENT'").order(:id).first&.id
+            admin_user.role_id = ::Role.where("role_short_name = 'member'").order(:id).first&.id unless admin_user.role_id
+            admin_user.role_id = ::Role.where("role_short_name <> 'admin'").order(:id).first&.id unless admin_user.role_id
           end
           admin_user.status_div_key = :accepted
           admin_user.password = SecureRandom.urlsafe_base64 if admin_user.new_record?
@@ -86,8 +89,8 @@ class SsoController < ApplicationController
     site_id = request_site_id
     return nil if site_id.blank? || @sso_type.blank?
 
-    @logic = eval("::Logic::Sso#{@sso_type.classify}Logic.new")
-    @logic.settings(site_id)
+    @logic = sso_logic(@sso_type)
+    @logic&.settings(site_id)
   end
 
   def set_sso_type

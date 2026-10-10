@@ -6,4 +6,8 @@ if Rails.env.development? || Rails.env.test?
 else
   Rails.application.config.session_store :active_record_store, same_site: :none, secure: true
 end
-Rails.application.config.active_record.use_yaml_unsafe_load = true
+ActiveRecord.use_yaml_unsafe_load = false
+ActiveRecord.yaml_column_permitted_classes = [
+  Symbol, Date, Time, BigDecimal,
+  ActiveSupport::TimeWithZone, ActiveSupport::TimeZone, ActiveSupport::HashWithIndifferentAccess
+]

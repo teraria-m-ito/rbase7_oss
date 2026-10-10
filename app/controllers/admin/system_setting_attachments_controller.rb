@@ -20,7 +20,7 @@ module Admin
     end
 
     def destroy
-      @system_setting_attachment = SystemSettingAttachment.find(params[:id])
+      @system_setting_attachment = @system_setting.system_setting_attachments.find(params[:id])
       @system_setting_attachment.destroy
       respond_with(@system_setting, location: edit_admin_system_setting_path(@system_setting))
     end

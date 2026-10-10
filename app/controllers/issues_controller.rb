@@ -134,7 +134,7 @@ class IssuesController < UserApplicationController
 
   desc :auth_as => :new
   def change_issue_type_for_new_or_edit
-    @issue = session[:issue].present? ? ::Issue.find(session[:issue]) : ::Issue.new
+    @issue = session[:issue].present? ? ::Issue.where(site_id: session[:active_site_id]).find(session[:issue]) : ::Issue.new
     @issue.issue_type_id = params[:issue_type_id]
     @workflow_states = @issue.new_record? ? WorkflowState.prohabbits_site(session[:active_site_id]) : @issue.aviable_workflow_states(current_admin_user)
   end
@@ -157,7 +157,7 @@ class IssuesController < UserApplicationController
   end
 
   def set_issue
-    @issue = Issue.find(params[:id])
+    @issue = Issue.where(site_id: session[:active_site_id]).find(params[:id])
   end
   
   def set_select_fields
@@ -198,7 +198,7 @@ class IssuesController < UserApplicationController
     end
   end
   def issue_params
-    params.require(:issue).permit!
+    params.require(:issue).permit!.except(:id, :site_id, :creator_id, :updater_id, :deleter_id, :issued_id, :prev_workflow_state_id, :deleted_at)
   end
 
   def set_fields

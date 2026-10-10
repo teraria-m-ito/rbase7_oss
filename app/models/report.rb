@@ -29,20 +29,26 @@ class Report < ApplicationRecord
   end
   
    def invoke(report = nil)
-    logic = eval("::Reports::#{self.report_class.classify}.new(self)")
+    logic = report_logic
     logic.build_pdf(report)
   end
   
   def set_demo_preview
-    logic = eval("::Reports::#{self.report_class.classify}.new(self)")
+    logic = report_logic
     self.target_model = logic.get_demo_preview 
   end
   
   def set_preview(target_id)
-    logic = eval("::Reports::#{self.report_class.classify}.new(self)")
+    logic = report_logic
     self.target_model = logic.get_preview(target_id)
   end
   
   private
+
+  def report_logic
+    klass = "::Reports::#{self.report_class.to_s.classify}".safe_constantize
+    raise ArgumentError, "invalid report_class: #{self.report_class.inspect}" unless klass.is_a?(Class) && klass.name.start_with?("Reports::")
+    klass.new(self)
+  end
 
 end
