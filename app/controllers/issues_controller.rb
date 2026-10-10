@@ -18,6 +18,12 @@ class IssuesController < UserApplicationController
   def index
     @target_class = "issues/search_conditions"
 
+    # 一覧を開かずに検索条件付きで直接アクセスされた場合は、項目の選択状態を初期化する
+    if session[:query_fields].nil? || session[:selected_query_fields].nil?
+      session[:query_fields] = ::Issues::SearchConditions.condition_field_type_options.drop(1).to_yaml
+      session[:selected_query_fields] = ::Issues::SearchConditions.default_conditions.to_yaml
+    end
+
     if params[:issues_search_conditions]
       @condition = ::Issues::SearchConditions.new(search_condition_params)
 
@@ -65,7 +71,7 @@ class IssuesController < UserApplicationController
   end
 
   def show
-    @workflow_states = @issue.workflow_state.workflow.workflow_states
+    @workflow_states = @issue.workflow_state&.workflow&.workflow_states || ::WorkflowState.none
     
     respond_with(@issue)
   end

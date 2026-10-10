@@ -25,14 +25,16 @@ module Logic
     end
     
     def next_state(prev_workflow_state, current_workflow_state, next_status_cd = nil)
-      role_id = self.role.nil? ? ::Role.first.id : self.role.id
+      role_id = self.role.nil? ? ::Role.first&.id : self.role.id
       if next_status_cd.nil?
         next_state_workflow_state = current_workflow_state.state_flow_workflow_states.joins(:state_flow).where("state_flows.role_id = ?", role_id)
-          .avaiable(current_workflow_state.id).first.next_workflow_state
+          .avaiable(current_workflow_state.id).first&.next_workflow_state
       else
         next_state_workflow_state = current_workflow_state.state_flow_workflow_states.joins(:state_flow).where("state_flows.role_id = ?", role_id)
-          .avaiable(current_workflow_state.id).joins(:next_workflow_state).where("workflow_states.state_cd = ?", next_status_cd).first.next_workflow_state
+          .avaiable(current_workflow_state.id).joins(:next_workflow_state).where("workflow_states.state_cd = ?", next_status_cd).first&.next_workflow_state
       end
+      # 遷移先が定義されていない場合は状態を変更しない
+      return nil if next_state_workflow_state.nil?
       
       self.issue.prev_workflow_state = current_workflow_state
       self.issue.current_workflow_state = next_state_workflow_state

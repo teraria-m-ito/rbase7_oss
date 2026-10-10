@@ -98,15 +98,15 @@ class AdminUser < ApplicationRecord
   end
 
   def admin?
-    self.role.role_short_name.downcase == 'admin'
+    self.role&.role_short_name.to_s.downcase == 'admin'
   end
 
   def manager?
-    self.role.role_short_name.downcase == 'manager'
+    self.role&.role_short_name.to_s.downcase == 'manager'
   end
 
   def member?
-    self.role.role_short_name.downcase == 'member'
+    self.role&.role_short_name.to_s.downcase == 'member'
   end
 
   def selected_site
@@ -130,8 +130,10 @@ class AdminUser < ApplicationRecord
   end
 
   def send_reset_password_instructions_notification(token)
-    mail_template = ::MailTemplate.where(template_name: "PASSWORD_RESET").for_site(self.current_site_id).first
-    ::AdminUserMailer.password_reset(mail_template, self.current_site_id, self, token).deliver if mail_template.enable
+    # メールアドレスのみでのパスワード再設定ではサイトが指定されないため、所属サイトで補う
+    site_id = self.current_site_id.presence || self.site_ids.first
+    mail_template = ::MailTemplate.where(template_name: "PASSWORD_RESET").for_site(site_id).first
+    ::AdminUserMailer.password_reset(mail_template, site_id, self, token).deliver if mail_template&.enable
   end
 
   private

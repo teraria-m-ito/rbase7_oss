@@ -15,7 +15,7 @@ module Admin
 
       if params[:admin_users_search_conditions]
         @condition = ::AdminUsers::SearchConditions.new(search_condition_params)
-        @condition.site_id = @condition.site_id.reject!(&:empty?)
+        @condition.site_id = Array(@condition.site_id).reject(&:blank?)
         return render 'index' unless @condition.valid?
         @condition.current_admin_user = current_admin_user
 

@@ -12,7 +12,7 @@ module AdminUsers
 
     def search
       admin_users = ::AdminUser.all
-      self.site_id.delete_if{|x| x.blank?} if self.site_id.present?
+      self.site_id = Array(self.site_id).reject(&:blank?)
 
       if self.site_id.present?
         admin_users = admin_users.joins(:admin_user_sites).where("admin_user_sites.site_id IN (?)", self.site_id)

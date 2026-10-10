@@ -49,10 +49,18 @@ class SsoController < ApplicationController
           admin_user.status_div_key = :accepted
           admin_user.password = SecureRandom.urlsafe_base64 if admin_user.new_record?
 
-          admin_user.save!
+          # 割り当てるロールが無い、または必須項目が欠けている場合はログイン失敗として扱う
+          unless admin_user.role_id && admin_user.save
+            ::Rails.logger.warn("SSO user registration failed: role_id=#{admin_user.role_id.inspect} errors=#{admin_user.errors.full_messages.inspect}")
+            admin_user = nil
+          end
         end
-        sign_in(admin_user) unless current_admin_user
-        flash[:notice] = t("devise.sessions.signed_in")
+        if admin_user
+          sign_in(admin_user) unless current_admin_user
+          flash[:notice] = t("devise.sessions.signed_in")
+        else
+          flash[:notice] = t("views.common.fail_login_message")
+        end
 
         # authorize_success, log the user
         # session[:userid] = response.nameid
