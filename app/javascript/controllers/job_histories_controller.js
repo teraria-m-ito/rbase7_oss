@@ -18,7 +18,9 @@ export default class extends RbaseController {
     if (Rbase.getParams('edited') != 'true') {
       Rbase.restoreWebStorageFormValueNoTrigger(SEARCH_FORM_NAME);
     }
-    $("form").on("change", function(e) {
+    // index() は Turbo Stream の適用ごとに呼ばれるため、名前空間付きで付け直して重複登録を防ぐ
+    $(document).off("change.jobHistoriesSearch");
+    $(document).on("change.jobHistoriesSearch", "form.new_job_histories_search_conditions", function(e) {
       Rbase.saveWebStorageFormValue($(e.target).prop('id'), SEARCH_FORM_NAME);
     });
   }

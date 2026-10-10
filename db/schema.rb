@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
+ActiveRecord::Schema[7.0].define(version: 2026_10_10_174500) do
   create_table "admin_settings", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.boolean "use_login_id"
     t.string "locale"
@@ -18,6 +18,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_admin_settings_on_deleted_at"
     t.index ["use_login_id"], name: "index_admin_settings_on_use_login_id"
   end
@@ -31,6 +34,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["admin_user_id"], name: "index_admin_user_attachments_on_admin_user_id"
     t.index ["deleted_at"], name: "index_admin_user_attachments_on_deleted_at"
   end
@@ -42,6 +48,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["admin_user_id"], name: "index_admin_user_custom_fields_on_admin_user_id"
     t.index ["custom_field_id"], name: "index_admin_user_custom_fields_on_custom_field_id"
     t.index ["deleted_at"], name: "index_admin_user_custom_fields_on_deleted_at"
@@ -53,6 +62,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["admin_user_id"], name: "index_admin_user_sites_on_admin_user_id"
     t.index ["deleted_at"], name: "index_admin_user_sites_on_deleted_at"
     t.index ["site_id"], name: "index_admin_user_sites_on_site_id"
@@ -77,6 +89,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "updated_at", null: false
     t.string "login_from", comment: "ログイン元"
     t.string "sso_session_id", comment: "SSOセッションID"
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_admin_users_on_deleted_at"
     t.index ["role_id"], name: "index_admin_users_on_role_id"
   end
@@ -87,6 +102,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["custom_field_id"], name: "index_custom_field_sites_on_custom_field_id"
     t.index ["deleted_at"], name: "index_custom_field_sites_on_deleted_at"
     t.index ["site_id"], name: "index_custom_field_sites_on_site_id"
@@ -109,6 +127,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.integer "display_order", comment: "表示順"
     t.boolean "search_cond", comment: "検索条件表示"
     t.boolean "display_result_list", comment: "検索結果表示"
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_custom_fields_on_deleted_at"
   end
 
@@ -134,6 +155,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["custom_field_id"], name: "index_issue_custom_fields_on_custom_field_id"
     t.index ["deleted_at"], name: "index_issue_custom_fields_on_deleted_at"
     t.index ["issue_id"], name: "index_issue_custom_fields_on_issue_id"
@@ -146,6 +170,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_issue_targets_on_deleted_at"
     t.index ["issue_id"], name: "index_issue_targets_on_issue_id"
     t.index ["target_type", "target_id"], name: "index_issue_targets_on_target"
@@ -157,6 +184,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_issue_type_sites_on_deleted_at"
     t.index ["issue_type_id"], name: "index_issue_type_sites_on_issue_type_id"
     t.index ["site_id"], name: "index_issue_type_sites_on_site_id"
@@ -170,6 +200,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_issue_types_on_deleted_at"
     t.index ["issue_type_short_name"], name: "index_issue_types_on_issue_type_short_name"
   end
@@ -251,6 +284,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_mail_template_sites_on_deleted_at"
     t.index ["mail_template_id"], name: "index_mail_template_sites_on_mail_template_id"
     t.index ["site_id"], name: "index_mail_template_sites_on_site_id"
@@ -267,6 +303,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "disable_notice", comment: "通知無効フラグ"
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_mail_templates_on_deleted_at"
   end
 
@@ -281,6 +320,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["admin_user_id"], name: "index_queries_on_admin_user_id"
     t.index ["deleted_at"], name: "index_queries_on_deleted_at"
   end
@@ -294,6 +336,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_report_attachments_on_deleted_at"
     t.index ["report_id"], name: "index_report_attachments_on_report_id"
   end
@@ -304,6 +349,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_report_sites_on_deleted_at"
     t.index ["report_id"], name: "index_report_sites_on_report_id"
     t.index ["site_id"], name: "index_report_sites_on_site_id"
@@ -316,6 +364,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_reports_on_deleted_at"
   end
 
@@ -329,6 +380,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_role_actions_on_deleted_at"
   end
 
@@ -338,6 +392,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_role_role_actions_on_deleted_at"
     t.index ["role_action_id"], name: "index_role_role_actions_on_role_action_id"
     t.index ["role_id"], name: "index_role_role_actions_on_role_id"
@@ -350,6 +407,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_roles_on_deleted_at"
   end
 
@@ -358,6 +418,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.text "data", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
@@ -367,6 +428,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_sites_on_deleted_at"
   end
 
@@ -377,6 +441,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["current_workflow_state_id"], name: "index_state_flow_workflow_states_on_current_workflow_state_id"
     t.index ["deleted_at"], name: "index_state_flow_workflow_states_on_deleted_at"
     t.index ["next_workflow_state_id"], name: "index_state_flow_workflow_states_on_next_workflow_state_id"
@@ -389,6 +456,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_state_flows_on_deleted_at"
     t.index ["role_id"], name: "index_state_flows_on_role_id"
     t.index ["workflow_id"], name: "index_state_flows_on_workflow_id"
@@ -404,6 +474,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_system_setting_attachments_on_deleted_at"
     t.index ["system_setting_id"], name: "index_system_setting_attachments_on_system_setting_id"
   end
@@ -414,6 +487,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_system_setting_sites_on_deleted_at"
     t.index ["site_id"], name: "index_system_setting_sites_on_site_id"
     t.index ["system_setting_id"], name: "index_system_setting_sites_on_system_setting_id"
@@ -426,6 +502,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_system_settings_on_deleted_at"
   end
 
@@ -438,6 +517,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.boolean "is_proc", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.index ["locale", "key"], name: "index_translations_on_locale_and_key", unique: true
   end
 
   create_table "versions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -456,6 +538,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_workflow_sites_on_deleted_at"
     t.index ["site_id"], name: "index_workflow_sites_on_site_id"
     t.index ["workflow_id"], name: "index_workflow_sites_on_workflow_id"
@@ -472,6 +557,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_workflow_states_on_deleted_at"
   end
 
@@ -482,6 +570,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_31_211347) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
     t.index ["deleted_at"], name: "index_workflows_on_deleted_at"
     t.index ["issue_type_id"], name: "index_workflows_on_issue_type_id"
   end

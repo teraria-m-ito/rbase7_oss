@@ -18,7 +18,9 @@ export default class extends RbaseController {
     if (Rbase.getParams('edited') != 'true') {
       Rbase.restoreWebStorageFormValueNoTrigger(SEARCH_FORM_NAME);
     }
-    $("form").on("change", function(e) {
+    // index() は Turbo Stream の適用ごとに呼ばれるため、名前空間付きで付け直して重複登録を防ぐ
+    $(document).off("change.issuesSearch");
+    $(document).on("change.issuesSearch", "#new_issues_search_conditions", function(e) {
       Rbase.saveWebStorageFormValue($(e.target).prop('id'), SEARCH_FORM_NAME);
     });
 
@@ -52,7 +54,8 @@ export default class extends RbaseController {
       }
     });
     
-    $("#button_show_query").on("click", async function() {
+    $(document).off("click.issuesShowQuery");
+    $(document).on("click.issuesShowQuery", "#button_show_query", async function() {
       const response = await get(self.paramsValue.url2, {
         query: {
           target_class: self.paramsValue.data_type

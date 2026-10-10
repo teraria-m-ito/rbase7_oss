@@ -3,6 +3,8 @@ class ApplicationRecord < ActiveRecord::Base
   include ApplicationConcern
   acts_as_paranoid
   primary_abstract_class
+  # 作成者・更新者・削除者（creator_id / updater_id / deleter_id）を全モデルで記録する
+  stampable
 
   attr_accessor :current_admin_user
   attr_accessor :current_site_id

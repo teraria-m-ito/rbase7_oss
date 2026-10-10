@@ -2,8 +2,6 @@ class JobManage < ApplicationRecord
   include ::Rbase::PluginModule::Extendable # 継承を許可する宣言（必須）
   include ::SelectableAttr::Base
 
-  stampable
-
   belongs_to :request_by_user, class_name: "AdminUser", foreign_key: "request_by", optional: true
 
   has_many :job_manage_errors, dependent: :destroy

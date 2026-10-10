@@ -109,10 +109,9 @@ namespace :deploy do
   namespace :rbase_plugins do
     task :yml_upload do
       on roles(:app) do
-        within shared_path do
-          unless test "[ -f #{shared_path}/rbase_plugins.yml ]"
-            upload!('rbase_plugins.yml', ".rbase_plugins.yml")
-          end
+        # upload! は within のディレクトリを考慮しないため、アップロード先は絶対パスで指定する
+        unless test "[ -f #{shared_path}/rbase_plugins.yml ]"
+          upload!('rbase_plugins.yml', shared_path.join('rbase_plugins.yml').to_s)
         end
       end
     end
@@ -158,7 +157,16 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       within release_path do
-        execute :cp, "config/environments/production_#{fetch(:target_env)}.rb",  "config/environments/production.rb"
+        # 環境別の production_<target_env>.rb がある場合だけ production.rb を差し替える
+        target_env = fetch(:target_env)
+        unless target_env.to_s.empty?
+          env_file = "config/environments/production_#{target_env}.rb"
+          if test("[ -f #{release_path.join(env_file)} ]")
+            execute :cp, env_file, "config/environments/production.rb"
+          else
+            info "#{env_file} not found. config/environments/production.rb is used as is."
+          end
+        end
         # execute :bundle, :exec, :rake, 'bower:install'
         # execute :bundle, :exec, :rake, 'db:migrate:primary RAILS_ENV=production'
         execute :bundle, :exec, :rake, 'rbase:setup_role RAILS_ENV=production'

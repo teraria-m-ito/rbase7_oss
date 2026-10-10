@@ -527,6 +527,7 @@ ja:
           button_destroy: "削除"
       show:
         title: "権限詳細"
+        header_guide: "権限の内容を確認できます。"
         button_back: "戻る"
       new:
         title: "新規権限登録"
@@ -614,6 +615,7 @@ ja:
           button_destroy: "削除"
       show:
         title: "ワークフロー詳細"
+        header_guide: "ワークフローの内容を確認できます。"
         button_back: "戻る"
       new:
         title: "新規ワークフロー登録"
@@ -719,6 +721,7 @@ ja:
           button_destroy: "削除"
       show:
         title: "メールテンプレート詳細"
+        header_guide: "メールテンプレートの内容を確認できます。"
         button_back: "戻る"
       new:
         title: "新規メールテンプレート登録"
@@ -784,6 +787,7 @@ ja:
           button_destroy: "削除"
       show:
         title: "帳票詳細"
+        header_guide: "帳票の内容を確認できます。"
         button_back: "戻る"
       new:
         title: "新規帳票登録"
@@ -803,6 +807,7 @@ ja:
         setting_category_div: "カテゴリ名"
         setting_div_name: "設定名"
         setting_value: "設定値"
+        action: "アクション"
         filename: "ファイル名"
         add_file: "ファイル追加..."
       index:

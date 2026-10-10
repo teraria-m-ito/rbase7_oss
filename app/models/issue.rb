@@ -3,8 +3,6 @@ class Issue < ApplicationRecord
   include ::SelectableAttr::Base
   include CustomFieldDynamicAccessors
 
-  stampable
-
   after_find :set_limited_at
   before_save :set_prev_workflow_state
 
