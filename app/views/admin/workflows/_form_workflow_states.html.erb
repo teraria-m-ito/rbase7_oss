@@ -3,32 +3,32 @@
     <%= link_to t(:"views.workflows.edit.table_workflow_states.button_new"), new_admin_workflow_workflow_state_path(@workflow, clear: true), class: "btn btn-primary btn-sm", id: "new_workflow_state_btn" %>
   </div>
   <br /><br />
-  <table class="table table-hover table-striped table-condensed">
+  <table class="table table-hover table-striped table-condensed" data-sort-url="<%= sort_admin_workflow_workflow_states_path(@workflow) %>">
     <thead>
       <tr>
+        <th style="width: 50px;"></th>
         <th><%= t(:"views.workflows.edit.table_workflow_states.title.state_cd")%></th>
         <th><%= t(:"views.workflows.edit.table_workflow_states.title.state_name")%></th>
         <th><%= t(:"views.workflows.edit.table_workflow_states.title.default_value")%></th>
         <th><%= t(:"views.workflows.edit.table_workflow_states.title.end_point")%></th>
         <th><%= t(:"views.workflows.edit.table_workflow_states.title.deleted_state")%></th>
-        <th><%= t(:"views.workflows.edit.table_workflow_states.title.sort")%></th>
         <th colspan="3"><%= t(:"views.workflows.edit.table_workflow_states.title.action")%></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="workflow-state-sortable-list">
       <% if @workflow_states.empty? %>
         <tr>
-          <td colspan="5">No data</td>
+          <td colspan="7">No data</td>
         </tr>
       <% end %>
       <% @workflow_states.each do |workflow_state| %>
-        <tr>
+        <tr draggable="true" data-workflow-state-id="<%= workflow_state.id %>">
+          <td class="text-center" style="cursor: move;">&#9776;</td>
           <td><%= link_to "#{workflow_state.state_cd}", admin_workflow_workflow_state_path(@workflow, workflow_state) %></td>
           <td><%= workflow_state.state_name %></td>
           <td><%= show_check(workflow_state.default_value) %></td>
           <td><%= show_check(workflow_state.end_point) %></td>
           <td><%= show_check(workflow_state.deleted_state) %></td>
-          <td><%= show_sort(workflow_state) %></td>
           <td>
             <%= link_to t(:"views.workflows.edit.table_workflow_states.button_edit"), edit_admin_workflow_workflow_state_path(@workflow, workflow_state), class: "btn btn-primary btn-sm" %>
             <%= link_to t(:"views.workflows.edit.table_workflow_states.button_destroy"), admin_workflow_workflow_state_path(@workflow, workflow_state), data: { turbo_method: :delete, turbo_confirm: t(:"views.common.destroy_confirm_message") }, class: "btn btn-danger btn-sm" %>

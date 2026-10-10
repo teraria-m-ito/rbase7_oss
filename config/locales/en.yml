@@ -121,8 +121,6 @@ en:
       admin/workflow_states_create: "Create"
       admin/workflow_states_update: "Update"
       admin/workflow_states_destroy: "Delete"
-      admin/workflow_states_move_up: "Move up"
-      admin/workflow_states_move_down: "Move down"
       admin/workflows_index: "Search"
       admin/workflows_show: "Details"
       admin/workflows_create: "Create"
@@ -669,6 +667,7 @@ en:
         action: "Action"
       index:
         title: "Custom fields"
+        header_guide: "Drag rows to change the display order. After changing the order, click the \"Apply cache\" button to apply it to the screens."
         button_new: "Add custom field"
         button_reflect_cache: "Apply cache"
         reflect_cache_confirm_message: "The application will be restarted to apply changes such as the display order to the custom field definitions. Are you sure?"
