@@ -1,7 +1,5 @@
 module Admin
   class WorkflowStatesController < AdminApplicationController
-    protect_from_forgery except: [:move_up, :move_down]
-    
     before_action :set_workflow
     before_action :set_workflow_state, only: [:show, :edit, :update, :destroy, :move_up, :move_down]
 
@@ -41,7 +39,7 @@ module Admin
         end
       end
 
-      redirect_to edit_admin_workflow_path(@workflow)
+      redirect_to edit_admin_workflow_path(@workflow), status: :see_other
     end
 
     # desc :auth_as => :other, :display_name => 'admin/workflow_states_move_up'
@@ -58,7 +56,7 @@ module Admin
         end
       end
       @workflow_states = @workflow_state.workflow.workflow_states.order(:display_order)
-      render turbo_stream: turbo_stream.replace('entry-state-forms', partial: 'admin/workflows/form_workflow_states'), status: :see_other
+      render turbo_stream: turbo_stream.replace('entry-state-forms', partial: 'admin/workflows/form_workflow_states')
     end
 
     #    desc :auth_as => :other, :display_name => 'admin/workflow_states_move_down'
@@ -75,7 +73,7 @@ module Admin
         end
       end
       @workflow_states = @workflow_state.workflow.workflow_states.order(:display_order)
-      render turbo_stream: turbo_stream.replace('entry-state-forms', partial: 'admin/workflows/form_workflow_states'), status: :see_other
+      render turbo_stream: turbo_stream.replace('entry-state-forms', partial: 'admin/workflows/form_workflow_states')
     end
 
 

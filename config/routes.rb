@@ -42,8 +42,8 @@ Rails.application.routes.draw do
       end
       resources :workflow_states do
         member do
-          get 'move_up'
-          get 'move_down'
+          patch 'move_up'
+          patch 'move_down'
         end
       end
     end

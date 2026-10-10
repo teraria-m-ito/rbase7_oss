@@ -8,6 +8,8 @@ class IssueCustomField < ApplicationRecord
   belongs_to :issue, inverse_of: :issue_custom_fields
   belongs_to :custom_field, optional: true
 
+  validate :custom_fields_validate
+
   def custom_fields_validate
     self.validate_field
   end

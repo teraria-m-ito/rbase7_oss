@@ -14,7 +14,7 @@
   <tbody>
     <% @system_settings.each do |system_setting|%>
       <tr>
-        <td><%= system_setting.sites.map(&:site_name).join("<br />").html_safe %></td>
+        <td><%= safe_join(system_setting.sites.map(&:site_name), tag.br) %></td>
         <td><%= system_setting.setting_category_div_name %></td>
         <td><%= link_to system_setting.setting_div_name, admin_system_setting_path(system_setting) %></td>
         <% if system_setting.input_type == :file %>

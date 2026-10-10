@@ -61,12 +61,12 @@ module SamlIdp
     end
 
     def acs_url
-      service_provider.acs_url ||
+      service_provider&.acs_url.presence ||
         authn_request["AssertionConsumerServiceURL"].to_s
     end
 
     def logout_url
-      service_provider.assertion_consumer_logout_service_url
+      service_provider&.assertion_consumer_logout_service_url
     end
 
     def response_url
@@ -101,30 +101,30 @@ module SamlIdp
         return false
       end
 
-      if response_url.nil?
+      if response_url.blank?
         log "Unable to find response url for #{issuer}: #{raw_xml}"
         return false
       end
 
-      # if !service_provider.acceptable_response_hosts.include?(response_host)
-      #   log "#{service_provider.acceptable_response_hosts} compare to #{response_host}"
-      #   log "No acceptable AssertionConsumerServiceURL, either configure them via config.service_provider.response_hosts or match to your metadata_url host"
-      #   return false
-      # end
+      # SP 設定に acs_url が無い場合、送り先はリクエスト内の AssertionConsumerServiceURL になるため、
+      # 署名済みアサーションを第三者へ送らないよう、許可されたホストか照合する
+      if authn_request? && service_provider.acs_url.blank? &&
+          !service_provider.acceptable_response_hosts.include?(response_host)
+        log "#{service_provider.acceptable_response_hosts} compare to #{response_host}"
+        log "No acceptable AssertionConsumerServiceURL, either configure them via config.service_provider.response_hosts or match to your metadata_url host"
+        return false
+      end
 
       return true
     end
 
     def valid_signature?
-      true
-      # # Force signatures for logout requests because there is no other protection against a cross-site DoS.
-      # # Validate signature when metadata specify AuthnRequest should be signed
-      # metadata = service_provider.current_metadata
-      # if logout_request? || authn_request? && metadata.respond_to?(:sign_authn_request?) && metadata.sign_authn_request?
-      #   document.valid_signature?(service_provider.fingerprint)
-      # else
-      #   true
-      # end
+      # Force signatures for logout requests because there is no other protection against a cross-site DoS.
+      # Validate signature when metadata specify AuthnRequest should be signed
+      metadata = service_provider.current_metadata
+      require_signature = logout_request? ||
+        (authn_request? && metadata.respond_to?(:sign_authn_request?) && metadata.sign_authn_request?)
+      service_provider.valid_signature?(document, require_signature)
     end
 
     def service_provider?
@@ -133,7 +133,11 @@ module SamlIdp
 
     def service_provider
       return unless issuer.present?
-      @_service_provider ||= ServiceProvider.new((service_provider_finder[issuer] || {}).merge(identifier: issuer))
+      # finder に登録されていない issuer は SP 無しとして扱い、valid? で拒否する
+      @_service_provider ||= begin
+        settings = service_provider_finder[issuer]
+        ServiceProvider.new(settings.merge(identifier: issuer)) if settings.present?
+      end
     end
 
     def issuer
@@ -150,10 +154,9 @@ module SamlIdp
     end
 
     def response_host
-      uri = URI(response_url)
-      if uri
-        uri.host
-      end
+      URI(response_url).host
+    rescue URI::InvalidURIError
+      nil
     end
     private :response_host
 

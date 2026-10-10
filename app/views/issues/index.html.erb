@@ -23,7 +23,7 @@
             <%= link_to t(:"views.issues.index.button_hide_condition"), "#condition-card", {id: "condtion-button", class: "btn btn-default btn-sm", role: "button", :"data-toggle"=> "collapse", :"aria-expanded" => "false", :"aria-controls" => "condition-card"} %>
           </div>
           <div class="collapse show" id="condition-card">
-            <%= simple_form_for @condition, url: issues_path, method: :get do |f| %>
+            <%= simple_form_for @condition, builder: RbaseFormBuilder, url: issues_path, method: :get do |f| %>
               <div class="card-body">
                 <%= f.error_notification %>
                 <div class="form-group">

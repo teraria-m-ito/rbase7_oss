@@ -15,7 +15,7 @@
     </div>
     <div class="form-group form-inline input-group-sm align-items-start">
       <%= form.input :priority, as: :select, collection: ::Issue.priority_options, input_html: {col: 3} %>
-      <%= form.input :limited_at, as: :string, input_html: {type: "date", col: 2} %>
+      <%= form.input :limited_at, as: :string, input_html: {type: "date", col: 2, value: form.object.limited_at&.strftime("%Y-%m-%d")} %>
     </div>
     <div class="form-group form-inline input-group-sm align-items-start">
       <%= form.input :expression, as: :text, input_html: {rows: 5, col: 10} %>

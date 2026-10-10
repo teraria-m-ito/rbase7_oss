@@ -27,23 +27,27 @@ class AdminUsers::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
-    begin
-      ActiveRecord::Base.transaction do
-        self.resource.uuid = params[:admin_user][:uuid]
-        AdminUserAttachment.where(["token = ?", self.resource.uuid]).each do |attach|
-          attach.admin_user = self.resource
+    uuid = params.dig(:admin_user, :uuid)
+    # 本人情報の更新と添付ファイルの紐付けを同一トランザクションで行い、どちらかが失敗したらまとめて戻す
+    ActiveRecord::Base.transaction do
+      super do |updated_resource|
+        updated_resource.uuid = uuid
+        next if uuid.blank? || updated_resource.errors.any?
+
+        AdminUserAttachment.where(token: uuid).each do |attach|
+          attach.admin_user = updated_resource
           attach.save!
         end
       end
-      ActiveRecord::Base.transaction do
-        super
-        flash[:notice] = t("views.common.update_complete_message")
-      end
-    rescue ActiveRecord::RecordInvalid => e
-    rescue => e
-      STDERR.puts e.backtrace.join("\n")
     end
-    setup_values
+    flash[:notice] = t("views.common.update_complete_message") if response.redirect?
+  rescue => e
+    logger.error("[AdminUsers::RegistrationsController#update] #{e.class}: #{e.message}\n#{e.backtrace&.join("\n")}")
+    raise if performed?
+
+    set_admin_user_custom_fields
+    flash.now[:alert] = t("views.common.error_message")
+    render :edit, status: :unprocessable_entity
   end
 
   # DELETE /resource

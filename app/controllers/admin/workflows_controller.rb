@@ -38,7 +38,7 @@ module Admin
       @workflow = Workflow.new(workflow_params)
       if @workflow.save
         flash[:notice] = t("views.common.create_complete_message")
-        redirect_to edit_admin_workflow_path(@workflow)
+        redirect_to edit_admin_workflow_path(@workflow), status: :see_other
       else
         render :new, status: :unprocessable_entity
       end

@@ -1,6 +1,9 @@
 class QueriesController < UserApplicationController
   include ::Rbase::PluginModule::Extendable # 継承を許可する宣言（必須）
 
+  # 検索項目の切り替えで issues/_search_conditions を描画するため（operator_select）
+  helper ::IssuesHelper
+
   before_action :set_query, only: [:show, :edit, :update, :destroy, :load]  
   before_action :set_queries, only: [:index, :new]  
   before_action :set_referrer, only: [:new, :edit, :destroy]
@@ -61,7 +64,7 @@ class QueriesController < UserApplicationController
       # session[:query_fields] =  Psych.load(@query.query_fields).to_yaml
       # session[:selected_query_fields] =  Psych.safe_load(@query.selected_query_fields).to_yaml
 
-      redirect_to url_for(controller: "/#{@data_type}", action: :index), turbo: false
+      redirect_to url_for(controller: "/#{@data_type}", action: :index), turbo: false, status: :see_other
     else
       render :new, status: :unprocessable_entity
     end
@@ -90,7 +93,7 @@ class QueriesController < UserApplicationController
         # session[:query_fields] =  Psych.safe_load(@query.query_fields).to_yaml
         # session[:selected_query_fields] =  Psych.safe_load(@query.selected_query_fields).to_yaml
        
-        redirect_to url_for(controller: "/#{@data_type}", action: :index), turbo: false
+        redirect_to url_for(controller: "/#{@data_type}", action: :index), turbo: false, status: :see_other
       else
         render :edit, status: :unprocessable_entity
       end

@@ -12,12 +12,12 @@ module Issues
     attr_accessor :select_field_ope_type_expression
     attr_accessor :select_field_ope_type_creator_id
     attr_accessor :select_field_ope_type_assigned_id
-    attr_accessor :select_field_ope_type_changed
+    attr_accessor :select_field_ope_type_updater_id
 
     
     attr_accessor :select_field_type
     attr_accessor :site_id
-    ATTRIBUTE_NAMES = [:issue_type_id, :workflow_state_id, :priority, :title, :expression, :creator_id, :assigned_id, :changed]
+    ATTRIBUTE_NAMES = [:issue_type_id, :workflow_state_id, :priority, :title, :expression, :creator_id, :assigned_id, :updater_id]
     attr_accessor *ATTRIBUTE_NAMES
     # attr_accessor :issue_type_id
     # attr_accessor  :workflow_state_id
@@ -45,7 +45,8 @@ module Issues
     attr_accessor  :creator_check
     attr_accessor  :creator_multiple
 
-    attr_accessor  :changed_check
+    attr_accessor  :updater_check
+    attr_accessor  :updater_multiple
 
 #    validates :issue_type_id, presence: true
     
@@ -59,10 +60,6 @@ module Issues
       entry 'not equal', :not_equal, 'Not equal', ope: "<>"
       entry 'include', :include, 'Include', ope: "like"
       entry 'exclude', :exclude, 'Exclude', ope: "not like"
-    end
-      
-    selectable_attr :condition_ope_type_changed do
-      entry 'changed', :changed, 'Changed', ope: nil
     end
       
     selectable_attr :condition_field_type do
@@ -85,7 +82,8 @@ module Issues
       entry 'expression', :expression, 'Expression', field_type: :text
       entry 'assigned', :assigned_id, 'Assigned', field_type: :select, multi: true do
         def values(admin_user)
-          AdminUser.define_site(1).map{|x|[x.email, x.id]}
+          site_id = Thread.current[:request].session[:active_site_id]
+          AdminUser.define_site(site_id).map{|x|[x.email, x.id]}
         end
       end
       entry 'creator', :creator_id, 'Creator', field_type: :select, multi: true do
@@ -122,13 +120,7 @@ module Issues
       issues = issues.where(build_condition_string(:text, "expression", self.expression)) unless self.expression.blank?
       issues = issues.where(build_condition_string(:select, "creator_id", self.creator_id, self.creator_multiple)) unless self.creator_id.blank?
       issues = issues.where(build_condition_string(:select, "assigned_id", self.assigned_id, self.assigned_multiple)) unless self.assigned_id.blank?
-
-      if self.changed.present?
-        case self.changed
-        when ::Issues::SearchConditions.condition_ope_type_changed_id_by_key(:changed)
-          issues = issues.joins(voucher: {voucher_pages: :voucher_page_fields}).where("voucher_page_fields.master_value <> voucher_page_fields.value")
-        end
-      end
+      issues = issues.where(build_condition_string(:select, "updater_id", self.updater_id, self.updater_multiple)) unless self.updater_id.blank?
 
       issues = issues.distinct
       issues = issues.order("issues.created_at desc, issues.id desc")
