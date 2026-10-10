@@ -229,7 +229,7 @@ class SystemSetting < ApplicationRecord
     if seting_div_entry[:input_type] == :file
       setting = self.joins(:system_setting_sites).where("system_setting_sites.site_id = ?", site_id).where("system_settings.setting_div = ?", self.setting_div_id_by_key(setting_div_key)).first
       return nil if setting.blank? || setting.system_setting_attachments.blank?
-      return setting.system_setting_attachments[0].document.path
+      return setting.system_setting_attachments[0].document.local_path
     end
 
     category_div = SystemSetting.setting_category_div_id_by_key(seting_div_entry[:category])

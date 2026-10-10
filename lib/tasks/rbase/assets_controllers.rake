@@ -156,8 +156,6 @@ namespace :rbase do
         # manifest.js に rbase_gems/rbase_*/app/assets/images の link_tree を反映
         puts "update manifest.js (rbase plugin images link_tree)......"
         manifest_path = File.join(::Rails.root, "app", "assets", "config", "manifest.js")
-        manifest_dir = Pathname.new(File.expand_path(File.dirname(manifest_path)))
-
         image_suffixes = %w[.png .jpg .jpeg .gif .svg .ico .webp .bmp .avif].freeze
 
         # lib/customizes 側の実体は rbase_gems/rbase_* からのシンボリックリンクで参照する想定
@@ -224,17 +222,17 @@ namespace :rbase do
         insertion_lines = []
         if images_dirs.any?
           insertion_lines << "#{start_marker}\n"
-          images_dirs.each do |abs_dir|
-            rel = Pathname.new(File.expand_path(abs_dir)).relative_path_from(manifest_dir).to_s.tr("\\", "/")
-            insertion_lines << "//= link_tree #{rel}\n"
-            image_paths =
-              Dir.glob(File.join(abs_dir, "**", "*"), File::FNM_DOTMATCH).select do |path|
-                File.file?(path) && image_suffixes.include?(File.extname(path).downcase)
-              end.sort
-            image_paths.each do |abs_file|
-              # link_tree のディレクトリ通じて解決するため、ファイル名のみでよい
-              insertion_lines << "//= link #{File.basename(abs_file)}\n"
+          # link_tree だと同名の画像が複数のプラグインにあるとき Sprockets::DoubleLinkError になるため、
+          # 論理パスで1回だけ link する（どのファイルが使われるかは assets.paths の順で決まる）
+          logical_paths = images_dirs.flat_map do |abs_dir|
+            Dir.glob(File.join(abs_dir, "**", "*"), File::FNM_DOTMATCH).select do |path|
+              File.file?(path) && image_suffixes.include?(File.extname(path).downcase)
+            end.map do |abs_file|
+              Pathname.new(abs_file).relative_path_from(Pathname.new(abs_dir)).to_s.tr("\\", "/")
             end
+          end
+          logical_paths.uniq.sort.each do |logical_path|
+            insertion_lines << "//= link #{logical_path}\n"
           end
           insertion_lines << "#{end_marker}\n"
         end

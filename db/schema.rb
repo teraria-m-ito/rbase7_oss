@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_09_30_123000) do
+ActiveRecord::Schema[7.0].define(version: 2026_10_01_201500) do
   create_table "admin_settings", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.boolean "use_login_id"
     t.string "locale"
@@ -45,6 +45,18 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_30_123000) do
     t.index ["admin_user_id"], name: "index_admin_user_custom_fields_on_admin_user_id"
     t.index ["custom_field_id"], name: "index_admin_user_custom_fields_on_custom_field_id"
     t.index ["deleted_at"], name: "index_admin_user_custom_fields_on_deleted_at"
+  end
+
+  create_table "admin_user_roles", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "管理ユーザロール", force: :cascade do |t|
+    t.bigint "admin_user_id", comment: "管理ユーザID"
+    t.bigint "role_id", comment: "ロールID"
+    t.datetime "deleted_at", comment: "削除日時"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id", "role_id"], name: "index_admin_user_roles_on_admin_user_id_and_role_id", unique: true
+    t.index ["admin_user_id"], name: "index_admin_user_roles_on_admin_user_id"
+    t.index ["deleted_at"], name: "index_admin_user_roles_on_deleted_at"
+    t.index ["role_id"], name: "index_admin_user_roles_on_role_id"
   end
 
   create_table "admin_user_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -565,8 +577,6 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_30_123000) do
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "branch_condition", comment: "分岐条件"
-    t.text "display_condition", comment: "表示条件"
     t.index ["deleted_at"], name: "index_ldi_general_form_manages_on_deleted_at"
     t.index ["ldi_general_form_id"], name: "index_ldi_general_form_manages_on_ldi_general_form_id"
     t.index ["multi_assessment_cd"], name: "index_ldi_general_form_manages_on_multi_assessment_cd"
@@ -693,7 +703,6 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_30_123000) do
     t.datetime "updated_at", null: false
     t.string "form_type", comment: "フォーム種別"
     t.boolean "enable_pdf", comment: "Pdf出力可否"
-    t.boolean "need_assign", comment: "要配布フラグ"
     t.index ["deleted_at"], name: "index_ldi_general_forms_on_deleted_at"
     t.index ["ldi_input_category_id"], name: "idx_ldi_general_forms_icid"
     t.index ["ldi_input_category_id"], name: "index_ldi_general_forms_on_ldi_input_category_id"
@@ -873,7 +882,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_30_123000) do
     t.datetime "updated_at", null: false
     t.index ["dept_org_id"], name: "index_ldi_rubric_levels_on_dept_org_id"
     t.index ["inst_org_id"], name: "index_ldi_rubric_levels_on_inst_org_id"
-    t.index ["ldi_rubric_level_master_id"], name: "index_ldi_rubric_levels_on_ldi_rubric_level_master_id"
+    t.index ["ldi_rubric_level_master_id"], name: "index_ldi_rubric_levels_on_ldi_rubric_level_master_id", unique: true
   end
 
   create_table "ldi_usages", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTI利用ガイド", force: :cascade do |t|
@@ -1159,6 +1168,46 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_30_123000) do
     t.index ["deleted_at"], name: "index_mail_templates_on_deleted_at"
   end
 
+  create_table "mnb_import_batches", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "MNBインポートバッチ", force: :cascade do |t|
+    t.string "canvas_course_id", comment: "CanvasコースID"
+    t.string "course_label", comment: "コースラベル"
+    t.string "status", comment: "ステータス"
+    t.string "work_dir", comment: "作業ディレクトリ"
+    t.string "imscc_path", comment: "生成IMSCCパス"
+    t.bigint "job_manage_id", comment: "ジョブ管理ID"
+    t.bigint "site_id", comment: "サイトID"
+    t.string "canvas_migration_id", comment: "Canvas content_migration ID"
+    t.text "error_message", comment: "エラーメッセージ"
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
+    t.datetime "deleted_at", comment: "削除日時"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_mnb_import_batches_on_deleted_at"
+    t.index ["job_manage_id"], name: "index_mnb_import_batches_on_job_manage_id"
+    t.index ["site_id"], name: "index_mnb_import_batches_on_site_id"
+  end
+
+  create_table "mnb_import_items", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "MNBインポートアイテム", force: :cascade do |t|
+    t.bigint "mnb_import_batch_id", null: false, comment: "バッチID"
+    t.string "source_filename", comment: "元MHTファイル名"
+    t.string "content_type", comment: "コンテンツ種別(report等)"
+    t.string "title", comment: "タイトル"
+    t.boolean "prepare_ok", default: false, null: false, comment: "準備成功"
+    t.string "skip_reason", comment: "スキップ理由"
+    t.text "error_message", comment: "エラーメッセージ"
+    t.text "payload", comment: "抽出データJSON"
+    t.bigint "creator_id", comment: "作成ユーザID"
+    t.bigint "updater_id", comment: "更新ユーザID"
+    t.bigint "deleter_id", comment: "削除ユーザID"
+    t.datetime "deleted_at", comment: "削除日時"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_mnb_import_items_on_deleted_at"
+    t.index ["mnb_import_batch_id"], name: "index_mnb_import_items_on_mnb_import_batch_id"
+  end
+
   create_table "queries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "admin_user_id"
     t.string "title"
@@ -1349,21 +1398,6 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_30_123000) do
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "wid_lms_user_dashboards", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LMSユーザ別ダッシュボード", force: :cascade do |t|
-    t.bigint "lms_user_id", comment: "LMSユーザID"
-    t.bigint "site_id", comment: "サイトID"
-    t.string "dashboard_name", comment: "ダッシュボード名"
-    t.text "layout_json", comment: "レイアウトJSON"
-    t.bigint "creator_id", comment: "作成ユーザID"
-    t.bigint "updater_id", comment: "更新ユーザID"
-    t.bigint "deleter_id", comment: "削除ユーザID"
-    t.datetime "deleted_at", comment: "削除日時"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["deleted_at"], name: "index_wid_lms_user_dashboards_on_deleted_at"
-    t.index ["lms_user_id", "site_id", "dashboard_name"], name: "index_wid_lms_user_dashboards_on_user_site_name"
   end
 
   create_table "wid_widget_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "ウィジェットマスタサイト", force: :cascade do |t|
