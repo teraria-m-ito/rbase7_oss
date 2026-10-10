@@ -7,7 +7,7 @@ function admin_init() {
 
 function restoreWebStorageFormValue(model_name) {
   $(function() {
-    for(key in localStorage) {
+    for (var key in localStorage) {
       if (key.indexOf(model_name) != -1) {
         if (key.indexOf("-button-plus") != -1) {
           var keyAfter = key.replace(model_name + "/", "");
@@ -18,7 +18,8 @@ function restoreWebStorageFormValue(model_name) {
       }
     }
     $('input, select, textarea').each(function(index) {
-      input = $(this);
+      var input = $(this);
+      var val = null;
       val = localStorage.getItem(model_name + '/' + input.prop('id'));
       if (val != null) {
         if (input.prop('type') == 'checkbox') {
@@ -38,7 +39,8 @@ function restoreWebStorageFormValue(model_name) {
     });
   
     $('input, select, textarea').each(function(index) {
-      input = $(this);
+      var input = $(this);
+      var val = null;
       val = localStorage.getItem(model_name + '/' + input.prop('id'));
       if (val != null) {
         input.trigger('change');
@@ -52,7 +54,7 @@ var lockFlag = false;
 function restoreWebStorageFormValueWithLock(model_name) {
   $(function() {
     lockFlag = true;
-    for(key in localStorage) {
+    for (var key in localStorage) {
       if (key.indexOf(model_name) != -1) {
         if (key.indexOf("-button-plus") != -1) {
           var keyAfter = key.replace(model_name + "/", "");
@@ -63,7 +65,8 @@ function restoreWebStorageFormValueWithLock(model_name) {
       }
     }
     $('input, select').each(function(index) {
-      input = $(this);
+      var input = $(this);
+      var val = null;
       if (!input.hasClass("no-restore")) {
         val = localStorage.getItem(model_name + '/' + input.prop('id'));
         if (val != null) {
@@ -72,7 +75,7 @@ function restoreWebStorageFormValueWithLock(model_name) {
           }
           if (input.prop('type') == 'radio') {
             //ラジオボタンの場合、IDを削除したキーで保存しているので復元してcheckを入れる
-            ids = input.prop('id').split("_");
+            var ids = input.prop('id').split("_");
             ids.pop();
             ids = ids.join("_");
             val = localStorage.getItem(model_name + '/' + ids);
@@ -98,7 +101,8 @@ function restoreWebStorageFormValueWhenLoad(model_name) {
   $(function() {
     lockFlag = true;
     $('input, select').each(function(index) {
-      input = $(this);
+      var input = $(this);
+      var val = null;
       val = localStorage.getItem(model_name + '/' + input.prop('id'));
       if (val != null) {
         if (input.prop('type') == 'checkbox') {
@@ -118,7 +122,8 @@ function restoreWebStorageFormValueNoTrigger(model_name) {
   $(function() {
     lockFlag = true;
     $('input, select').each(function (index) {
-      input = $(this);
+      var input = $(this);
+      var val = null;
       var ids = null;
       //ラジオボタンの場合は、選択肢ごとにIDが振られるので、復元ができなくなる。末尾のID部分を削除して登録している
       if (input.prop('type') == 'radio') {
@@ -153,7 +158,8 @@ function restoreWebStorageFormValueNoTrigger(model_name) {
       }
     });
     $('textarea').each(function (index) {
-      input = $(this);
+      var input = $(this);
+      var val = null;
       val = localStorage.getItem(model_name + '/' + input.prop('id'));
       if (val != null) {
         input.html(val);
@@ -169,15 +175,15 @@ function lockFunc() {
 }
 
 function getParams(param_name) {
-  url = location.href;
-  parameters = url.split("?");
+  var url = location.href;
+  var parameters = url.split("?");
   if (parameters.length <= 1) {
     return null;
   }
-  params  = parameters[1].split("&");
-  paramsArray = [];
-  for ( i = 0; i < params.length; i++ ) {
-    neet = params[i].split("=");
+  var params  = parameters[1].split("&");
+  var paramsArray = [];
+  for (var i = 0; i < params.length; i++ ) {
+    var neet = params[i].split("=");
     paramsArray.push(neet[0]);
     paramsArray[neet[0]] = neet[1];
   }
@@ -321,7 +327,7 @@ function trigger_only_visible(field_id, trigger_name) {
 }
 
 function clearWebStorageFormValue(model_name) {
-  for(key in localStorage) {
+  for (var key in localStorage) {
     if (key.indexOf(model_name+"/") != -1) {
       delete localStorage[key];
     }
@@ -331,7 +337,7 @@ function clearWebStorageFormValue(model_name) {
 function disableWhenElementHide(element_class) {
   var targets = $("."+element_class+":hidden");
   targets.each(function() {
-    targers = $(this).find("input,select,textarea");
+    var targers = $(this).find("input,select,textarea");
     targers.each(function() {
       if ($(this).prop('type') != 'submit' && $(this).prop('type') != 'button') {
         if ($(this).prop("disabled") == false) {
@@ -343,7 +349,7 @@ function disableWhenElementHide(element_class) {
   
   targets = $("."+element_class+":visible");
   targets.each(function() {
-    targers = $(this).find("input,select,textarea");
+    var targers = $(this).find("input,select,textarea");
     targers.each(function() {
       if ($(this).prop('type') != 'submit' && $(this).prop('type') != 'button') {
         if ($(this).prop("disabled") == true) {

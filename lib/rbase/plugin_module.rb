@@ -157,11 +157,9 @@ module Rbase
             if self.instance_methods.include?(:"#{aliased_target}_with_#{plugin_name}#{punctuation}")
               @instance_method_adding = true
               begin
-                self.module_eval do
-                  alias :"#{method_name}_without_#{plugin_name}" :"#{method_name}"
-                  alias :"#{method_name}" :"#{method_name}_with_#{plugin_name}"
-                  # alias_method_chain(method_name, plugin_name)
-                end
+                # alias_method_chain と同じく、?・!・= は末尾に付ける（例: valid_without_foo? / valid_with_foo?）
+                alias_method :"#{aliased_target}_without_#{plugin_name}#{punctuation}", method_name
+                alias_method method_name, :"#{aliased_target}_with_#{plugin_name}#{punctuation}"
               ensure
                 @instance_method_adding = nil
               end
@@ -178,10 +176,8 @@ module Rbase
             if self.methods.include?(:"#{aliased_target}_with_#{plugin_name}#{punctuation}")
               @singleton_method_adding = true
               begin
-                self.instance_eval <<-EOS
-                  alias :#{method_name}_without_#{plugin_name} :#{method_name}
-                  alias :#{method_name} :#{method_name}_with_#{plugin_name}
-                EOS
+                singleton_class.send(:alias_method, :"#{aliased_target}_without_#{plugin_name}#{punctuation}", method_name)
+                singleton_class.send(:alias_method, method_name, :"#{aliased_target}_with_#{plugin_name}#{punctuation}")
               ensure
                 @singleton_method_adding = nil
               end

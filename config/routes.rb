@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       end
     end
     
-    resources :state_flows
+    resources :state_flows, only: [:index, :create, :update]
     
     resources :custom_fields do
       collection do

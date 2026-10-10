@@ -29,10 +29,10 @@
               <% end %>
 
               <% if current_admin_user.member? %>
-                <%= manager_top_page_content %>
+                <%= member_top_page_content %>
               <% end %>
             <% else %>
-              <%= member_top_page_content %>
+              <%= non_login_top_page_content %>
             <% end %>
           </div>
         </div>

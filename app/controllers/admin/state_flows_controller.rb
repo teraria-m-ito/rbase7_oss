@@ -24,10 +24,6 @@ module Admin
       end
     end
     
-    def new
-      
-    end
-    
     def create
       @state_flow = StateFlow.new(state_flow_params)
 
@@ -42,12 +38,8 @@ module Admin
         flash[:notice] = t("views.common.create_complete_message")
         respond_with(@state_flow, location: admin_state_flows_path)
       else
-        render :new, status: :unprocessable_entity
+        render_index_with_errors
       end
-    end
-    
-    def edit
-      
     end
     
     def update
@@ -64,15 +56,18 @@ module Admin
         flash[:notice] = t("views.common.update_complete_message")
         respond_with(@state_flow, location: admin_state_flows_path(clear: true))
       else
-        render :edit, status: :unprocessable_entity
+        render_index_with_errors
       end
     end
     
-    def destroy
-      
-    end
-    
     private
+    # 状態遷移の編集フォームは一覧画面にあるため、エラー時は入力内容を保持したまま一覧画面を表示する
+    def render_index_with_errors
+      @condition = session[:state_flows_condition] || StateFlows::SearchConditions.new(role_id: @state_flow.role_id, workflow_id: @state_flow.workflow_id)
+      @workflow = @state_flow.workflow
+      render :index, status: :unprocessable_entity
+    end
+
     def set_state_flow
       @state_flow = StateFlow.find(params[:id])
     end
