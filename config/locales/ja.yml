@@ -679,6 +679,9 @@ ja:
       index:
         title: "カスタムフィールド一覧"
         button_new: "新しいカスタムフィールドを追加"
+        button_reflect_cache: "キャッシュ反映"
+        reflect_cache_confirm_message: "アプリケーションを再起動して、並び順などの変更をカスタムフィールド定義に反映します。よろしいですか？"
+        reflect_cache_complete_message: "再起動してカスタムフィールド定義を反映しました。"
         table_custom_fields:
           title:
             action: "アクション"

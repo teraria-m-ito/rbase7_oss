@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     resources :custom_fields do
       collection do
         patch 'sort'
+        post 'reflect_cache'
       end
     end
     resources :mail_templates

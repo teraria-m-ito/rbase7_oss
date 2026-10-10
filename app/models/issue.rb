@@ -33,6 +33,10 @@ class Issue < ApplicationRecord
       else
         ::CustomField.where(custom_field_type: "issue").order(:display_order)
       end
+    },
+    custom_field_filter: lambda { |custom_field, issue|
+      (issue.issue_type_id.blank? || custom_field.issue_type.to_s == issue.issue_type_id.to_s) &&
+        (issue.site_id.blank? || custom_field.available_for_sites?(issue.site_id))
     }
   )
 

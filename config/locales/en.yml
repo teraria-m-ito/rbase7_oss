@@ -668,6 +668,9 @@ en:
       index:
         title: "Custom fields"
         button_new: "Add custom field"
+        button_reflect_cache: "Apply cache"
+        reflect_cache_confirm_message: "The application will be restarted to apply changes such as the display order to the custom field definitions. Are you sure?"
+        reflect_cache_complete_message: "The application was restarted and the custom field definitions were applied."
         table_custom_fields:
           title:
             action: "Action"

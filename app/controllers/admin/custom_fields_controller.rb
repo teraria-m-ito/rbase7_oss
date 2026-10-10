@@ -1,6 +1,7 @@
 module Admin
   class CustomFieldsController < AdminApplicationController
     include ::Rbase::PluginModule::Extendable # 継承を許可する宣言（必須）
+    include ::Rbase::Passenger::Extendable
 
     before_action :set_sites, only: [:new, :create, :edit, :update, :show]
 
@@ -29,6 +30,14 @@ module Admin
       head :ok
     end
 
+    # 並べ替えなど再起動を伴わない変更を、再起動してカスタムフィールド定義のキャッシュへ反映する
+    desc :auth_as => :update
+    def reflect_cache
+      passenger_restart
+      flash[:notice] = t("views.custom_fields.index.reflect_cache_complete_message")
+      redirect_to admin_custom_fields_url, status: :see_other
+    end
+
     def show
       respond_with(@custom_field)
     end
@@ -47,6 +56,8 @@ module Admin
       @custom_field.display_order ||= (CustomField.maximum(:display_order) || 0) + 1
       @custom_field.cleansing
       if @custom_field.save
+        # カスタムフィールド定義はクラス単位で保持されるため、再起動して反映する
+        passenger_restart
         flash[:notice] = t("views.common.create_complete_message")
         set_available_sites
         respond_with(@custom_field, location: admin_custom_fields_url)
@@ -60,7 +71,9 @@ module Admin
       @custom_field.assign_attributes(custom_field_params)
       @custom_field.cleansing
       if @custom_field.save
-        flash[:notice] = t("views.common.update_complete_message") 
+        # カスタムフィールド定義はクラス単位で保持されるため、再起動して反映する
+        passenger_restart
+        flash[:notice] = t("views.common.update_complete_message")
         respond_with(@issue_type, location: admin_custom_fields_url)
       else
         render :edit, status: :unprocessable_entity
@@ -69,7 +82,11 @@ module Admin
     end
 
     def destroy
-      flash[:notice] = t("views.common.destroy_complete_message") if @custom_field.destroy      
+      if @custom_field.destroy
+        # カスタムフィールド定義はクラス単位で保持されるため、再起動して反映する
+        passenger_restart
+        flash[:notice] = t("views.common.destroy_complete_message")
+      end
       respond_with(@custom_field, location: admin_custom_fields_url)
     end
 
