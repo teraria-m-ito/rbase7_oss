@@ -142,6 +142,6 @@ module.exports = {
   ensurePrintReadyFallback: ensurePrintReadyFallback,
   startWidgetUpdates: startWidgetUpdates,
   waitWidgetUpdates: waitWidgetUpdates,
-  drapGraph: drawGraph
+  drawGraph: drawGraph
 }
 
