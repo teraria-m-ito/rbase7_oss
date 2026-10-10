@@ -79,8 +79,8 @@ module Rbase
         File.open("rbase_gems/load_plugins.rb", "a") do |f|
           rbase_plugin_paths.each do |plugin_path|
             plugin_name = RbaseTaskHelpers.plugin_name_from_path(plugin_path)
-            f.puts "require './rbase_gems/#{plugin_name}/init'"
-            puts "add ==> require './rbase_gems/#{plugin_name}/init'"
+            f.puts "require File.expand_path('#{plugin_name}/init', __dir__)"
+            puts "add ==> require File.expand_path('#{plugin_name}/init', __dir__)"
           end
         end
       end
@@ -98,7 +98,7 @@ module Rbase
 
         text = <<~EOS
           # Include hook code here
-          require './lib/rbase/plugin_module'
+          require Rails.root.join('lib/rbase/plugin_module').to_s
 
           Rbase::PluginModule.register(
           )

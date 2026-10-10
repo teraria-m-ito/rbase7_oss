@@ -8,7 +8,7 @@ export default class extends RbaseController {
   index() {
     super.index();
     if (Rbase.getParams('clear') == 'true') {
-      Rbase.clearWebStorageFormValue('user');
+      Rbase.clearWebStorageFormValue(FORM_NAME);
     }
   }
   

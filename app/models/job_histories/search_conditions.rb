@@ -24,7 +24,9 @@ module JobHistories
           when :status then
             field_name = "job_manages.status"
           else
-            field_name = k
+            # 画面から任意の列名が渡されるため、ジョブ管理テーブルに存在する列だけで並び替える
+            next unless ::JobManage.column_names.include?(k.to_s)
+            field_name = "job_manages.#{k}"
           end
 
           if v[:direction] == :desc

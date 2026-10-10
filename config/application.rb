@@ -43,7 +43,8 @@ module Rbase7
     end
 
     # localeのカスタマイズ部の登録（RBASE_GEMS_ORDER の順。後勝ちで上書き）
-    plugin_locales_paths = Dir["rbase_gems/rbase_*/locales"]
+    # カレントディレクトリに依存しないよう、アプリのルートを基準に探す
+    plugin_locales_paths = Dir.glob("rbase_gems/rbase_*/locales", base: File.expand_path("..", __dir__))
     if ENV["RBASE_GEMS_ORDER"].present?
       gem_names = plugin_locales_paths.map { |path| path[%r{rbase_gems/(rbase_[^/]+)/locales}, 1] }.compact
       sort_list = ENV["RBASE_GEMS_ORDER"].split(",").map(&:strip).reject(&:blank?)
@@ -59,7 +60,7 @@ module Rbase7
     end
 
     # migrationのカスタマイズ部の登録
-    plugin_locales_paths = Dir["rbase_gems/rbase_*/migrations"]
+    plugin_locales_paths = Dir.glob("rbase_gems/rbase_*/migrations", base: File.expand_path("..", __dir__))
     plugin_locales_paths.each do |plugin_locales_path|
       config.paths['db/migrate'] << plugin_locales_path
     end
@@ -85,9 +86,9 @@ module Rbase7
     config.active_record.writing_role = :default
     config.active_record.reading_role = :readonly
 
-    logname_prefix = ENV['RBASE_LOG_NAME'] ? "#{ENV['RBASE_LOG_NAME']}" : "production"
+    # ログファイル名は「<RBASE_LOG_NAME><環境名>_rotate.log」（例: RBASE_LOG_NAME=rbase_ → rbase_production_rotate.log）
     if ENV['RAILS_ENV'] == 'production'
-      config.logger = ActiveSupport::Logger.new("#{Rails.root}/log/#{logname_prefix}#{(env['RAILS_ENV'].downcase rescue nil)}_rotate.log", 22, 10*1024*1024)
+      config.logger = ActiveSupport::Logger.new("#{Rails.root}/log/#{ENV['RBASE_LOG_NAME']}#{ENV['RAILS_ENV'].downcase}_rotate.log", 22, 10*1024*1024)
 
       class FormatterWithThread < Logger::Formatter
         Format = "[pid:%d #%s] %s %5s %s\n"

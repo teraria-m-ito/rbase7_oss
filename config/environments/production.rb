@@ -52,7 +52,8 @@ Rails.application.configure do
 
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
-  config.log_level = :info
+  # 環境変数 RBASE_LOG_LEVEL で変更できる（未指定時は info）
+  config.log_level = ENV.fetch('RBASE_LOG_LEVEL', 'info').downcase.to_sym
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]

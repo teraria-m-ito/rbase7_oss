@@ -133,9 +133,10 @@ module Ddb #:nodoc:
             self.class.stamper_class&.stamper
           end
 
+          # 画面から送られた値で作成者を偽れないよう、記録者がいる場合は常に記録者で上書きする
           def set_creator_attribute
             stamper = current_stamper
-            return if stamper.nil? || !has_attribute?(self.creator_attribute) || self.send(self.creator_attribute).present?
+            return if stamper.nil? || !has_attribute?(self.creator_attribute)
 
             self.send("#{self.creator_attribute}=".to_sym, stamper)
           end

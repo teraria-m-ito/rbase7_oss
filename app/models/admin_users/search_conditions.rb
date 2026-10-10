@@ -19,11 +19,11 @@ module AdminUsers
       else
         admin_users = admin_users.joins(:admin_user_sites).where("admin_user_sites.site_id IN (?)", current_admin_user.site_ids)
       end
-      admin_users = admin_users.where("name like ?", "#{self.name}%") unless self.name.blank?
-      admin_users = admin_users.where("email like ?", "#{self.email}%") unless self.email.blank?
+      admin_users = admin_users.where("admin_users.name like ?", "#{self.name}%") unless self.name.blank?
+      admin_users = admin_users.where("admin_users.email like ?", "#{self.email}%") unless self.email.blank?
 
       admin_users = admin_users.distinct
-      admin_users = admin_users.order("updated_at asc")
+      admin_users = admin_users.order("admin_users.updated_at asc")
       admin_users
     end
   end

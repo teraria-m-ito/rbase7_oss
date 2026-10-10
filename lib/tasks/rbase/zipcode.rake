@@ -5,7 +5,10 @@ namespace :rbase do
   desc "import jigyosho zipcode."
   task :import_jigyosho_zipcode => :environment do
     puts "[import_jigyosho_zipcode]start..."
-    csv_data = CSV.read("#{Rails.root}/tmp/JIGYOSYO.csv", headers: false)
+    # 日本郵便の配布 CSV は Shift_JIS（CP932）のため、UTF-8 に変換して読む。UTF-8 版を使う場合は ENCODING=UTF-8 を指定する
+    encoding = ENV.fetch("ENCODING", "CP932")
+    encoding = "#{encoding}:UTF-8" unless encoding.upcase.start_with?("UTF-8")
+    csv_data = CSV.read(ENV.fetch("FILE", "#{Rails.root}/tmp/JIGYOSYO.csv"), headers: false, encoding: encoding)
     csv_data.each_with_index do |data, index|
       #data[0] 所在地JIS
       #data[1] 法人名カナ
