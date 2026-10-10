@@ -79,7 +79,7 @@ class SystemSetting < ApplicationRecord
       可とした場合、ログイン前のトップページに会員登録のリンクを表示します。
       END_OF_HINT
     end
-    entry 'R010', :logics    , '申請ロジック設定'    , required: true, category: :application_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'R010', :logics    , '申請ロジック設定'    , required: true, category: :application_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※　申請を処理するロジックを指定します。
       　　この定義は、サイト１の設定がすべてのサイトに有効になります。
       入力例：
@@ -87,7 +87,7 @@ class SystemSetting < ApplicationRecord
       issue_logic2|申請 ロジック2
       END_OF_HINT
     end
-    entry 'R020', :report_logics    , 'レポートロジック設定'    , required: true, category: :application_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'R020', :report_logics    , 'レポートロジック設定'    , required: true, category: :application_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※　申請で使用するレポートロジックを指定します。
       　　この定義は、サイト１の設定がすべてのサイトに有効になります。
       入力例：
@@ -95,75 +95,75 @@ class SystemSetting < ApplicationRecord
       report2_logic|レポート2ロジック
       END_OF_HINT
     end
-    entry 'R021', :delayed_job_timing    , 'ディレイドジョブ実行非同期設定'    , required: true, category: :application_setting, input_type: :boolean, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'R021', :delayed_job_timing    , 'ディレイドジョブ実行非同期設定'    , required: true, category: :application_setting, input_type: :boolean, hint: <<-"END_OF_HINT" do
       ※　ディレイドジョブの実行タイミングを設定します。
       可とした場合、ディレイドジョブは非同期実行を行います。
       END_OF_HINT
     end
 
-    entry 'R022', :force_sign_in    , '強制ログイン'    , required: true, category: :application_setting, input_type: :boolean, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'R022', :force_sign_in    , '強制ログイン'    , required: true, category: :application_setting, input_type: :boolean, hint: <<-"END_OF_HINT" do
       ※　強制ログインを設定します。
       可とした場合、未ログイン時は、ログインページに強制遷移します。
       END_OF_HINT
     end
 
-    entry 'R023', :footer_signature    , 'フッターシグネイチャー'    , required: true, category: :application_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'R023', :footer_signature    , 'フッターシグネイチャー'    , required: true, category: :application_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※　フッターシグネイチャーを設定します。
       未登録の場合、Powered by Teraria Labs,を表示します。
       END_OF_HINT
     end
 
-    entry 'R024', :footer_copyright    , 'フッターコピーライト'    , required: true, category: :application_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'R024', :footer_copyright    , 'フッターコピーライト'    , required: true, category: :application_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※　フッターコピーライトを設定します。
       未登録の場合、Copyright &copy;  <%= Time.now.strftime("%Y") %> |  All rights reserved.</strong> All rights reserved.を表示します。
       END_OF_HINT
     end
 
-    entry 'R026', :logo_path    , 'ロゴ画像のパス'    , required: true, category: :application_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'R026', :logo_path    , 'ロゴ画像のパス'    , required: true, category: :application_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※ ログ画像のパスを指定します。
       logo.png
       END_OF_HINT
     end
 
-    entry 'G001', :generic_app_name    , '汎用アプリケーション名'    , required: true, category: :generic_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'G001', :generic_app_name    , '汎用アプリケーション名'    , required: true, category: :generic_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※ サイト未指定時（複数テナントでパラメータ無しなど）のブラウザタブ・サイドバー名です。
       　　この定義は Site.first に登録します。
       未登録の場合、TERALABS-APPS を表示します。
       END_OF_HINT
     end
-    entry 'G002', :generic_logo_path    , '汎用ロゴ画像のパス'    , required: true, category: :generic_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'G002', :generic_logo_path    , '汎用ロゴ画像のパス'    , required: true, category: :generic_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※ サイト未指定時のサイドバーロゴです。
       　　この定義は Site.first に登録します。
       未登録の場合、ロゴは表示しません。
       END_OF_HINT
     end
-    entry 'G003', :generic_footer_copyright    , '汎用フッターコピーライト'    , required: true, category: :generic_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'G003', :generic_footer_copyright    , '汎用フッターコピーライト'    , required: true, category: :generic_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※ サイト未指定時のフッター左側です。
       　　この定義は Site.first に登録します。
       未登録の場合、Copyright © 今年 | All rights reserved. を表示します。
       END_OF_HINT
     end
-    entry 'G004', :generic_footer_signature    , '汎用フッターシグネイチャー'    , required: true, category: :generic_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'G004', :generic_footer_signature    , '汎用フッターシグネイチャー'    , required: true, category: :generic_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※ サイト未指定時のフッター右側です。
       　　この定義は Site.first に登録します。
       未登録の場合、Powered by Teraria Labs, Version 0.9 を表示します。
       END_OF_HINT
     end
 
-    entry 'S001', :sso_type    , 'SSOタイプ設定'    , required: true, category: :sso_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'S001', :sso_type    , 'SSOタイプ設定'    , required: true, category: :sso_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※　このアプリがSPとして動作する際にSSOタイプを設定します。
       　　この定義は、サイト１の設定がすべてのサイトに有効になります。
       saml2
       現在は、SAML2のみ許可しています。
       END_OF_HINT
     end
-    entry 'S002', :sso_setting    , 'SSO接続情報'    , required: true, category: :sso_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'S002', :sso_setting    , 'SSO接続情報'    , required: true, category: :sso_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※　このアプリがSPとして動作する際にSSO接続情報を設定します。
       　　この定義は、サイト１の設定がすべてのサイトに有効になります。
       現在は、SAML2のみ許可しています。
       END_OF_HINT
     end
-    entry 'S003', :issue_mapping    , 'issuerマッピング設定'    , required: true, category: :sso_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'S003', :issue_mapping    , 'issuerマッピング設定'    , required: true, category: :sso_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※ このアプリがSPとして動作する際にissuerマッピング設定を設定します。
       　　この定義は、サイト１の設定がすべてのサイトに有効になります。
       入力例：
@@ -171,7 +171,7 @@ class SystemSetting < ApplicationRecord
       https：//shibboleth.example.com/realms/rbase|https：//moodle-dev.example.com
       END_OF_HINT
     end
-    entry 'S004', :sso_enable    , 'SSO適用設定'    , required: true, category: :sso_setting, input_type: :boolean, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'S004', :sso_enable    , 'SSO適用設定'    , required: true, category: :sso_setting, input_type: :boolean, hint: <<-"END_OF_HINT" do
       ※ このアプリがSPとして動作する際にSSO適用設定を設定します。
       　　この定義は、サイト１の設定がすべてのサイトに有効になります。
       　　ONにした場合、SSO認証が有効になります。
@@ -184,7 +184,7 @@ class SystemSetting < ApplicationRecord
       SSOでのログインを強制する場合は、ONにします。
       END_OF_HINT
     end
-    entry 'S006', :idp_finger_print    , 'IDPフィンガープリント'    , required: true, category: :sso_setting, input_type: :string, reload: true, hint: <<-"END_OF_HINT" do
+    entry 'S006', :idp_finger_print    , 'IDPフィンガープリント'    , required: true, category: :sso_setting, input_type: :string, hint: <<-"END_OF_HINT" do
       ※ このアプリがSPとして動作する際にIDPのフィンガープリントを設定します。
       この設定の登録が無い場合は、サーバソースのconfig/saml2/server.crtの内容を適用します。
       この設定は、idp metadataのX509証明書に対して、

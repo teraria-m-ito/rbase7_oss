@@ -22,6 +22,12 @@ class CustomField < ApplicationRecord
   scope :issues, -> { where(custom_field_type: 'issue').order(:display_order) }
   scope :issues_for_issue_type, ->(issue_type) { where(custom_field_type: 'issue').where("issue_type = ?", issue_type) }
   scope :admin_users, -> { where(custom_field_type: 'admin_user').order(:display_order) }
+  scope :for_site, ->(site_id) { where(id: ::CustomFieldSite.where(site_id: site_id).select(:custom_field_id)) }
+
+  # custom_field_sites を読み込み済みでも追加のクエリを発行しないよう、関連から判定する
+  def available_for_sites?(site_ids)
+    (self.custom_field_sites.map(&:site_id) & Array(site_ids).map(&:to_i)).any?
+  end
   
   selectable_attr :custom_field_type do
     entry 'admin_user', :admin_user, 'Admin User'

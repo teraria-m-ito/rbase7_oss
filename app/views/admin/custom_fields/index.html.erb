@@ -7,6 +7,7 @@
       <div class="col-sm-6">
         <div class="float-sm-right">
           <%= link_to t(:"views.custom_fields.index.button_new"), new_admin_custom_field_path(clear: true), class: "btn btn-primary btn-sm" %>
+          <%= button_to t(:"views.custom_fields.index.button_reflect_cache"), reflect_cache_admin_custom_fields_path, method: :post, form: { class: "d-inline", data: { turbo_confirm: t(:"views.custom_fields.index.reflect_cache_confirm_message") } }, class: "btn btn-warning btn-sm" %>
         </div>
       </div>
     </div>

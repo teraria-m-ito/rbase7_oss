@@ -27,6 +27,10 @@ class AdminUser < ApplicationRecord
       else
         ::CustomField.where(custom_field_type: "admin_user").order(:display_order)
       end
+    },
+    custom_field_filter: lambda { |custom_field, admin_user|
+      site_ids = admin_user.current_site_id.present? ? [admin_user.current_site_id] : admin_user.site_ids
+      site_ids.blank? || custom_field.available_for_sites?(site_ids)
     }
   )
 

@@ -96,6 +96,8 @@ class AdminUsers::RegistrationsController < Devise::RegistrationsController
 
   def set_admin_user_custom_fields
     @custom_fields = CustomField.admin_users
+    site_ids = self.resource.site_ids.presence || [current_site_id].compact
+    @custom_fields = @custom_fields.for_site(site_ids) if site_ids.present?
     @custom_fields.each do |custom_field|
       self.resource.admin_user_custom_fields << AdminUserCustomField.new(custom_field_id: custom_field.id) unless self.resource.admin_user_custom_fields.map(&:custom_field_id).include?(custom_field.id)
     end

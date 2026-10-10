@@ -81,26 +81,26 @@ module Admin
       params[:system_setting][:system_setting_attachments_attributes] = []
       @system_setting = SystemSetting.new(system_setting_params)
 
+      saved = false
       ActiveRecord::Base.transaction do
         if @system_setting.save
           SystemSettingAttachment.where(["token = ?", @system_setting.uuid]).each do |attach|
             attach.system_setting = @system_setting
             attach.save!
           end
-
-          #設定で再起動が必要な場合を候補して、再ロードを行う．
-          if @system_setting.setting_div_entry[:reload] == true
-            passenger_restart
-          end
-
-          @system_setting
-          flash[:notice] = t("views.common.create_complete_message")
-          respond_with(@system_setting, location: admin_system_settings_url)
-        else
-          setup_values
-          setup_setting_divs
-          respond_with(@system_setting, location: new_admin_system_setting_path)
+          saved = true
         end
+      end
+
+      if saved
+        # 設定値は起動時やクラス単位で保持されるものがあるため、コミット後に必ず再起動して反映する
+        passenger_restart
+        flash[:notice] = t("views.common.create_complete_message")
+        respond_with(@system_setting, location: admin_system_settings_url)
+      else
+        setup_values
+        setup_setting_divs
+        respond_with(@system_setting, location: new_admin_system_setting_path)
       end
     end
 
@@ -120,6 +120,7 @@ module Admin
     # end
 
     def update
+      saved = false
       ActiveRecord::Base.transaction do
         @system_setting.assign_attributes(system_setting_params)
         if @system_setting.save
@@ -128,26 +129,26 @@ module Admin
             attach.system_setting = @system_setting
             attach.save!
           end
-          #設定で再起動が必要な場合を候補して、再ロードを行う．
-          if @system_setting.setting_div_entry[:reload] == true
-            passenger_restart
-          end
-
-          flash[:notice] = t("views.common.update_complete_message")
-          respond_with(@system_setting, location: admin_system_settings_url)
-        else
-          setup_values
-          setup_setting_divs
-          respond_with(@system_setting, location: edit_admin_system_setting_path(@system_setting))
+          saved = true
         end
+      end
+
+      if saved
+        # 設定値は起動時やクラス単位で保持されるものがあるため、コミット後に必ず再起動して反映する
+        passenger_restart
+        flash[:notice] = t("views.common.update_complete_message")
+        respond_with(@system_setting, location: admin_system_settings_url)
+      else
+        setup_values
+        setup_setting_divs
+        respond_with(@system_setting, location: edit_admin_system_setting_path(@system_setting))
       end
     end
 
     def destroy
-      system_setting_clone = @system_setting.dup
-      flash[:notice] = t("views.common.destroy_complete_message") if @system_setting.destroy
-      #設定で再起動が必要な場合を候補して、再ロードを行う．
-      if system_setting_clone.setting_div_entry[:reload] == true
+      if @system_setting.destroy
+        flash[:notice] = t("views.common.destroy_complete_message")
+        # 削除した設定が残らないよう、登録・更新と同様に再起動する
         passenger_restart
       end
       respond_with(@system_setting, location: admin_system_settings_url)

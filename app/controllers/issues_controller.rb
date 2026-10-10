@@ -199,6 +199,8 @@ class IssuesController < UserApplicationController
 
   def set_issue_custom_fields
     @custom_fields = @issue.issue_type_id.nil? ? CustomField.issues : CustomField.issues_for_issue_type(@issue.issue_type_id)
+    site_id = @issue.site_id || session[:active_site_id]
+    @custom_fields = @custom_fields.for_site(site_id) if site_id
     @custom_fields.each do |custom_field|
       @issue.issue_custom_fields << IssueCustomField.new(custom_field_id: custom_field.id) unless @issue.issue_custom_fields.map(&:custom_field_id).include?(custom_field.id)
     end
