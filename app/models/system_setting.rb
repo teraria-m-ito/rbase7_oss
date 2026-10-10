@@ -253,11 +253,11 @@ class SystemSetting < ApplicationRecord
 
     unless entity_name.nil?
       enum_value = entity_name.to_s.classify.constantize.public_send("#{value_div_name}_enum")
-      unless enum_value[value_div].id.to_s == value_div.to_s
+      unless enum_value[value_div]&.id.to_s == value_div.to_s
         return nil
       end
     end
-    setting.setting_value.split("\n").each do|line|
+    setting&.setting_value.to_s.split("\n").each do|line|
       if line.split("|").first == value_div.to_s
         return line.split("|").second
       end
@@ -272,9 +272,9 @@ class SystemSetting < ApplicationRecord
 
     setting = self.joins(:system_setting_sites).where("system_setting_sites.site_id = ?", site_id).where("system_settings.setting_div = ?", self.setting_div_id_by_key(setting_div_key)).first
 
-    setting.setting_value.split("\n").each do|line|
+    setting&.setting_value.to_s.split("\n").each do|line|
       if line.split("|").first == value_div.to_s
-        return line.split("|").second.strip
+        return line.split("|").second&.strip
       end
     end
     return nil
@@ -313,9 +313,9 @@ class SystemSetting < ApplicationRecord
 
     setting = self.joins(:system_setting_sites).where("system_setting_sites.site_id = ?", site_id).where("system_settings.setting_div = ?", self.setting_div_id_by_key(setting_div_key)).first
 
-    setting.setting_value.split("\n").each do|line|
+    setting&.setting_value.to_s.split("\n").each do|line|
       if line.split("|").second == value_div.to_s
-        return line.split("|").first.strip
+        return line.split("|").first&.strip
       end
     end
     return nil
@@ -327,15 +327,16 @@ class SystemSetting < ApplicationRecord
     raise ArgumentError, "No site_id" if site_id.blank?
     self.setting_div_id_by_key(setting_div_key)
     setting = self.joins(:system_setting_sites).where("system_setting_sites.site_id = ?", site_id).where("system_settings.setting_div = ?", self.setting_div_id_by_key(setting_div_key)).first
+    return nil if setting.nil?
 
     unless entity_name.nil?
       enum_value = entity_name.to_s.classify.constantize.public_send("#{value_div_name}_enum")
-      unless enum_value[value_div].id.to_s == value_div.to_s
+      unless enum_value[value_div]&.id.to_s == value_div.to_s
         return nil
       end
     end
     lines = []
-    setting.setting_value.split("\n").each do|line|
+    setting.setting_value.to_s.split("\n").each do|line|
       if line.split("|").first == value_div.to_s
         line = "#{line.split("|").first}|#{value}"
       end

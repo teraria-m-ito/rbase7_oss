@@ -16,6 +16,11 @@ class QueriesController < UserApplicationController
   end
 
   def new
+    # 検索条件はセッションから復元するため、一覧画面を経由していない場合は一覧へ戻す
+    if session[:"#{@data_type}_condition"].nil? || session[:query_fields].nil?
+      return redirect_to url_for(controller: "/#{@data_type}", action: :index)
+    end
+
     @query = Query.new({target_class: @target_class})
     @condition =  Psych.safe_load(session[:"#{@data_type}_condition"], permitted_classes: [::Issues::SearchConditions])
     @query_fields = Psych.safe_load(session[:query_fields])

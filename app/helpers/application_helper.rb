@@ -30,6 +30,7 @@ module ApplicationHelper
 
   def enable_action?(url, method = nil)
     return true if current_admin_user.admin?
+    return false if current_admin_user.role.nil?
     access_url = method.nil? ? Rails.application.routes.recognize_path(url) : Rails.application.routes.recognize_path(url, method: method)
     controller_name = access_url[:controller]
     action_name = access_url[:action]

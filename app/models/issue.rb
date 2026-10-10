@@ -60,16 +60,18 @@ class Issue < ApplicationRecord
   end
   
   def state_cd
-    WorkflowState.find(self.workflow_state_id).state_cd
+    self.workflow_state&.state_cd
   end  
   
   def state_name
-    WorkflowState.find(self.workflow_state_id).state_name
+    self.workflow_state&.state_name
   end
   
   def aviable_workflow_states(admin_user)
     target_ids = [self.workflow_state_id]
-    state_flow_workflow_states = self.issue_type.present? ? StateFlow.where(workflow_id: self.issue_type.workflow.id).where(role_id: admin_user.role_id).first.state_flow_workflow_states : []
+    workflow_id = self.issue_type&.workflow&.id
+    state_flow = workflow_id ? StateFlow.where(workflow_id: workflow_id).where(role_id: admin_user.role_id).first : nil
+    state_flow_workflow_states = state_flow ? state_flow.state_flow_workflow_states : []
     state_flow_workflow_states.each do |state_flow_workflow_state|
       target_ids << state_flow_workflow_state.next_workflow_state_id if state_flow_workflow_state.current_workflow_state_id == self.workflow_state_id
     end
@@ -136,8 +138,9 @@ class Issue < ApplicationRecord
   def change_deleted_state
     change_deleted_state_result = false
     deleted_workflow_state = nil
-    role_id = self.current_admin_user.role.id
-    self.workflow_state.state_flow_workflow_states.joins(:state_flow).where(state_flows: {role_id: role_id}).each do |state_flow_workflow_state|
+    role_id = self.current_admin_user&.role_id
+    state_flow_workflow_states = self.workflow_state ? self.workflow_state.state_flow_workflow_states : ::StateFlowWorkflowState.none
+    state_flow_workflow_states.joins(:state_flow).where(state_flows: {role_id: role_id}).each do |state_flow_workflow_state|
       next_workflow_state = state_flow_workflow_state.next_workflow_state
       if next_workflow_state&.deleted_state
         deleted_workflow_state = next_workflow_state

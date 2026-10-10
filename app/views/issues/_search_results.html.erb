@@ -16,8 +16,8 @@
       <tr>
         <td><%= link_to issue.title, issue_path(issue) %></td>
         <td><%= issue.created_at.try(:strftime, "%Y-%m-%d %H:%M:%S") %></td>
-        <td><%= issue.issue_type.issue_type_name %></td>
-        <td><%= issue.workflow_state.state_name %></td>
+        <td><%= issue.issue_type&.issue_type_name %></td>
+        <td><%= issue.workflow_state&.state_name %></td>
         <td>
           <%# if enable_action?("issues/update", :PATCH) %>
             <%= link_to t(:"views.issues.index.table_issues.button_edit"), edit_issue_path(issue, edit_clear: true), class: "btn btn-primary btn-sm" %>

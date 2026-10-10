@@ -50,9 +50,12 @@ module Admin
       display_order = @workflow_state.display_order
       prev_workflow_state = WorkflowState.where("workflow_id = ? and display_order = ?", @workflow_state.workflow_id , @workflow_state.display_order - 1).first
       
-      WorkflowState.transaction do
-        prev_workflow_state.update!({display_order: display_order})
-        @workflow_state.update!({display_order: display_order - 1})
+      # 先頭の状態では入れ替え相手が無いため、並び順を変えずに再描画する
+      if prev_workflow_state
+        WorkflowState.transaction do
+          prev_workflow_state.update!({display_order: display_order})
+          @workflow_state.update!({display_order: display_order - 1})
+        end
       end
       @workflow_states = @workflow_state.workflow.workflow_states.order(:display_order)
       render turbo_stream: turbo_stream.replace('entry-state-forms', partial: 'admin/workflows/form_workflow_states'), status: :see_other
@@ -64,9 +67,12 @@ module Admin
       display_order = @workflow_state.display_order
       prev_workflow_state = WorkflowState.where("workflow_id = ? and display_order = ?", @workflow_state.workflow_id, @workflow_state.display_order + 1).first
       
-      WorkflowState.transaction do
-        prev_workflow_state.update!({display_order: display_order})
-        @workflow_state.update!({display_order: display_order + 1})
+      # 末尾の状態では入れ替え相手が無いため、並び順を変えずに再描画する
+      if prev_workflow_state
+        WorkflowState.transaction do
+          prev_workflow_state.update!({display_order: display_order})
+          @workflow_state.update!({display_order: display_order + 1})
+        end
       end
       @workflow_states = @workflow_state.workflow.workflow_states.order(:display_order)
       render turbo_stream: turbo_stream.replace('entry-state-forms', partial: 'admin/workflows/form_workflow_states'), status: :see_other

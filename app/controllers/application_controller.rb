@@ -114,6 +114,13 @@ class ApplicationController < ActionController::Base
     ::Rails.logger.info("request: #{request.url}")
     ::Rails.logger.info("referer controlle: (#{referer[:controller]}) action: (#{referer[:action]})")
     ::Rails.logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    # ロール未設定のユーザーはリファラーの画面も不許可でリダイレクトがループするため、トップページへ戻す
+    if current_admin_user && current_admin_user.role.nil?
+      flash[:alert] = exception.message
+      redirect_to root_path, status: :see_other
+      next
+    end
+
     flash[:alert] = exception.message
     session[:_rbase_turbo_flash_alert] = exception.message
 
@@ -209,6 +216,8 @@ class ApplicationController < ActionController::Base
   def current_ability
     Thread.current[:request] = request
     force = request.path.start_with?("/uploads") || request.path.start_with?("/docs") || request.path.start_with?("/api")  || request.path.start_with?("/admin_users/sign_in")
+    # トップページ（サイト一覧・サイト別トップ）は権限チェックしない
+    force ||= request.path == root_path || (request[:controller] == "top" && %w[index show].include?(request[:action]))
     @current_ability = Ability.new(current_admin_user, request[:controller], request[:action], force)
     @current_ability
   end

@@ -42,6 +42,12 @@ class Ability
       return 
     end
     
+    # ロールが設定されていないユーザーは不許可とする
+    if user.role.nil?
+      cannot :manage, :all
+      return
+    end
+
     if user.role.role_short_name == 'admin'
       can :manage, :all
       return 
@@ -53,7 +59,7 @@ class Ability
     # descでauth_asのみを指定している場合は、auth_asで定義されているアクションの許可／不許可を参照する
     if role_action and role_action.action_display_name.blank? and role_action.auth_as.present?
       role_action = RoleAction.where(controller_path: controller_name).where(action_name: convert_action(role_action.auth_as)).first
-      user_role_action = user.role.role_actions.select{|x| x.id == role_action.id}.first
+      user_role_action = user.role.role_actions.select{|x| x.id == role_action&.id}.first
     end
 
     ::Rails.logger.debug("------------------------------------------------------------------------------------------------------")
