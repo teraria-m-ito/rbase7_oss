@@ -69,6 +69,12 @@ class JobHistoriesController < UserApplicationController
   end
 
   def show
+    # Kaminari（remove_params）のページ送りでは return_to が落ちるため、詳細を開いたときの値をセッションに保持する
+    if params[:page].blank?
+      session[:job_history_return_to] = { "id" => @job_manage.id, "path" => params[:return_to].to_s.strip.presence }
+    end
+    saved = session[:job_history_return_to]
+    @return_to = saved["path"] if saved.is_a?(Hash) && saved["id"].to_i == @job_manage.id
     @job_manage_errors = @job_manage.job_manage_errors.order(:id).page(params[:page])
   end
 
