@@ -480,8 +480,8 @@ SimpleForm.setup do |config|
     integer: :default_input_form,
     text: :default_input_form,
     datetime: :default_input_form,
-    datetime_local: :default_input_form,
     datetime_picker: :default_input_form,
+    date_picker: :default_input_form,
     label: :default_input_form
   }
 

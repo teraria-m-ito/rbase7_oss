@@ -234,25 +234,34 @@ module SimpleForm
   end
 end
 
-# 日時ピッカー。datetime / datetime_local / type=datetime-local はここへ寄せる。
+# 日時ピッカー。画面では as: :datetime_picker を使う。datetime_local は使わない。
 # date_click_time は start（00:00:00）または end（23:59:59）。省略時は項目名から決める。
 # 時刻の動きは rbase_common.js
+# 日付だけは DatePickerInput（as: :date_picker）。見た目は同じカレンダーで、保存文字列は yyyy/MM/dd。
 class DatetimePickerInput < SimpleForm::Inputs::Base
+  def date_only?
+    false
+  end
+
   def input(wrapper_options = nil)
     merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
 
     col = merged_input_options.delete(:col) || "auto"
     no_custom = merged_input_options.delete(:no_custom)
-    click_time = options[:date_click_time] || merged_input_options.delete(:date_click_time)
-    click_time = click_time.to_s.presence
-    if click_time.blank?
-      attr = attribute_name.to_s
-      click_time = if attr.match?(/(?:_to|_end|end_at)\z/)
-        "end"
-      elsif attr.match?(/(?:_from|_start|start_at)\z/)
-        "start"
+    click_time = nil
+    unless date_only?
+      click_time = options[:date_click_time] || merged_input_options.delete(:date_click_time)
+      click_time = click_time.to_s.presence
+      if click_time.blank?
+        attr = attribute_name.to_s
+        click_time = if attr.match?(/(?:_to|_end|end_at)\z/)
+          "end"
+        elsif attr.match?(/(?:_from|_start|start_at)\z/)
+          "start"
+        end
       end
     end
+    display_format = date_only? ? "%Y/%m/%d" : "%Y/%m/%d %H:%M:%S"
     merged_input_options.delete(:step)
 
     group_style = nil
@@ -272,14 +281,18 @@ class DatetimePickerInput < SimpleForm::Inputs::Base
       ""
     elsif raw_value.is_a?(String)
       text = raw_value.strip
-      if text.match?(/\A\d{4}[\/-]\d{2}[\/-]\d{2}(?:[ T]\d{2}:\d{2}(?::\d{2})?)?\z/)
+      if !date_only? && text.match?(/\A\d{4}[\/-]\d{2}[\/-]\d{2}\z/)
+        suffix = click_time == "end" ? "23:59:59" : "00:00:00"
+        parsed = (Time.zone.parse("#{text} #{suffix}") rescue nil)
+        parsed ? I18n.l(parsed, format: display_format) : text
+      elsif text.match?(/\A\d{4}[\/-]\d{2}[\/-]\d{2}(?:[ T]\d{2}:\d{2}(?::\d{2})?)?\z/)
         parsed = (Time.zone.parse(text) rescue nil)
-        parsed ? I18n.l(parsed, format: "%Y/%m/%d %H:%M:%S") : text
+        parsed ? I18n.l(parsed, format: display_format) : text
       else
         text
       end
     else
-      I18n.l(raw_value, format: "%Y/%m/%d %H:%M:%S")
+      I18n.l(raw_value, format: display_format)
     end
     classes = Array(merged_input_options[:class])
     classes << "datetimepicker-input" unless classes.include?("datetimepicker-input")
@@ -290,7 +303,8 @@ class DatetimePickerInput < SimpleForm::Inputs::Base
 
     group_data = { target_input: "nearest" }
     group_data[:date_click_time] = click_time if click_time
-    group_options = { class: "input-group date rbase-datetimepicker", id: group_id, data: group_data }
+    group_class = date_only? ? "input-group date rbase-datetimepicker rbase-datepicker" : "input-group date rbase-datetimepicker"
+    group_options = { class: group_class, id: group_id, data: group_data }
     group_options[:style] = group_style if group_style.present?
     group = template.content_tag(:div, group_options) do
       template.concat(@builder.text_field(attribute_name, merged_input_options))
@@ -312,7 +326,10 @@ class DatetimePickerInput < SimpleForm::Inputs::Base
   end
 end
 
-class DatetimeLocalInput < DatetimePickerInput
+class DatePickerInput < DatetimePickerInput
+  def date_only?
+    true
+  end
 end
 
 # カラム型 datetime の form.input。date / time は従来の入力のまま。

@@ -546,12 +546,13 @@ function initDatetimePickers() {
     if ($group.data("datetimepicker")) {
       return;
     }
+    var dateOnly = $group.hasClass("rbase-datepicker");
     $group.datetimepicker({
-      format: "YYYY/MM/DD HH:mm:ss",
+      format: dateOnly ? "YYYY/MM/DD" : "YYYY/MM/DD HH:mm:ss",
       locale: "ja",
       useCurrent: false,
       allowInputToggle: true,
-      sideBySide: true,
+      sideBySide: !dateOnly,
       toolbarPlacement: "bottom",
       buttons: { showToday: true, showClear: true, showClose: true },
       icons: {
@@ -608,7 +609,7 @@ function initDatetimePickers() {
         current._suppressShow = false;
       }, 300);
     }, true);
-    var dateClickTime = datetimePickerClickTimes[$group.attr("data-date-click-time")];
+    var dateClickTime = dateOnly ? null : datetimePickerClickTimes[$group.attr("data-date-click-time")];
     if (dateClickTime) {
       $group[0].addEventListener("click", function (event) {
         var dayCell = event.target.closest && event.target.closest("[data-action='selectDay']");
@@ -657,10 +658,12 @@ function initDatetimePickers() {
       if (!parsed.isValid()) {
         return;
       }
-      var time = dateClickTime || datetimePickerClickTimes.start;
-      parsed.hour(time.hour);
-      parsed.minute(time.minute);
-      parsed.second(time.second);
+      if (!dateOnly) {
+        var time = dateClickTime || datetimePickerClickTimes.start;
+        parsed.hour(time.hour);
+        parsed.minute(time.minute);
+        parsed.second(time.second);
+      }
       var current = $group.data("datetimepicker");
       if (current) {
         current.date(parsed);

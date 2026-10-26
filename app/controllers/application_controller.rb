@@ -137,7 +137,10 @@ class ApplicationController < ActionController::Base
     else
       if referer[:controller].present?
         begin
-          redirect_to referer, status: :see_other
+          # recognize_path の結果だとクエリ（ldi_general_form_id 等）が落ちるため、リファラーのパス＋クエリへ戻す。
+          # ホストは使わず自サイト内のパスに限定する
+          referer_uri = URI.parse(request.referer)
+          redirect_to [referer_uri.path, referer_uri.query].compact.join("?"), status: :see_other
           #      redirect_to controller: referer[:controller], action: referer[:action], status: :see_other
         rescue
           exception_redirect

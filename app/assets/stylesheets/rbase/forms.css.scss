@@ -94,20 +94,25 @@ div.fileupload-buttonbar span.has-error span {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
-/* 日時ピッカー: datetime-local と同じく 1 枠の右内側にカレンダーアイコンを置く */
+/* 日時ピッカー: 1 枠の右内側にカレンダーアイコンを置く */
 .rbase-datetimepicker.input-group,
 .form-inline .rbase-datetimepicker.input-group {
   position: relative;
   display: inline-block;
-  width: 10rem;
+  width: 13rem;
   max-width: 100%;
   vertical-align: middle;
+}
+
+.rbase-datepicker.rbase-datetimepicker.input-group,
+.form-inline .rbase-datepicker.rbase-datetimepicker.input-group {
+  width: 8rem;
 }
 
 .rbase-datetimepicker.input-group > .form-control {
   flex: none;
   width: 100%;
-  height: calc(1.5em + 0.2rem + 2px);
+  height: calc(1.5em + 0.5rem + 2px);
   margin: 0;
   padding: 0.1rem 1.35rem 0.1rem 0.2rem;
   font-size: 0.8rem;

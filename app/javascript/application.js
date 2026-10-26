@@ -61,9 +61,13 @@ import "@fortawesome/fontawesome-free/js/all"
 import * as Rbase from "./rbase_common.js"
 window.Rbase = Rbase;
 
+// 画面専用の Stimulus コントローラが無いページでも、日時ピッカーを初期化する
+document.addEventListener("turbo:load", function () {
+  Rbase.initDatetimePickers();
+});
+
 import Widget from "./widget_common.js"
 window.Widget = Widget;
-
 
 // for widgets
 

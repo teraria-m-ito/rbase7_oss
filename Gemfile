@@ -126,7 +126,8 @@ gem 'json-jwt'
 gem "tinymce-rails"
 gem 'tinymce-rails-langs'
 
-gem 'axlsx'
+# axlsx 1.3.6 の to_stream は rubyzip 1.1 以前前提のため、rubyzip 1.3 対応の後継 caxlsx を使う
+gem 'caxlsx'
 gem 'zip-zip'
 gem 'roo'
 

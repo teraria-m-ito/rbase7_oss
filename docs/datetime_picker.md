@@ -14,9 +14,8 @@
 3. `app/javascript/rbase_stimulus.js`
    - `RbaseController.connect` で、既存の `$('.datepicker').datepicker(...)` の直後に `Rbase.initDatetimePickers()` を置く。Turbo の preview では connect が先に return するので、そこには置かない。
 4. `config/initializers/simple_form_custom.rb`
-   - `DatetimePickerInput` を足す。
-   - 既存の `DatetimeLocalInput` は `DatetimePickerInput` のサブクラスに置き換える。ネイティブの `datetime-local` を残す実装と両方置かない。
-   - `StringInput#input` の先頭で、`type` が `datetime` または `datetime-local` のときは `DatetimePickerInput` に渡す。
+   - `DatetimePickerInput` を足す。`DatetimeLocalInput` は置かない。
+   - `StringInput#input` の先頭で、`type` が `datetime` または `datetime-local` のときは `DatetimePickerInput` に渡す。ネイティブの日時入力は出さない。
    - `DateTimeInput` は `input_type == :datetime` のときだけピッカーにする。`:date` と `:time` は `super` のまま。ラベルの `for` は `attribute_name` にする（年月日セレクトの `_1i` にしない）。
 5. `config/initializers/simple_form_bootstrap.rb`
    - `wrapper_mappings` に `datetime_picker: :default_input_form` を足す。
@@ -44,13 +43,9 @@
 
 すでに入っている時刻がこの初期値と違うときは、日付を変えても時刻はそのまま。
 
-次も同じピッカーになる。画面を `as: :datetime_picker` に書き換えなくてよい。
+画面は `as: :datetime_picker` に書く。`as: :datetime_local` は使わない。`type: "datetime-local"` や `type: "datetime"` が残った文字列入力と、カラム型 datetime の `form.input` も、同じピッカーになる。
 
-- `as: :datetime_local`
-- `as: :string` で `type: "datetime-local"` または `type: "datetime"`
-- カラム型 datetime の `form.input`
-
-`rbase_lti_module` の操作ログ・取込履歴は `as: :datetime_local` のままにしておく。入力クラスを写したプロジェクトではピッカーになり、まだ写していないプロジェクトでは従来の入力のまま動く。
+`rbase_lti_module` の操作ログ・取込履歴も `as: :datetime_picker` である。このモジュールを使うプロジェクトは、上のピッカー一式をコアへ写してから動かす。
 
 ## 行を後から足す画面
 
