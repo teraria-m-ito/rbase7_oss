@@ -12,8 +12,13 @@ jQuery.fn.tooltip = _tooltip;
 
 require("jquery-treeview/jquery.treeview")
 
-require("moment/min/moment.min")
+// tempusdominus は window.moment を参照する。locale/ja も同じ moment 実体へ登録する
+var moment = require("moment")
+window.moment = moment
 require("moment/locale/ja")
+moment.locale("en")
+
+require("tempusdominus-bootstrap/build/js/tempusdominus-bootstrap")
 
 require("form-serializer/dist/jquery.serialize-object.min")
 

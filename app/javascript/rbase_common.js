@@ -523,6 +523,152 @@ function showLoading() {
   });
 }
 
+/**
+ * 日付クリック時に入れる時刻。data-date-click-time に start または end を指定する。
+ * 開始は 00:00:00、終了は 23:59:59。
+ */
+var datetimePickerClickTimes = {
+  start: { hour: 0, minute: 0, second: 0 },
+  end: { hour: 23, minute: 59, second: 59 }
+};
+
+/**
+ * .rbase-datetimepicker を tempusdominus で初期化する。
+ * simple_form の as: :datetime_picker が描く部品向け。RbaseController の connect から呼ぶ。
+ * 他プロジェクトへの展開手順は docs/datetime_picker.md。
+ */
+function initDatetimePickers() {
+  if (typeof $.fn.datetimepicker !== "function") {
+    return;
+  }
+  $(".rbase-datetimepicker").each(function () {
+    var $group = $(this);
+    if ($group.data("datetimepicker")) {
+      return;
+    }
+    $group.datetimepicker({
+      format: "YYYY/MM/DD HH:mm:ss",
+      locale: "ja",
+      useCurrent: false,
+      allowInputToggle: true,
+      sideBySide: true,
+      toolbarPlacement: "bottom",
+      buttons: { showToday: true, showClear: true, showClose: true },
+      icons: {
+        time: "bi bi-clock",
+        date: "bi bi-calendar3",
+        up: "bi bi-chevron-up",
+        down: "bi bi-chevron-down",
+        previous: "bi bi-chevron-left",
+        next: "bi bi-chevron-right",
+        today: "bi bi-calendar-check",
+        clear: "bi bi-trash",
+        close: "bi bi-check-lg"
+      },
+      tooltips: {
+        today: "今日",
+        clear: "削除",
+        close: "OK",
+        selectTime: "時刻",
+        selectDate: "日付"
+      }
+    });
+    // 削除で日付が空のまま閉じると _viewDate が消え、次の show が clone で落ちて二度と開かない
+    var picker = $group.data("datetimepicker");
+    var originalShow = picker.show;
+    picker.show = function () {
+      if (this._suppressShow) {
+        return;
+      }
+      if (!this._viewDate) {
+        this._viewDate = this.getMoment();
+      }
+      if (this.widget && this.widget[0] && (!this.widget.is(":visible") || this.widget[0].getBoundingClientRect().height === 0)) {
+        this.widget.remove();
+        this.widget = false;
+      }
+      return originalShow.apply(this, arguments);
+    };
+    // 削除は値を空にしたあとダイアログも閉じる。閉じた直後のフォーカスでは開き直さない
+    $group[0].addEventListener("click", function (event) {
+      var clearButton = event.target.closest && event.target.closest("[data-action='clear']");
+      if (!clearButton || !$group[0].contains(clearButton)) {
+        return;
+      }
+      event.preventDefault();
+      event.stopPropagation();
+      var current = $group.data("datetimepicker");
+      if (!current) {
+        return;
+      }
+      current._suppressShow = true;
+      current.clear();
+      current.hide();
+      window.setTimeout(function () {
+        current._suppressShow = false;
+      }, 300);
+    }, true);
+    var dateClickTime = datetimePickerClickTimes[$group.attr("data-date-click-time")];
+    if (dateClickTime) {
+      $group[0].addEventListener("click", function (event) {
+        var dayCell = event.target.closest && event.target.closest("[data-action='selectDay']");
+        if (!dayCell || !$group[0].contains(dayCell) || dayCell.classList.contains("disabled")) {
+          return;
+        }
+        var currentBefore = $group.data("datetimepicker");
+        var before = currentBefore && !currentBefore.unset ? currentBefore._getLastPickedDate() : null;
+        var timeDiffersFromInitial = before && (
+          before.hour() !== dateClickTime.hour ||
+          before.minute() !== dateClickTime.minute ||
+          before.second() !== dateClickTime.second
+        );
+        if (timeDiffersFromInitial) {
+          return;
+        }
+        window.setTimeout(function () {
+          var current = $group.data("datetimepicker");
+          if (!current) {
+            return;
+          }
+          var picked = current._getLastPickedDate();
+          if (!picked) {
+            return;
+          }
+          var next = picked.clone();
+          next.hour(dateClickTime.hour);
+          next.minute(dateClickTime.minute);
+          next.second(dateClickTime.second);
+          current._setValue(next, 0);
+        }, 0);
+      }, true);
+    }
+    // テキストへの貼り付けは yyyy/MM/dd。時刻は date-click-time の初期値
+    $group.find(".datetimepicker-input").on("paste", function (event) {
+      var clipboard = event.originalEvent && event.originalEvent.clipboardData;
+      if (!clipboard) {
+        return;
+      }
+      var text = $.trim(clipboard.getData("text"));
+      if (!/^\d{4}\/\d{2}\/\d{2}$/.test(text)) {
+        return;
+      }
+      event.preventDefault();
+      var parsed = window.moment(text, "YYYY/MM/DD", true);
+      if (!parsed.isValid()) {
+        return;
+      }
+      var time = dateClickTime || datetimePickerClickTimes.start;
+      parsed.hour(time.hour);
+      parsed.minute(time.minute);
+      parsed.second(time.second);
+      var current = $group.data("datetimepicker");
+      if (current) {
+        current.date(parsed);
+      }
+    });
+  });
+}
+
 function defaultTinyMceOption() {
   return {
     promotion: false,
@@ -563,4 +709,5 @@ module.exports = {
   tinyMceOnChangeHandler: tinyMceOnChangeHandler,
   showLoading: showLoading,
   defaultTinyMceOption: defaultTinyMceOption,
+  initDatetimePickers: initDatetimePickers,
 }

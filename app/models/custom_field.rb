@@ -7,7 +7,9 @@ class CustomField < ApplicationRecord
 
   attr_accessor :list_field, :date_field, :datetime_field
 
-  validates :field_name, presence: true
+  # field_name は動的アクセサ等の変数名になるため、Ruby の識別子形式に制限する
+  validates :field_name, presence: true,
+            format: { with: /\A[a-zA-Z_][a-zA-Z0-9_]*\z/, message: :invalid_variable_name }
   validates :display_name, presence: true
   validates :custom_field_type, presence: true
   validates :issue_type, presence: true, if: Proc.new {|p| p.custom_field_type_key == :issue}

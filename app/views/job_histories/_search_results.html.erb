@@ -1,4 +1,7 @@
-<%= turbo_frame_tag "entry-turbo-job_history_search_results" do %>
+<% job_histories_list_has_in_progress =
+     Array(@job_histories).any? { |rec| %w[wait processing].include?(rec.status.to_s) } %>
+<%= turbo_frame_tag "entry-turbo-job_history_search_results",
+                    data: { has_processing: job_histories_list_has_in_progress } do %>
 
   <div class="card">
   <div class="card-title"></div>
@@ -19,7 +22,7 @@
         </thead>
         <tbody>
         <% @job_histories.each do |job_history| %>
-          <tr>
+          <tr data-job-history-id="<%= job_history.id %>">
             <td><%= job_history.job_type_name %></td>
             <td><%= job_history.status_name %></td>
             <td><%= job_history.request_by_user.try(:name) %></td>

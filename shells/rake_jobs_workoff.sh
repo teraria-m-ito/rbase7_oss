@@ -13,7 +13,7 @@ echo $$ > ~/batches/pids/$basename.pid
 source ~/.bash_profile
 cd ${APP_ROOT}
 
-rake RAILS_ENV=production RBASE_LOG_NAME=batch_production jobs:workoff
+rake RAILS_ENV=production RBASE_LOG_NAME=batch_ jobs:workoff
 rake_exit_code=$?
 
 rm -f ~/batches/pids/$basename.pid

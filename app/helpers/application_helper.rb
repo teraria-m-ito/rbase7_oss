@@ -56,6 +56,8 @@ module ApplicationHelper
       options.update({as: :select, collection: form.object.custom_field.default_value.split(",")})
     when "date"
       options.update({input_html: {class: 'datepicker'}})
+    when "date_time"
+      options.update({as: :datetime_picker})
     else
       custom_field_input_else_field_type(form, options)
     end
@@ -104,6 +106,8 @@ module ApplicationHelper
       )
     when "date"
       options[:input_html][:class] = [options[:input_html][:class], "datepicker"].compact.join(" ")
+    when "date_time"
+      options[:as] = :datetime_picker
     else
       search_condition_custom_field_input_else_field_type(form, custom_field, options)
     end

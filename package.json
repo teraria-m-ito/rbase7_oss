@@ -19,6 +19,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "data-confirm-modal": "^1.6.2",
     "esbuild": "^0.16.4",
+    "flatpickr": "^4.6.13",
     "form-serializer": "^2.5.0",
     "gridstack": "^12.6.0",
     "jquery": "^3.6.2",

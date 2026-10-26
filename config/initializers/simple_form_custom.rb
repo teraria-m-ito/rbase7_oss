@@ -1,5 +1,10 @@
 class StringInput < SimpleForm::Inputs::StringInput
   def input(wrapper_options = nil)
+    html_type = input_html_options[:type].to_s
+    if html_type == "datetime" || html_type == "datetime-local"
+      return DatetimePickerInput.new(@builder, attribute_name, column, :datetime_picker, options).input(wrapper_options)
+    end
+
     unless string?
       input_html_classes.unshift("string")
       input_html_options[:type] ||= input_type if html5?
@@ -229,24 +234,103 @@ module SimpleForm
   end
 end
 
-class DatetimeLocalInput < SimpleForm::Inputs::Base
-  def input(wrapper_options)
+# 日時ピッカー。datetime / datetime_local / type=datetime-local はここへ寄せる。
+# date_click_time は start（00:00:00）または end（23:59:59）。省略時は項目名から決める。
+# 時刻の動きは rbase_common.js
+class DatetimePickerInput < SimpleForm::Inputs::Base
+  def input(wrapper_options = nil)
     merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
 
     col = merged_input_options.delete(:col) || "auto"
     no_custom = merged_input_options.delete(:no_custom)
+    click_time = options[:date_click_time] || merged_input_options.delete(:date_click_time)
+    click_time = click_time.to_s.presence
+    if click_time.blank?
+      attr = attribute_name.to_s
+      click_time = if attr.match?(/(?:_to|_end|end_at)\z/)
+        "end"
+      elsif attr.match?(/(?:_from|_start|start_at)\z/)
+        "start"
+      end
+    end
+    merged_input_options.delete(:step)
 
-    unless no_custom
-      error_text = has_errors? ? errors.send(error_method) : ""
+    group_style = nil
+    if (width = merged_input_options[:style].to_s[/max-width:\s*([^;]+)/, 1]&.strip).present?
+      group_style = "width: #{width}; max-width: 100%;"
+      rest_style = merged_input_options[:style].to_s.sub(/max-width:\s*[^;]+;?\s*/, "").strip
+      rest_style.present? ? merged_input_options[:style] = rest_style : merged_input_options.delete(:style)
+    end
 
-      template.content_tag(:div, nil, {class: "input-group-sm col-#{col}"}) do
-        template.concat(@builder.text_field(attribute_name, merged_input_options.merge(type: 'datetime-local')))
-        template.concat(template.content_tag(:p, error_text, {class: "text-danger small help-block"})) if has_errors?
-        template.concat(template.content_tag(:p, options[:input_hint], {class: "help-block"}))
+    dom_id = merged_input_options[:id].presence || "#{@builder.object_name}_#{attribute_name}".gsub(/\]\[|[^-a-zA-Z0-9:.]/, "_").sub(/_$/, "")
+    group_id = "#{dom_id}_picker"
+    raw_value = merged_input_options.key?(:value) ? merged_input_options[:value] : (object.public_send(attribute_name) if object.respond_to?(attribute_name))
+    merged_input_options[:id] = dom_id
+    merged_input_options[:type] = "text"
+    merged_input_options[:autocomplete] = "off"
+    merged_input_options[:value] = if raw_value.blank?
+      ""
+    elsif raw_value.is_a?(String)
+      text = raw_value.strip
+      if text.match?(/\A\d{4}[\/-]\d{2}[\/-]\d{2}(?:[ T]\d{2}:\d{2}(?::\d{2})?)?\z/)
+        parsed = (Time.zone.parse(text) rescue nil)
+        parsed ? I18n.l(parsed, format: "%Y/%m/%d %H:%M:%S") : text
+      else
+        text
       end
     else
-      @builder.text_field(attribute_name, merged_input_options.merge(type: 'datetime-local'))
+      I18n.l(raw_value, format: "%Y/%m/%d %H:%M:%S")
     end
+    classes = Array(merged_input_options[:class])
+    classes << "datetimepicker-input" unless classes.include?("datetimepicker-input")
+    merged_input_options[:class] = classes
+    data = (merged_input_options[:data] || {}).to_h
+    data[:target] = "##{group_id}"
+    merged_input_options[:data] = data
+
+    group_data = { target_input: "nearest" }
+    group_data[:date_click_time] = click_time if click_time
+    group_options = { class: "input-group date rbase-datetimepicker", id: group_id, data: group_data }
+    group_options[:style] = group_style if group_style.present?
+    group = template.content_tag(:div, group_options) do
+      template.concat(@builder.text_field(attribute_name, merged_input_options))
+      template.concat(
+        template.content_tag(:button, type: "button", class: "rbase-datetimepicker-toggle", tabindex: "-1", aria: { label: "カレンダー" }, data: { toggle: "datetimepicker", target: "##{group_id}" }) do
+          template.content_tag(:i, "", class: "fa-regular fa-calendar")
+        end
+      )
+    end
+
+    return group if no_custom
+
+    error_text = has_errors? ? errors.send(error_method) : ""
+    template.content_tag(:div, class: "input-group-sm col-#{col}") do
+      template.concat(group)
+      template.concat(template.content_tag(:p, error_text, class: "text-danger small help-block")) if has_errors?
+      template.concat(template.content_tag(:p, options[:input_hint], class: "help-block"))
+    end
+  end
+end
+
+class DatetimeLocalInput < DatetimePickerInput
+end
+
+# カラム型 datetime の form.input。date / time は従来の入力のまま。
+class DateTimeInput < SimpleForm::Inputs::DateTimeInput
+  def input(wrapper_options = nil)
+    if input_type == :datetime
+      DatetimePickerInput.new(@builder, attribute_name, column, :datetime_picker, options).input(wrapper_options)
+    else
+      super
+    end
+  end
+
+  private
+
+  def label_target
+    return attribute_name if input_type == :datetime
+
+    super
   end
 end
 

@@ -94,6 +94,225 @@ div.fileupload-buttonbar span.has-error span {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
+/* 日時ピッカー: datetime-local と同じく 1 枠の右内側にカレンダーアイコンを置く */
+.rbase-datetimepicker.input-group,
+.form-inline .rbase-datetimepicker.input-group {
+  position: relative;
+  display: inline-block;
+  width: 10rem;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.rbase-datetimepicker.input-group > .form-control {
+  flex: none;
+  width: 100%;
+  height: calc(1.5em + 0.2rem + 2px);
+  margin: 0;
+  padding: 0.1rem 1.35rem 0.1rem 0.2rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
+.rbase-datetimepicker.input-group > .rbase-datetimepicker-toggle {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 1.25rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.rbase-datetimepicker.input-group > .rbase-datetimepicker-toggle i,
+.rbase-datetimepicker.input-group > .rbase-datetimepicker-toggle svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+
+.input-group.rbase-datetimepicker .bootstrap-datetimepicker-widget.dropdown-menu {
+  font-size: 0.8rem;
+  z-index: 1050;
+  width: 16rem;
+  max-width: 16rem;
+  box-sizing: border-box;
+  padding: 4px 4px 2.2rem;
+  overflow: hidden;
+}
+
+.input-group.rbase-datetimepicker .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {
+  width: max-content;
+  min-width: 0;
+  max-width: none;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget.timepicker-sbs > .row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: auto;
+  margin: 0;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget.timepicker-sbs > .row > .datepicker,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget.timepicker-sbs > .row > .timepicker {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+  padding: 0 0.4rem;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget.timepicker-sbs > .row > .timepicker {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  justify-content: center;
+  border-left: 1px solid #dee2e6;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li {
+  display: block;
+  float: none;
+  width: 100%;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.25rem 0;
+  background: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  text-align: center;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch::after,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch::after {
+  content: none;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch table,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch table {
+  width: 100%;
+  margin: 0;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch tr,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch tr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch td:has(a[data-action="close"]),
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch td:has(a[data-action="close"]) {
+  order: -1;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch td,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch td {
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 0 0.25rem;
+  line-height: 1;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch a,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  color: #495057;
+  border-radius: 0.2rem;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch a:hover,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch a:hover {
+  background: #e9ecef;
+  color: #212529;
+  text-decoration: none;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch td span,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch td span {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  line-height: 1;
+  font-size: 1rem;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > li.picker-switch td span.bi::before,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget > ul > li.picker-switch td span.bi::before {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  line-height: 1;
+  vertical-align: 0;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget .timepicker table td {
+  height: auto;
+  line-height: 1.2;
+  width: auto;
+  padding: 0.15rem 0.3rem;
+  vertical-align: middle;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget .timepicker table td span {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  margin: 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget .timepicker a[data-action],
+.rbase-datetimepicker .bootstrap-datetimepicker-widget .timepicker button[data-action] {
+  padding: 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.rbase-datetimepicker .bootstrap-datetimepicker-widget .timepicker-hour,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget .timepicker-minute,
+.rbase-datetimepicker .bootstrap-datetimepicker-widget .timepicker-second {
+  width: auto;
+  height: auto;
+  font-size: 0.95rem;
+  line-height: 1;
+  vertical-align: middle;
+}
+
 
 .btn-default {
   background-color: #f8f9fa;

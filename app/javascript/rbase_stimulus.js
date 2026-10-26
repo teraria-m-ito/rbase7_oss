@@ -46,6 +46,7 @@ export class RbaseController extends Controller {
       autoclose: true,
       todayHighlight: true
     });
+    Rbase.initDatetimePickers();
     
     var $this = $(this);
     var self = this;
@@ -195,17 +196,8 @@ export class RbaseController extends Controller {
     $(document).off("turbo:before-stream-render");
     console.log("[RbaseController]add turbo:before-stream-render");
     $(document).on("turbo:before-stream-render", function() {
-      //同一URLをロードした時にこのイベントが呼ばれる為、clear=trueのパラメータは削除する
-      var url = window.location.pathname;
-      var params = window.location.search;
-      params = params.replace("clear=true", "");
-
-      if (params.length > 1) {
-        url = url + params;
-      }
-
-      history.replaceState("", "", url);
-
+      // 同一URL再入時に action を再実行する。clear=true は WebStorage 破棄判定に使うため、
+      // 先に trigger してから URL から外す（先に消すと同期完了リロードで復元が走ってしまう）
       currentControllernameValue = controllername;
       switch(actionnameValue) {
         case "create":
@@ -221,6 +213,21 @@ export class RbaseController extends Controller {
       console.log("turbo:before-stream-render call:"+controllername+"/"+actionnameValue);
 
       $this.trigger(actionnameValue);
+
+      var url = window.location.pathname;
+      var params = window.location.search;
+      params = params.replace(/[?&]clear=true\b/, "");
+      if (params.charAt(0) === "&") {
+        params = "?" + params.substring(1);
+      }
+      if (params === "?") {
+        params = "";
+      }
+      if (params.length > 1) {
+        url = url + params;
+      }
+      history.replaceState("", "", url);
+
       // Stream の DOM 反映はこのイベントの非同期処理の後。flash 自動消去を描画後に掛け直す
       scheduleFlashAutoDismiss();
     });
