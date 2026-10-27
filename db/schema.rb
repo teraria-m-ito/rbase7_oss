@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
-  create_table "admin_settings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2026_10_10_174500) do
+  create_table "admin_settings", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.boolean "use_login_id"
     t.string "locale"
     t.string "time_zone"
@@ -25,7 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["use_login_id"], name: "index_admin_settings_on_use_login_id"
   end
 
-  create_table "admin_user_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "admin_user_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "admin_user_id"
     t.string "filename"
     t.integer "file_size"
@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_admin_user_attachments_on_deleted_at"
   end
 
-  create_table "admin_user_custom_fields", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "admin_user_custom_fields", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "admin_user_id"
     t.bigint "custom_field_id"
     t.string "field_value"
@@ -57,18 +57,18 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
   end
 
   create_table "admin_user_roles", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "管理ユーザロール", force: :cascade do |t|
+    t.bigint "admin_user_id", comment: "管理ユーザID"
     t.bigint "role_id", comment: "ロールID"
-    t.datetime "deleted_at", precision: nil, comment: "削除日時"
+    t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "admin_user_id", comment: "管理ユーザID"
     t.index ["admin_user_id", "role_id"], name: "index_admin_user_roles_on_admin_user_id_and_role_id", unique: true
     t.index ["admin_user_id"], name: "index_admin_user_roles_on_admin_user_id"
     t.index ["deleted_at"], name: "index_admin_user_roles_on_deleted_at"
     t.index ["role_id"], name: "index_admin_user_roles_on_role_id"
   end
 
-  create_table "admin_user_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "admin_user_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "admin_user_id"
     t.bigint "site_id"
     t.datetime "deleted_at", precision: nil
@@ -82,7 +82,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["site_id"], name: "index_admin_user_sites_on_site_id"
   end
 
-  create_table "admin_users", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "admin_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", limit: 100
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -108,7 +108,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["role_id"], name: "index_admin_users_on_role_id"
   end
 
-  create_table "canvas_accounts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CAVASサブアカウント", force: :cascade do |t|
+  create_table "canvas_accounts", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CAVASサブアカウント", force: :cascade do |t|
     t.bigint "parent_canvas_account_id", comment: "親CAVASサブアカウントID"
     t.bigint "parent_account_id", comment: "親アカウントID"
     t.bigint "canvasapi_account_id", comment: "CAVASサブアカウントID"
@@ -131,7 +131,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["parent_canvas_account_id"], name: "index_canvas_accounts_on_parent_canvas_account_id"
   end
 
-  create_table "canvas_admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVAS管理者", force: :cascade do |t|
+  create_table "canvas_admins", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVAS管理者", force: :cascade do |t|
     t.bigint "account_id", comment: "アカウントID"
     t.bigint "canvasapi_admin_id", comment: "CANVAS管理者ID"
     t.string "canvasapi_role", comment: "CANVASロール名"
@@ -151,7 +151,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["user_id"], name: "index_canvas_admins_on_user_id"
   end
 
-  create_table "canvas_course_blueprints", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASコースブループリント", force: :cascade do |t|
+  create_table "canvas_course_blueprints", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASコースブループリント", force: :cascade do |t|
     t.bigint "course_id", comment: "コースID"
     t.bigint "canvas_associated_course_id", comment: "関連コースID(関連）"
     t.bigint "associated_course_id", comment: "関連コースID"
@@ -167,7 +167,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_course_blueprints_on_deleted_at"
   end
 
-  create_table "canvas_course_custom_fields", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASコースのカスタムフィールド", force: :cascade do |t|
+  create_table "canvas_course_custom_fields", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASコースのカスタムフィールド", force: :cascade do |t|
     t.integer "course_id", comment: "コースID"
     t.integer "custom_field_id", comment: "カスタムフィールドID"
     t.string "field_value", comment: "カスタムフィールド値"
@@ -179,7 +179,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_course_custom_fields_on_deleted_at"
   end
 
-  create_table "canvas_courses", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASコース", force: :cascade do |t|
+  create_table "canvas_courses", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASコース", force: :cascade do |t|
     t.bigint "canvasapi_course_id", comment: "CANVASコースID"
     t.string "canvasapi_name", comment: "CANVASコース名"
     t.string "name", comment: "コース名"
@@ -262,6 +262,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "enrollment_dialog_user_ids_csv", comment: "履修者編集ダイアログで選択した canvas_users.id（CSV）"
+    t.text "enrollment_dialog_rows_json", comment: "履修者編集ダイアログの行単位（user_id, section_id, role_id, enrollment_state）JSON配列"
     t.text "enrollment_dialog_by_admin_json", comment: "履修者編集ダイアログのドラフト（キー: admin_user.id の JSON オブジェクト）"
     t.string "status", comment: "ステータス"
     t.string "synced", comment: "同期ステータス"
@@ -278,7 +279,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_courses_on_deleted_at"
   end
 
-  create_table "canvas_enrollment_terms", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVAS履修学期", force: :cascade do |t|
+  create_table "canvas_enrollment_terms", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVAS履修学期", force: :cascade do |t|
     t.bigint "account_id", comment: "アカウントID"
     t.bigint "canvasapi_term_id", comment: "CANVAS学期ID"
     t.string "canvasapi_name", comment: "CANVAS学期名"
@@ -306,7 +307,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_enrollment_terms_on_deleted_at"
   end
 
-  create_table "canvas_enrollments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVAS履修", force: :cascade do |t|
+  create_table "canvas_enrollments", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVAS履修", force: :cascade do |t|
     t.bigint "canvasapi_enrollment_id", comment: "CANVAS履修ID"
     t.bigint "canvasapi_root_account_id", comment: "CANVASルートアカウントID"
     t.bigint "canvas_root_account_id", comment: "ルートアカウントID(連携)"
@@ -432,6 +433,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.integer "position", comment: "表示順"
     t.string "output_field", comment: "出力項目"
     t.string "transform", comment: "変換"
+    t.text "transform_value", comment: "変換値"
     t.string "input_field", comment: "入力項目"
     t.bigint "creator_id", comment: "作成ユーザID"
     t.bigint "updater_id", comment: "更新ユーザID"
@@ -439,7 +441,6 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "transform_value", comment: "変換値"
     t.index ["canvas_etl_builder_id"], name: "index_canvas_etl_builder_rows_on_builder_id"
     t.index ["deleted_at"], name: "index_canvas_etl_builder_rows_on_deleted_at"
   end
@@ -461,15 +462,13 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.virtual "active_flag", type: :integer, comment: "未削除フラグ（一意制約用）", as: "if(`deleted_at` is null,1,NULL)", stored: true
     t.index ["deleted_at"], name: "index_canvas_etl_builders_on_deleted_at"
-    t.index ["site_id", "target", "active_flag"], name: "index_canvas_etl_builders_on_site_id_target_active", unique: true
     t.index ["site_id", "target"], name: "index_canvas_etl_builders_on_site_id_and_target"
     t.index ["site_id"], name: "index_canvas_etl_builders_on_site_id"
   end
 
-  create_table "canvas_integration_request_attachment_fields", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASインテグレーション添付ファイル項目", force: :cascade do |t|
-    t.bigint "integration_request_attachment_id", comment: "CANVASインテグレーション添付ファイルID"
+  create_table "canvas_integration_request_attachment_fields", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVAS SISインテグレーション添付ファイル項目", force: :cascade do |t|
+    t.bigint "integration_request_attachment_id", comment: "CANVAS SISインテグレーション添付ファイルID"
     t.integer "column_number", comment: "項目番号"
     t.string "column_name", comment: "項目名"
     t.bigint "creator_id", comment: "作成ユーザID"
@@ -482,7 +481,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["integration_request_attachment_id"], name: "index_canvas_ira_fields_on_canvas_ira_id"
   end
 
-  create_table "canvas_integration_request_attachment_values", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASインテグレーション添付セル値", force: :cascade do |t|
+  create_table "canvas_integration_request_attachment_values", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVAS SISインテグレーション添付セル値", force: :cascade do |t|
     t.bigint "integration_request_attachment_field_id", null: false, comment: "CANVASインテグレーション添付項目ID"
     t.integer "row_number", null: false, comment: "元 Excel の行番号（1 始まり、ヘッダーは 1）"
     t.text "cell_value", comment: "セル値"
@@ -497,8 +496,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["integration_request_attachment_field_id"], name: "index_canvas_ir_attachment_values_on_field_id"
   end
 
-  create_table "canvas_integration_request_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASインテグレーション要求添付ファイル", force: :cascade do |t|
-    t.bigint "integration_request_id", comment: "CANVASインテグレーション要求ID"
+  create_table "canvas_integration_request_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVAS SISインテグレーション要求添付ファイル", force: :cascade do |t|
+    t.bigint "integration_request_id", comment: "CANVAS SISインテグレーション要求ID"
     t.string "type_div", comment: "添付ファイルタイプ"
     t.string "filename", comment: "添付ファイル名"
     t.integer "file_size", comment: "添付ファイルサイズ"
@@ -515,9 +514,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["integration_request_id"], name: "index_canvas_ir_attachments_on_canvas_ir_id"
   end
 
-  create_table "canvas_integration_request_conditions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASインテグレーション条件", force: :cascade do |t|
-    t.bigint "integration_request_id", comment: "CANVASインテグレーション要求ID"
-    t.string "integration_type", comment: "インテグレーションタイプ"
+  create_table "canvas_integration_request_conditions", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVAS SISインテグレーション条件", force: :cascade do |t|
+    t.bigint "integration_request_id", comment: "CANVAS SISインテグレーション要求ID"
+    t.string "integration_type", comment: "SIS インテグレーションタイプ"
     t.string "condition_div", comment: "条件区分"
     t.string "and_or", comment: "AND/OR"
     t.integer "with_in_time", comment: "条件時間"
@@ -531,8 +530,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_integration_request_conditions_on_deleted_at"
   end
 
-  create_table "canvas_integration_request_stop_periods", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASインテグレーション停止期間", force: :cascade do |t|
-    t.bigint "integration_request_id", comment: "CANVASインテグレーション要求ID"
+  create_table "canvas_integration_request_stop_periods", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVAS SISインテグレーション停止期間", force: :cascade do |t|
+    t.bigint "integration_request_id", comment: "CANVAS SISインテグレーション要求ID"
     t.datetime "start_at", comment: "停止開始日時"
     t.datetime "end_at", comment: "停止終了日時"
     t.bigint "creator_id", comment: "作成ユーザID"
@@ -545,18 +544,16 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["integration_request_id"], name: "index_canvas_integration_request_stop_periods_on_request_id"
   end
 
-  create_table "canvas_integration_requests", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASインテグレーション要求", force: :cascade do |t|
-    t.bigint "site_id", comment: "サイトID"
+  create_table "canvas_integration_requests", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASインテグレーション要求", force: :cascade do |t|
     t.bigint "job_manage_id", comment: "ジョブ管理ID"
-    t.string "integration_type", comment: "インテグレーションタイプ"
+    t.string "integration_type", comment: "SISインテグレーションタイプ"
     t.bigint "account_id", comment: "対象サブアカウント（canvas_accounts.id）"
     t.boolean "run_immediately", comment: "即時実行フラグ"
     t.string "cron_expression", comment: "定期実行クーロン表現"
-    t.datetime "cron_last_fired_at", comment: "定期実行で最後に処理したcron発火時刻"
     t.string "import_dir_path", comment: "インポートディレクトリパス"
     t.string "filename", comment: "ファイル名"
     t.boolean "filename_regex", comment: "ファイル名正規表現"
-    t.bigint "parent_canvas_integration_request_id", comment: "親インテグレーション要求ID"
+    t.bigint "parent_canvas_integration_request_id", comment: "親SISインテグレーション要求ID"
     t.string "run_day", comment: "毎月N日に実行"
     t.boolean "run_sunday", comment: "日曜日実行フラグ"
     t.boolean "run_monday", comment: "月曜日実行フラグ"
@@ -586,10 +583,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["account_id"], name: "index_canvas_integration_requests_on_account_id"
     t.index ["deleted_at"], name: "index_canvas_integration_requests_on_deleted_at"
     t.index ["job_manage_id"], name: "index_canvas_integration_requests_on_job_manage_id"
-    t.index ["site_id"], name: "index_canvas_integration_requests_on_site_id"
   end
 
-  create_table "canvas_role_accounts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASロールアカウント", force: :cascade do |t|
+  create_table "canvas_role_accounts", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASロールアカウント", force: :cascade do |t|
     t.bigint "role_id", comment: "ロールID"
     t.bigint "account_id", comment: "アカウントID"
     t.bigint "creator_id", comment: "作成ユーザID"
@@ -603,7 +599,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["role_id"], name: "index_canvas_role_accounts_on_role_id"
   end
 
-  create_table "canvas_role_permissions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASロールパーミッション", force: :cascade do |t|
+  create_table "canvas_role_permissions", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASロールパーミッション", force: :cascade do |t|
     t.bigint "role_id", comment: "CANVASロールID"
     t.string "canvasapi_permission_name", comment: "CANVASロールパーミッション名"
     t.boolean "canvasapi_enabled", comment: "CANVASロールパーミッション有効フラグ"
@@ -632,7 +628,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["role_id"], name: "index_canvas_role_permissions_on_role_id"
   end
 
-  create_table "canvas_roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASロール", force: :cascade do |t|
+  create_table "canvas_roles", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASロール", force: :cascade do |t|
     t.bigint "canvasapi_role_id", comment: "CANVASロールID"
     t.string "canvasapi_role", comment: "CANVASロール名"
     t.string "canvasapi_label", comment: "CANVAS表示名"
@@ -659,7 +655,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_roles_on_deleted_at"
   end
 
-  create_table "canvas_sections", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASセクション", force: :cascade do |t|
+  create_table "canvas_sections", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASセクション", force: :cascade do |t|
     t.bigint "canvasapi_section_id", comment: "CANVASセクションID"
     t.string "canvasapi_section_name", comment: "CANVASセクション名"
     t.bigint "canvasapi_course_id", comment: "CANVASコースID"
@@ -686,18 +682,18 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_sections_on_deleted_at"
   end
 
-  create_table "canvas_usages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CanvasAdmin利用ガイド", force: :cascade do |t|
+  create_table "canvas_usages", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CanvasAdmin利用ガイド", force: :cascade do |t|
     t.text "message", comment: "利用ガイドメッセージ"
-    t.bigint "creator_id", comment: "作成ユーザID"
-    t.bigint "updater_id", comment: "更新ユーザID"
-    t.bigint "deleter_id", comment: "削除ユーザID"
+    t.integer "creator_id", comment: "作成ユーザID"
+    t.integer "updater_id", comment: "更新ユーザID"
+    t.integer "deleter_id", comment: "削除ユーザID"
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deleted_at"], name: "index_canvas_usages_on_deleted_at"
   end
 
-  create_table "canvas_user_accounts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASユーザ_アカウント", force: :cascade do |t|
+  create_table "canvas_user_accounts", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASユーザ_アカウント", force: :cascade do |t|
     t.bigint "user_id", comment: "ユーザID"
     t.bigint "account_id", comment: "アカウントID"
     t.bigint "creator_id", comment: "作成ユーザID"
@@ -709,7 +705,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_user_accounts_on_deleted_at"
   end
 
-  create_table "canvas_user_custom_fields", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASユーザのカスタムフィールド", force: :cascade do |t|
+  create_table "canvas_user_custom_fields", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASユーザのカスタムフィールド", force: :cascade do |t|
     t.integer "user_id", comment: "ユーザID"
     t.integer "custom_field_id", comment: "カスタムフィールドID"
     t.string "field_value", comment: "カスタムフィールド値"
@@ -721,7 +717,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["user_id"], name: "index_canvas_user_custom_fields_on_user_id"
   end
 
-  create_table "canvas_user_linkages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASユーザ名寄せ", force: :cascade do |t|
+  create_table "canvas_user_linkages", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASユーザ名寄せ", force: :cascade do |t|
     t.bigint "source_canvas_user_id", comment: "名寄せ元CANVASユーザID"
     t.bigint "target_canvas_user_id", comment: "名寄せ先CANVASユーザID"
     t.bigint "creator_id", comment: "作成ユーザID"
@@ -733,7 +729,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_user_linkages_on_deleted_at"
   end
 
-  create_table "canvas_users", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "CANVASユーザ", force: :cascade do |t|
+  create_table "canvas_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "CANVASユーザ", force: :cascade do |t|
     t.bigint "canvasapi_user_id", comment: "CANVASユーザID"
     t.string "canvasapi_name", comment: "CANVASユーザ名"
     t.string "name", comment: "ユーザ名"
@@ -774,7 +770,6 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", comment: "ステータス"
-    t.string "canvasapi_status", comment: "Canvasのログイン状態（active / suspended）"
     t.string "synced", comment: "同期ステータス"
     t.datetime "synced_at", comment: "同期ステータス日時"
     t.boolean "syncing", default: false, null: false, comment: "同期中フラグ"
@@ -783,7 +778,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_canvas_users_on_deleted_at"
   end
 
-  create_table "custom_field_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "custom_field_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "custom_field_id"
     t.bigint "site_id"
     t.datetime "deleted_at", precision: nil
@@ -797,7 +792,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["site_id"], name: "index_custom_field_sites_on_site_id"
   end
 
-  create_table "custom_fields", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "custom_fields", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "custom_field_type"
     t.string "issue_type"
     t.string "field_name"
@@ -820,7 +815,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_custom_fields_on_deleted_at"
   end
 
-  create_table "delayed_jobs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "delayed_jobs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
@@ -835,7 +830,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "issue_custom_fields", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "issue_custom_fields", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "issue_id"
     t.bigint "custom_field_id"
     t.string "field_value"
@@ -850,7 +845,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["issue_id"], name: "index_issue_custom_fields_on_issue_id"
   end
 
-  create_table "issue_targets", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "申請対象", force: :cascade do |t|
+  create_table "issue_targets", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "申請対象", force: :cascade do |t|
     t.bigint "issue_id", comment: "申請ID"
     t.string "target_type", null: false
     t.bigint "target_id", null: false
@@ -865,7 +860,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["target_type", "target_id"], name: "index_issue_targets_on_target"
   end
 
-  create_table "issue_type_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "issue_type_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "issue_type_id"
     t.bigint "site_id"
     t.datetime "deleted_at", precision: nil
@@ -879,7 +874,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["site_id"], name: "index_issue_type_sites_on_site_id"
   end
 
-  create_table "issue_types", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "issue_types", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "issue_type_name"
     t.string "issue_type_class"
     t.string "issue_type_short_name"
@@ -894,7 +889,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["issue_type_short_name"], name: "index_issue_types_on_issue_type_short_name"
   end
 
-  create_table "issues", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "issues", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "site_id"
     t.bigint "issue_type_id"
     t.bigint "workflow_state_id"
@@ -918,7 +913,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["workflow_state_id"], name: "index_issues_on_workflow_state_id"
   end
 
-  create_table "job_manage_errors", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "JOB管理エラー", force: :cascade do |t|
+  create_table "job_manage_errors", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "JOB管理エラー", force: :cascade do |t|
     t.bigint "job_manage_id", comment: "JOB管理ID"
     t.string "message", comment: "エラーメッセージ"
     t.integer "row_no", comment: "行番号"
@@ -932,7 +927,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_job_manage_errors_on_deleted_at"
   end
 
-  create_table "job_manages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "ジョブ管理", force: :cascade do |t|
+  create_table "job_manages", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "ジョブ管理", force: :cascade do |t|
     t.string "active_job_id", comment: "ジョブID"
     t.string "job_type", comment: "ジョブタイプ"
     t.string "status", comment: "ステータス"
@@ -952,7 +947,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_job_manages_on_deleted_at"
   end
 
-  create_table "ken_all_postal_codes", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "ken_all_postal_codes", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "code"
     t.text "address1"
     t.text "address2"
@@ -966,11 +961,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
   end
 
   create_table "license_activations", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "ライセンスアクティベート履歴", force: :cascade do |t|
-    t.bigint "site_id", comment: "サイトID"
     t.string "contract_cd", comment: "契約ID"
     t.string "license_key", comment: "ライセンスキー"
     t.string "result", comment: "結果"
-    t.string "failure_reason", comment: "失敗理由"
     t.date "end_at", comment: "有効期限"
     t.datetime "requested_at", comment: "要求日時"
     t.bigint "creator_id", comment: "作成ユーザID"
@@ -983,10 +976,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.string "license", comment: "ライセンス"
     t.index ["deleted_at"], name: "index_license_activations_on_deleted_at"
     t.index ["requested_at"], name: "index_license_activations_on_requested_at"
-    t.index ["site_id", "requested_at"], name: "index_license_activations_on_site_id_and_requested_at"
   end
 
-  create_table "lms_user_custom_fields", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "lms_user_custom_fields", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "lms_user_id"
     t.bigint "custom_field_id"
     t.string "field_value"
@@ -998,7 +990,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["lms_user_id"], name: "index_lms_user_custom_fields_on_lms_user_id"
   end
 
-  create_table "lms_user_import_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LMSユーザインポート添付", force: :cascade do |t|
+  create_table "lms_user_import_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LMSユーザインポート添付", force: :cascade do |t|
     t.bigint "lms_user_import_id", comment: "LTI振り返りインポートID"
     t.string "filename", comment: "ファイル名"
     t.integer "file_size", comment: "ファイルサイズ"
@@ -1011,7 +1003,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["lms_user_import_id"], name: "index_lms_user_import_atts_import_id"
   end
 
-  create_table "lms_user_import_errors", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LMSユーザインポートエラー", force: :cascade do |t|
+  create_table "lms_user_import_errors", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LMSユーザインポートエラー", force: :cascade do |t|
     t.bigint "lms_user_import_id", comment: "LMSユーザインポートID"
     t.integer "line_no", comment: "行番号"
     t.string "error_message", comment: "エラーメッセージ"
@@ -1022,7 +1014,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["lms_user_import_id"], name: "index_lms_user_import_errors_on_lms_user_import_id"
   end
 
-  create_table "lms_user_imports", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LMSユーザインポート", force: :cascade do |t|
+  create_table "lms_user_imports", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LMSユーザインポート", force: :cascade do |t|
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1032,7 +1024,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_lms_user_imports_on_deleted_at"
   end
 
-  create_table "lms_user_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LMSユーザサイト", force: :cascade do |t|
+  create_table "lms_user_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LMSユーザサイト", force: :cascade do |t|
     t.bigint "lms_user_id", comment: "LMSユーザID"
     t.bigint "site_id", comment: "サイトID"
     t.datetime "deleted_at", comment: "削除日時"
@@ -1043,7 +1035,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["site_id"], name: "index_lms_user_sites_on_site_id"
   end
 
-  create_table "lms_users", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LMSユーザ", force: :cascade do |t|
+  create_table "lms_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LMSユーザ", force: :cascade do |t|
     t.string "username", comment: "ユーザID"
     t.string "name", comment: "氏名"
     t.string "given_name", comment: "姓"
@@ -1060,25 +1052,22 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.bigint "course_org_id", comment: "コース組織ID"
     t.bigint "admin_user_id", comment: "ユーザID"
     t.bigint "lms_user_id", comment: "LMSユーザID"
-    t.string "lti_sub", comment: "LTI sub（LMS 上のユーザ識別子）"
     t.index ["deleted_at"], name: "index_lms_users_on_deleted_at"
-    t.index ["lms", "lti_sub"], name: "index_lms_users_on_lms_and_lti_sub"
   end
 
-  create_table "lti_caches", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTIキャッシュ", force: :cascade do |t|
+  create_table "lti_caches", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTIキャッシュ", force: :cascade do |t|
     t.string "launch_id", comment: "起動ID"
     t.string "nonce", comment: "ナンス値"
     t.text "data", comment: "キャッシュデータ"
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "nonce_used_at", comment: "ナンス使用日時（LTI 起動で使用済み）"
     t.index ["deleted_at"], name: "index_lti_caches_on_deleted_at"
     t.index ["launch_id"], name: "index_lti_caches_on_launch_id"
     t.index ["nonce"], name: "index_lti_caches_on_nonce"
   end
 
-  create_table "lti_database_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTIデータベースサイト", force: :cascade do |t|
+  create_table "lti_database_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTIデータベースサイト", force: :cascade do |t|
     t.bigint "lti_database_id", comment: "LTIデータベースID"
     t.bigint "site_id", comment: "サイトID"
     t.datetime "deleted_at", comment: "削除日時"
@@ -1089,7 +1078,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["site_id"], name: "index_lti_database_sites_on_site_id"
   end
 
-  create_table "lti_databases", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTIデータベース", force: :cascade do |t|
+  create_table "lti_databases", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTIデータベース", force: :cascade do |t|
     t.string "name", comment: "名前"
     t.string "iss", null: false
     t.string "client_id"
@@ -1103,12 +1092,11 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "public_key", comment: "公開鍵"
-    t.string "registration_lms_url", comment: "呼び出し元LMS URL（動的登録を許可するLMS）"
     t.index ["deleted_at"], name: "index_lti_databases_on_deleted_at"
     t.index ["iss"], name: "index_lti_databases_on_iss"
   end
 
-  create_table "lti_import_histories", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTIインポート履歴", force: :cascade do |t|
+  create_table "lti_import_histories", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTIインポート履歴", force: :cascade do |t|
     t.string "target_type", comment: "インポートタイプ"
     t.bigint "target_id", comment: "履歴ID"
     t.bigint "provider_job_id", comment: "delayed_job ID"
@@ -1147,7 +1135,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_lti_operation_logs_on_deleted_at"
   end
 
-  create_table "lti_org_import_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTI組織インポート添付", force: :cascade do |t|
+  create_table "lti_org_import_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTI組織インポート添付", force: :cascade do |t|
     t.integer "lti_org_import_id", comment: "LTI組織インポートID"
     t.string "filename", comment: "ファイル名"
     t.integer "file_size", comment: "ファイルサイズ"
@@ -1160,7 +1148,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["lti_org_import_id"], name: "index_lti_org_import_atts_import_id"
   end
 
-  create_table "lti_org_import_errors", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTI組織インポートエラー", force: :cascade do |t|
+  create_table "lti_org_import_errors", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTI組織インポートエラー", force: :cascade do |t|
     t.integer "lti_org_import_id", comment: "LTI組織インポートID"
     t.integer "line_no", comment: "行番号"
     t.string "error_message", comment: "エラーメッセージ"
@@ -1171,7 +1159,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["lti_org_import_id"], name: "index_lti_org_import_errors_on_lti_org_import_id"
   end
 
-  create_table "lti_org_imports", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTI組織インポート", force: :cascade do |t|
+  create_table "lti_org_imports", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTI組織インポート", force: :cascade do |t|
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1181,7 +1169,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_lti_org_imports_on_deleted_at"
   end
 
-  create_table "lti_orgs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTI組織", force: :cascade do |t|
+  create_table "lti_orgs", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTI組織", force: :cascade do |t|
     t.string "org_cd", comment: "組織CD"
     t.string "org_name", comment: "組織名"
     t.bigint "parent_org_id", comment: "親組織CD"
@@ -1197,7 +1185,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["org_cd"], name: "index_lti_orgs_on_org_cd"
   end
 
-  create_table "lti_usages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", comment: "LTI利用ガイド", force: :cascade do |t|
+  create_table "lti_usages", charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "LTI利用ガイド", force: :cascade do |t|
     t.text "message", comment: "利用ガイドメッセージ"
     t.datetime "deleted_at", comment: "削除日時"
     t.datetime "created_at", null: false
@@ -1208,7 +1196,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_lti_usages_on_deleted_at"
   end
 
-  create_table "mail_template_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "mail_template_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "mail_template_id"
     t.bigint "site_id"
     t.datetime "deleted_at", precision: nil
@@ -1222,7 +1210,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["site_id"], name: "index_mail_template_sites_on_site_id"
   end
 
-  create_table "mail_templates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "mail_templates", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "template_div"
     t.string "template_name"
     t.string "from_address"
@@ -1232,15 +1220,15 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "enable", comment: "有効フラグ"
     t.boolean "disable_notice", comment: "通知無効フラグ"
     t.bigint "creator_id", comment: "作成ユーザID"
     t.bigint "updater_id", comment: "更新ユーザID"
     t.bigint "deleter_id", comment: "削除ユーザID"
+    t.boolean "enable", comment: "有効フラグ"
     t.index ["deleted_at"], name: "index_mail_templates_on_deleted_at"
   end
 
-  create_table "queries", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "queries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "admin_user_id"
     t.string "title"
     t.string "query_content", limit: 1000
@@ -1258,7 +1246,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_queries_on_deleted_at"
   end
 
-  create_table "report_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "report_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "report_id"
     t.string "filename"
     t.integer "file_size"
@@ -1274,7 +1262,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["report_id"], name: "index_report_attachments_on_report_id"
   end
 
-  create_table "report_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "report_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "report_id"
     t.bigint "site_id"
     t.datetime "deleted_at", precision: nil
@@ -1288,7 +1276,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["site_id"], name: "index_report_sites_on_site_id"
   end
 
-  create_table "reports", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "reports", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "title"
     t.string "report_class"
     t.string "description", limit: 1000
@@ -1301,7 +1289,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_reports_on_deleted_at"
   end
 
-  create_table "role_actions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "role_actions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "controller_path"
     t.string "display_name"
@@ -1317,7 +1305,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_role_actions_on_deleted_at"
   end
 
-  create_table "role_role_actions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "role_role_actions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "role_id"
     t.bigint "role_action_id"
     t.datetime "deleted_at", precision: nil
@@ -1331,7 +1319,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["role_id"], name: "index_role_role_actions_on_role_id"
   end
 
-  create_table "roles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "roles", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "role_name"
     t.string "role_short_name"
     t.boolean "deletable"
@@ -1344,7 +1332,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_roles_on_deleted_at"
   end
 
-  create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data", size: :medium
     t.datetime "created_at", null: false
@@ -1353,7 +1341,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "site_name"
     t.string "status_div", default: "before_apply"
     t.datetime "deleted_at", precision: nil
@@ -1365,7 +1353,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_sites_on_deleted_at"
   end
 
-  create_table "state_flow_workflow_states", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "state_flow_workflow_states", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "state_flow_id"
     t.bigint "current_workflow_state_id"
     t.bigint "next_workflow_state_id"
@@ -1381,7 +1369,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["state_flow_id"], name: "index_state_flow_workflow_states_on_state_flow_id"
   end
 
-  create_table "state_flows", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "state_flows", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "workflow_id"
     t.bigint "role_id"
     t.datetime "deleted_at", precision: nil
@@ -1395,7 +1383,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["workflow_id"], name: "index_state_flows_on_workflow_id"
   end
 
-  create_table "system_setting_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "system_setting_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "system_setting_id"
     t.string "type_div"
     t.string "filename"
@@ -1412,7 +1400,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["system_setting_id"], name: "index_system_setting_attachments_on_system_setting_id"
   end
 
-  create_table "system_setting_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "system_setting_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "system_setting_id"
     t.bigint "site_id"
     t.datetime "deleted_at", precision: nil
@@ -1426,7 +1414,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["system_setting_id"], name: "index_system_setting_sites_on_system_setting_id"
   end
 
-  create_table "system_settings", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "system_settings", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "setting_category_div", limit: 20
     t.string "setting_div", limit: 20
     t.string "setting_value", limit: 16000, comment: "設定値"
@@ -1439,7 +1427,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_system_settings_on_deleted_at"
   end
 
-  create_table "translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "translations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "scope"
     t.string "locale"
     t.string "key"
@@ -1463,7 +1451,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  create_table "workflow_sites", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "workflow_sites", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "workflow_id"
     t.bigint "site_id"
     t.datetime "deleted_at", precision: nil
@@ -1477,7 +1465,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["workflow_id"], name: "index_workflow_sites_on_workflow_id"
   end
 
-  create_table "workflow_states", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "workflow_states", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "workflow_id"
     t.string "state_cd"
     t.string "state_name"
@@ -1494,7 +1482,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_12_170000) do
     t.index ["deleted_at"], name: "index_workflow_states_on_deleted_at"
   end
 
-  create_table "workflows", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "workflows", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "workflow_name"
     t.bigint "issue_type_id"
     t.boolean "deletable"
