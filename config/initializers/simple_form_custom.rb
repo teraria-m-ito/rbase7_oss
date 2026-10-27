@@ -281,7 +281,18 @@ class DatetimePickerInput < SimpleForm::Inputs::Base
       ""
     elsif raw_value.is_a?(String)
       text = raw_value.strip
-      if !date_only? && text.match?(/\A\d{4}[\/-]\d{2}[\/-]\d{2}\z/)
+      calendar = text.match(/\A(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?\z/)
+      impossible_calendar = calendar && (
+        !Date.valid_date?(calendar[1].to_i, calendar[2].to_i, calendar[3].to_i) ||
+        (calendar[4] && (
+          !(0..23).cover?(calendar[4].to_i) ||
+          !(0..59).cover?(calendar[5].to_i) ||
+          !(0..59).cover?((calendar[6] || 0).to_i)
+        ))
+      )
+      if impossible_calendar
+        text
+      elsif !date_only? && text.match?(/\A\d{4}[\/-]\d{2}[\/-]\d{2}\z/)
         suffix = click_time == "end" ? "23:59:59" : "00:00:00"
         parsed = (Time.zone.parse("#{text} #{suffix}") rescue nil)
         parsed ? I18n.l(parsed, format: display_format) : text

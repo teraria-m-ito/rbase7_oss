@@ -1,20 +1,13 @@
 # frozen_string_literal: true
 
 # 他テーブル参照用の integer 型カラム（外部キー相当）を bigint に揃える
-# 非対象: file_size, line_no, sign_in_count, field_size, display_order, priority, attempts, canvasapi_storage_quota_mb 等
+# 非対象: file_size, line_no, sign_in_count, field_size, display_order, priority, attempts 等
 class ChangeIntegerForeignKeyColumnsToBigint < ActiveRecord::Migration[7.0]
   FKS = {
     admin_user_attachments: %i[admin_user_id],
     admin_user_custom_fields: %i[admin_user_id custom_field_id],
     admin_user_sites: %i[admin_user_id site_id],
     admin_users: %i[role_id],
-    canvas_course_custom_fields: %i[canvas_course_id custom_field_id],
-    canvas_enrollment_terms: %i[creator_id updater_id deleter_id],
-    canvas_enrollments: %i[creator_id updater_id deleter_id],
-    canvas_sections: %i[creator_id updater_id deleter_id],
-    canvas_usages: %i[creator_id updater_id deleter_id],
-    canvas_user_custom_fields: %i[canvas_user_id custom_field_id],
-    canvas_users: %i[creator_id updater_id deleter_id],
     custom_field_sites: %i[custom_field_id site_id],
     issue_custom_fields: %i[issue_id custom_field_id],
     issue_targets: %i[issue_id],

@@ -283,6 +283,8 @@ en:
         inclusion: "is invalid."
         taken: "has already been taken."
         invalid: "is invalid."
+        invalid_date: "has a date that does not exist"
+        before_start_at: "is before the start date/time"
         not_a_number: "is not a number."
         greater_than_or_equal_to: "must be greater than or equal to 0."
         system_setting_already_registered: "This setting is already registered. You can open the edit screen."

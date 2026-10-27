@@ -550,6 +550,9 @@ function initDatetimePickers() {
     $group.datetimepicker({
       format: dateOnly ? "YYYY/MM/DD" : "YYYY/MM/DD HH:mm:ss",
       locale: "ja",
+      // 11/31 などを翌月へ繰り上げない。不正な文字列は入力欄に残す
+      useStrict: true,
+      keepInvalid: true,
       useCurrent: false,
       allowInputToggle: true,
       sideBySide: !dateOnly,

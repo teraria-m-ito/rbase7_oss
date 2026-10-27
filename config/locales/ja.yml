@@ -285,6 +285,8 @@ ja:
         inclusion: "が正しくありません。"
         taken: "が重複しています。"
         invalid: "が正しくありません。"
+        invalid_date: "に存在しない日付が指定されています"
+        before_start_at: "は開始日時より前です"
         not_a_number: "が数値ではありません。"
         greater_than_or_equal_to: "は0以上の数値を入力して下さい。"
         system_setting_already_registered: "既に登録済です．編集画面に遷移可能です．"

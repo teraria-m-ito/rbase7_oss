@@ -25,6 +25,9 @@
    - `.rbase-datetimepicker` のブロックを写す。閉じた入力の幅、枠内のカレンダーアイコン、カレンダーと時刻の横並び、下端の今日・削除・OK、時刻マスの高さはここにある。
 8. `app/helpers/application_helper.rb`
    - カスタム項目の `date_time` は、入力と検索条件の両方で `as: :datetime_picker` にする。`date` は従来の datepicker のまま。
+9. `app/models/concerns/calendar_datetime_range.rb`
+   - 開始日時・終了日時を持つモデルが `include CalendarDatetimeRange` する。存在しない日付は保存せず、開始が終了より後のときは終了日時をエラーにする。
+   - エラー文は `activerecord.errors.messages.invalid_date` と `before_start_at`。`config/locales/ja.yml` の同キーを写す。項目名は各モデルの `activerecord.attributes` に置く。
 
 `package.json` に `moment`、`tempusdominus-bootstrap`、`bootstrap-icons` があること。アイコンクラスは `bi bi-*` にする。Font Awesome のクラスは Tempus Dominus が作る span では文字化けする。
 
@@ -42,6 +45,8 @@
 - それ以外は、日付を選んでも入っている時刻を変えない。
 
 すでに入っている時刻がこの初期値と違うときは、日付を変えても時刻はそのまま。
+
+`2026/11/31` のように存在しない日付は、翌月へ繰り上げない。ピッカーは `useStrict: true` と `keepInvalid: true` で、入力した文字列を残す。保存側はコアの `CalendarDatetimeRange` を include する。ActiveRecord の datetime 型は不正な日付を 12 月 1 日のように解釈して保存する。開始日時が終了日時より後のときは、終了日時だけをエラーにする。再表示は `invalid_calendar_datetime(:start_at)` を入力値の先頭に置く。このリポジトリでは `CanvasEnrollmentTerm`、`CanvasCourse`、`CanvasIntegrationRequestStopPeriod` が include している。
 
 画面は `as: :datetime_picker` に書く。`as: :datetime_local` は使わない。`type: "datetime-local"` や `type: "datetime"` が残った文字列入力と、カラム型 datetime の `form.input` も、同じピッカーになる。
 
