@@ -16,6 +16,7 @@ class CustomField < ApplicationRecord
   # validates :field_type, presence: true
   validates :field_size, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 12 }, allow_nil: true
   validates :field_type, presence: true
+  validate :datetime_default_must_exist
 
   accepts_nested_attributes_for :custom_field_sites,  :allow_destroy => true
 
@@ -61,9 +62,39 @@ class CustomField < ApplicationRecord
     
     self.default_value = self.list_field.gsub(/(\r\n|\r)/, "\n").split("\n").join(",") if field_type_entry[:list_field]
     self.default_value = self.date_field if field_type_entry[:calendar]
-    self.default_value = Time.parse(self.datetime_field).strftime("%Y-%m-%d %H:%M:%S") if field_type_entry[:dt_calendar]
+    # ピッカーの保存文字列は 2024/10/28 00:00:00。存在しない日付は繰り上げない
+    self.default_value = calendar_datetime_text(datetime_field) if field_type_entry[:dt_calendar]
   end
-  
+
+  private
+
+  def datetime_default_must_exist
+    return unless field_type_key == :date_time
+    return if datetime_field.blank?
+    return if calendar_datetime_text(datetime_field)
+
+    errors.add(:datetime_field, :invalid_date)
+  end
+
+  def calendar_datetime_text(value)
+    text = value.to_s.strip
+    return if text.blank?
+
+    match = text.match(/\A(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?\z/)
+    return unless match
+    return unless Date.valid_date?(match[1].to_i, match[2].to_i, match[3].to_i)
+    if match[4]
+      return unless (0..23).cover?(match[4].to_i)
+      return unless (0..59).cover?(match[5].to_i)
+      return unless (0..59).cover?((match[6] || 0).to_i)
+    end
+
+    time = match[4] ? format("%02d:%02d:%02d", match[4].to_i, match[5].to_i, (match[6] || 0).to_i) : "00:00:00"
+    format("%04d/%02d/%02d %s", match[1].to_i, match[2].to_i, match[3].to_i, time)
+  end
+
+  public
+
   def restore_fields
     field_type_entry = CustomField.field_type_entry_by_key(self.field_type_key)
     self.list_field = self.default_value.split(",").join("\n") if field_type_entry[:list_field]

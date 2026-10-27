@@ -273,7 +273,17 @@ class DatetimePickerInput < SimpleForm::Inputs::Base
 
     dom_id = merged_input_options[:id].presence || "#{@builder.object_name}_#{attribute_name}".gsub(/\]\[|[^-a-zA-Z0-9:.]/, "_").sub(/_$/, "")
     group_id = "#{dom_id}_picker"
-    raw_value = merged_input_options.key?(:value) ? merged_input_options[:value] : (object.public_send(attribute_name) if object.respond_to?(attribute_name))
+    # 存在しない日付は属性が空になる。再表示は入力した文字列を先に出す
+    raw_value = if merged_input_options.key?(:value)
+      merged_input_options[:value]
+    else
+      invalid_text = object.invalid_calendar_datetime(attribute_name) if object.respond_to?(:invalid_calendar_datetime)
+      if invalid_text.present?
+        invalid_text
+      elsif object.respond_to?(attribute_name)
+        object.public_send(attribute_name)
+      end
+    end
     merged_input_options[:id] = dom_id
     merged_input_options[:type] = "text"
     merged_input_options[:autocomplete] = "off"
