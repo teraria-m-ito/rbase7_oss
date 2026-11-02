@@ -406,6 +406,7 @@ SimpleForm.setup do |config|
     b.optional :readonly
     b.use :label, class: "control-label", error_class: "has-error"
     b.use :input, class: "form-control", error_class: "has-error"
+    b.use :error, wrap_with: { tag: "p", class: "text-danger small help-block" }
   end
 
   config.boolean_style = :inline
